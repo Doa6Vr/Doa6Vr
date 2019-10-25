@@ -1,6 +1,7 @@
 Virtual Reality Mod for Dead or Alive 6
 
 This is a free-camera mod for DOA6 with a VR component. The free camera can be used without VR.
+I heavily based this on the work by https://bryanyora2525.com/
 
 This is very much in an Alpha state. If you try running this, don't expect it to be in a user-friendly state.
 
