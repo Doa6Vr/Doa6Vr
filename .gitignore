@@ -1,0 +1,9 @@
+*.pdb
+*.dll
+*.user
+*.db
+*.opendb
+Release/
+Debug/
+.vs/
+!openvr_api.dll

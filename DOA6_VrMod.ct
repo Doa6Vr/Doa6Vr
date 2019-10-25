@@ -1,0 +1,1479 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="29">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>3692</ID>
+      <Description>"VR Mod"</Description>
+      <Options moHideChildren="1"/>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[enable]
+aobScanModule( AOB_CameraCallScan, DOA6.exe, 80 7c 24 20 00 74 1e )
+aobScanModule( AOB_TargetsTableCall, DOA6.exe, 48 8B 01 48 8D 54 24 60 FF 50 08)
+aobScanModule( AOB_GameSpeedScan, DOA6.exe, C7 44 24 58 01 00 00 00 33 D2 41 F7 F0 )
+aobScanModule( AOB_HideHeadScan, DOA6.exe, 48 8B 5B 28 48 85 DB 74 7C 49 8B 06 49 8B CE FF 50 18 44 0F B6 D0 44 89 93 20 03 00 00 )
+aobScanModule( AOB_HideHairScan, DOA6.exe, 48 8B 5B 40 48 85 DB 74 7C 49 8B 06 49 8B CE FF 50 18 44 0F B6 D0 44 89 93 20 03 00 00 )
+aobScanModule( AOB_HideModelCall, DOA6.exe, 80 B9 1C 02 00 00 00 0F 94 C0 C3 )
+aobScanModule( AOB_GetCharTableFuncPtr, DOA6.exe, 88 4c 24 08 53 56 57 48 81 ec a0 00 00 00 ) // use this passing 0 or 1 in RCX, returns in rax
+aobScanModule( AOB_HideUI, DOA6.exe, 48 8B 13 80 7A 22 00 75 0D 49 8B 45 00 )
+aobScanModule( AOB_GetTargetTableBaseCall, DOA6.exe, 4c 8b 49 10 4d 8b c1 49 8b 49 08 )
+//aobScanModule( AOB_GetCameraAddr, DOA6.exe, 33 db 48 85 d2 8b c3 49 0f 45 c0 )
+
+
+label(TargetsTable1Ptr)
+label(TargetsTable2Ptr)
+label(TargetTableBasePtr)
+label(GetCharTableFuncPtr)
+label(Zoom)
+label(CameraClippingDist)
+label(Rotation)
+label(GameSpeed)
+label(CameraSource)
+label(EnableTarget)
+label(EnableSource)
+label(SourceTableSelect)
+label(TargetTableSelect)
+label(SourceTableIdx)
+label(TargetTableIdx)
+label(VariableBlock)
+label(FPVHideHead)
+label(FPVHidePlayer)
+label(RequestVrReset)
+label(RequestPosReset)
+label(HideUI)
+
+label(RotA)
+label(RotB)
+label(RotC)
+
+RegisterSymbol(TargetsTable1Ptr)
+RegisterSymbol(TargetsTable2Ptr)
+RegisterSymbol(GetCharTableFuncPtr)
+RegisterSymbol(TargetTableBasePtr)
+RegisterSymbol(Zoom)
+RegisterSymbol(CameraClippingDist)
+RegisterSymbol(Rotation)
+RegisterSymbol(GameSpeed)
+RegisterSymbol(CameraSource)
+RegisterSymbol(EnableTarget)
+RegisterSymbol(EnableSource)
+RegisterSymbol(SourceTableSelect)
+RegisterSymbol(TargetTableSelect)
+RegisterSymbol(SourceTableIdx)
+RegisterSymbol(TargetTableIdx)
+RegisterSymbol(VariableBlock)
+RegisterSymbol(FPVHideHead)
+RegisterSymbol(FPVHidePlayer)
+RegisterSymbol(RequestVrReset)
+RegisterSymbol(RequestPosReset)
+
+RegisterSymbol(RotA)
+RegisterSymbol(RotB)
+RegisterSymbol(RotC)
+
+RegisterSymbol(AOB_CameraCall)
+RegisterSymbol(AOB_CameraCall_Orig)
+RegisterSymbol(AOB_TargetsTableCall)
+RegisterSymbol(AOB_GameSpeedScan)
+RegisterSymbol(AOB_HideHeadScan)
+RegisterSymbol(AOB_HideHeadCall)
+RegisterSymbol(AOB_HideHairScan)
+RegisterSymbol(AOB_HideHairCall)
+RegisterSymbol(AOB_HideModelCall)
+RegisterSymbol(AOB_GetCharTableFuncPtr)
+RegisterSymbol(AOB_HideUI)
+RegisterSymbol(AOB_GetTargetTableBaseCall)
+//RegisterSymbol(AOB_GetCameraAddr)
+
+
+label(AOB_CameraCall)
+label(AOB_HideHeadCall)
+label(AOB_HideHairCall)
+label(TargetsTablePatch)
+label(TargetsTablePatchRet)
+label(TargetsTablePatchSkip)
+label(CameraCallPatch)
+label(CameraCallPatchSkip)
+label(CameraCallPatchRet)
+//label(GetCameraAddrPatch)
+//label(GetCameraAddrPatchRet)
+label(HideHeadPatch)
+label(HideHeadPatchSkip)
+label(HideHeadPatchRet)
+label(HideHairPatch)
+label(HideHairPatchSkip)
+label(HideHairPatchRet)
+label(HideModelPatch)
+label(HideModelPatchSkip)
+label(HideModelPatchRet)
+label(HideModelPatchOrig)
+label(GameSpeedPatchSkip)
+label(HideUIPatch)
+label(HideUIPatchSkip)
+label(HideUIPatchRet)
+
+alloc( newmem, 4096, "DOA6.exe" )
+
+{$lua}
+--- Check if CamMod.dll is currently loaded
+reinitializeSymbolhandler()
+{$asm}
+
+loadLibrary(CamMod.dll)
+
+// #Patches#
+
+//*******************************************
+// Backup the original AOB_CameraCall
+alloc( AOB_CameraCall_Orig, 32, "DOA6.exe" )
+AOB_CameraCall_Orig:
+ReadMem( AOB_CameraCallScan+1b, 32 )
+
+// Overwrite the original AOB_CameraCall
+AOB_CameraCallScan+1b:
+AOB_CameraCall:
+jmp long CameraCallPatch
+CameraCallPatchRet:
+
+
+//*******************************************
+// Patch the TargetsTableCall
+AOB_TargetsTableCall:
+jmp long TargetsTablePatch
+nop
+nop
+nop
+TargetsTablePatchRet:
+
+
+//*******************************************
+// Patch the GameSpeed call
+AOB_GameSpeedScan:
+jmp long GameSpeedPatch
+nop
+nop
+nop
+GameSpeedPatchRet:
+
+//*******************************************
+// Patch in to get camera address
+//AOB_GetCameraAddr:
+//jmp long GetCameraAddrPatch // Camera addr is in RDX
+//GetCameraAddrPatchRet:
+
+//*******************************************
+// Patch the call to hide head
+AOB_HideHeadScan+16:
+AOB_HideHeadCall:
+jmp long HideHeadPatch
+nop
+nop
+HideHeadPatchRet:
+
+//*******************************************
+// Patch the call to hide hair
+AOB_HideHairScan+16:
+AOB_HideHairCall:
+jmp long HideHairPatch
+nop
+nop
+HideHairPatchRet:
+
+//*******************************************
+// Patch the call to hide model
+AOB_HideModelCall:
+jmp long HideModelPatch
+nop
+nop
+nop
+nop
+nop
+HideModelPatchRet:
+
+//*******************************************
+// Patch the call to hide UI
+AOB_HideUI:
+jmp long HideUIPatch
+nop
+nop
+HideUIPatchRet:
+
+
+//*******************************************
+// Patch the call to get target table base addr
+AOB_GetTargetTableBaseCall:
+jmp long GetTargetTableBasePatch
+nop
+nop
+GetTargetTableBasePatchRet:
+
+
+// #Patched routines#
+newmem:
+
+//*******************************************
+// Get the base table address
+GetTargetTableBasePatch:  // RCX holds base pointer
+db 4c 8b 49 10
+db 4d 8b c1
+mov [TargetTableBasePtr], rcx
+jmp GetTargetTableBasePatchRet
+
+
+
+//********************************************************************
+// Patch the UI display
+HideUIPatch:   // rax is usable in this function
+mov rax, [HideUI]
+cmp rax, 0
+jne HideUIPatchSkip  // If Hide UI is off then run original code
+
+db 48 8b 13     // mov rdx,[rbx]
+db 80 7a 22 00  // cmp byte ptr [rdx+22],00   &lt;-- if equal then draw UI
+HideUIPatchSkip:
+jmp HideUIPatchRet
+
+
+
+//********************************************************************
+// Store pointers to target tables
+TargetsTablePatch:
+
+// First do code we overwrote to make our jump
+mov rax, [rcx]
+lea rdx, [rsp+60]
+
+
+push rax
+push rbx
+
+// Now use code from https://bryanyora2525.com/ to find tables
+cmp ebp,0A
+jne TargetsTablePatchSkip
+
+// Get the target player
+mov rax,[r15+00000098]
+movzx eax,[rax+00003560]
+imul eax,8
+
+ // Load address where we will store pointers, add player offset
+lea rbx, [TargetsTable1Ptr]
+add rbx, eax
+
+// Get the current table address
+mov rax,[rcx+20]
+lea rax,[rax+00000030]
+
+// now write table to TargetsTable1Ptr or 2
+mov [rbx], rax
+
+
+TargetsTablePatchSkip:
+pop rbx
+pop rax
+
+jmp TargetsTablePatchRet
+//*********end TargetsTablePatch***************************************
+
+
+//********************************************************************
+// Patch to grab the camera pointer
+GetCameraAddrPatch:
+//mov rax,rdx  // camera address is in RDX
+//add rax,30
+//mov [CameraSource], rax
+
+//// Might as well store the CharTable getter...   This should be moved somewhere better that gets called once
+//// RAX is free to use
+//mov rax, AOB_GetCharTableFuncPtr
+//mov [GetCharTableFuncPtr], rax
+
+//// Run the original code
+//db 33 db
+//db 48 85 d2
+//jmp GetCameraAddrPatchRet
+
+//********************************************************************
+// Patch the game speed
+GameSpeedPatch:
+db C7 44 24 58 01 00 00 00
+mov ecx, 3F800000 // 1.0f
+movd xmm0, ecx
+subss xmm0, [GameSpeed] // Subtract gamespeed from 1
+movss [r15], xmm0       // set gamespeed
+                        // set [rsi] to 8 to stop game?
+GameSpeedPatchSkip:
+jmp GameSpeedPatchRet
+
+
+//********************************************************************
+// Patch the camera movement calls
+CameraCallPatch:
+
+add rcx,30
+mov [CameraSource], rcx
+
+// Store the Function pointer to get char table.  This should be moved somewhere better that gets called once
+mov rcx, AOB_GetCharTableFuncPtr
+mov [GetCharTableFuncPtr], rcx
+
+
+// Now we have camera source, camera target, and the table of coordinates
+sub rsp,20
+lea rcx,[VariableBlock]
+call CamMod.AdjustCamera
+add rsp,20
+
+CameraCallPatchSkip:
+jmp CameraCallPatchRet
+
+//*********end CameraCallPatch***************************************
+
+
+
+
+//********************************************************************
+// Hide model based on FPVHideHead
+HideHeadPatch:
+
+movzx eax, byte ptr [FPVHideHead]
+cmp eax, 0
+je HideHeadPatchSkip // If player is 0 then skip
+
+dec eax // Eax is now current player index
+
+mov rdx, [r14+98]
+movzx edx, byte ptr [rdx+3560] // Get current player this function is acting on
+cmp edx, eax
+jne HideHeadPatchSkip // Skip if not FPV player
+
+mov r10, 0 // Set r10 to zero to hide head
+
+HideHeadPatchSkip:
+db 44 89 93 20 03 00 00
+jmp HideHeadPatchRet
+//*********end HideHeadPatch***************************************
+
+
+
+//********************************************************************
+// Hide model based on FPVHideHead
+HideHairPatch:
+movzx eax, byte ptr [FPVHideHead]
+cmp eax, 0
+je HideHairPatchSkip // If player is 0 then skip
+
+dec eax // Eax is now current player index
+
+mov rdx, [r14+98]
+movzx edx, byte ptr [rdx+3560] // Get current player this function is acting on
+cmp edx, eax
+jne HideHairPatchSkip // Skip if not FPV player
+
+mov r10, 0 // Set r10 to zero to hide head
+
+HideHairPatchSkip:
+db 44 89 93 20 03 00 00
+jmp HideHairPatchRet
+//*********end HideHairPatch***************************************
+
+
+
+//********************************************************************
+// Hide model based on FPVHidePlayer
+HideModelPatch:
+movzx eax, byte ptr [FPVHidePlayer]
+cmp eax, 0
+je HideModelPatchOrig // If player is 0 then run original code
+
+movzx eax, byte ptr [FPVHideHead]
+dec eax // Eax is now current player index
+
+mov rdx, [r14+98]
+movzx edx, byte ptr [rdx+3560] // Get current player this function is acting on
+cmp edx, eax
+jne HideModelPatchOrig // Skip if not FPV player
+
+mov rax, 0 // Set rax to zero to hide head
+jmp HideModelPatchSkip
+
+HideModelPatchOrig:
+db 80 b9 1c 02 00 00 00
+db 0f 94 c0
+HideModelPatchSkip:
+jmp HideModelPatchRet
+//*********end HideModelPatch***************************************
+
+
+// # Variables #
+
+newmem+900: // 256 bytes for our variables
+VariableBlock:
+TargetTableBasePtr:
+dq 0000000000000000
+TargetsTable1Ptr:
+dq 0000000000000000
+TargetsTable2Ptr:
+dq 0000000000000000
+CameraSource:
+dq 0000000000000000
+GetCharTableFuncPtr:
+dq 0000000000000000
+Zoom:
+db 00 00 00 00
+CameraClippingDist:
+db 00 00 00 00
+Rotation:
+db 00 00 00 00
+GameSpeed:
+db 00 00 00 00
+RotA:
+db 00 00 00 00
+RotB:
+db 00 00 00 00
+RotC:
+db 00 00 00 00
+EnableTarget: // 0 - Off, 1 - Use Table, 2 - POV
+db 00
+EnableSource:
+db 00
+SourceTableSelect: // 0 - TargetsTable1, 1 - TargetsTable2, 2 - CharTargetsTable1, 3 - CharTargetsTable2
+db 00
+TargetTableSelect:
+db 00
+SourceTableIdx:
+db 00
+TargetTableIdx:
+db 00
+FPVHideHead:
+db 00
+FPVHidePlayer:
+db 00
+RequestVrReset:
+db 00
+RequestPosReset:
+db 00
+HideUI:
+db 00
+
+
+
+//*****************************************************
+[disable]
+
+createThread( CamMod.Unload )
+
+//*******************************************
+// Restore the original AOB_CameraCall
+AOB_CameraCall:
+readmem( AOB_CameraCall_Orig, 32 )
+
+
+//*******************************************
+// Restore the original AOB_TargetsTableCall
+AOB_TargetsTableCall:
+db 48 8b 01
+db 48 8d 54 24 60
+db ff 50 08
+
+//*******************************************
+// Restore the original AOB_HideHeadCall
+AOB_HideHeadCall:
+db 44 89 93 20 03 00 00
+
+//*******************************************
+// Restore the original AOB_HideHairCall
+AOB_HideHairCall:
+db 44 89 93 20 03 00 00
+
+//*******************************************
+// Restore the original AOB_HideModelCall
+AOB_HideModelCall:
+db 80 b9 1c 02 00 00 00 0f 94 c0
+
+//db 0f 5b c9
+
+//*******************************************
+// Restore the original AOB_GetCameraAddr
+//AOB_GetCameraAddr:
+//db 33 db
+//db 48 85 d2
+
+
+
+//*******************************************
+// Restore the original AOB_GameSpeedScan
+AOB_GameSpeedScan:
+db C7 44 24 58 01 00 00 00 33 D2 41 F7 F0
+
+//*******************************************
+// Restore the original AOB_HideUI
+AOB_HideUI:
+db 48 8b 13
+db 80 7a 22 00
+
+//*******************************************
+// Restore the original AOB_GetTargetTableBaseCall
+AOB_GetTargetTableBaseCall:
+db 4c 8b 49 10
+db 4d 8b c1
+
+dealloc( AOB_CameraCall_Orig )
+dealloc( newmem )
+
+UnregisterSymbol(TargetsTable1Ptr)
+UnregisterSymbol(TargetsTable2Ptr)
+UnregisterSymbol(AOB_GetCharTableFuncPtr)
+UnregisterSymbol(Zoom)
+UnregisterSymbol(CameraClippingDist)
+UnregisterSymbol(Rotation)
+UnregisterSymbol(GameSpeed)
+UnregisterSymbol(CameraSource)
+UnregisterSymbol(EnableTarget)
+UnregisterSymbol(EnableSource)
+UnregisterSymbol(SourceTableSelect)
+UnregisterSymbol(TargetTableSelect)
+UnregisterSymbol(SourceTableIdx)
+UnregisterSymbol(TargetTableIdx)
+UnregisterSymbol(VariableBlock)
+UnregisterSymbol(FPVHideHead)
+UnregisterSymbol(FPVHidePlayer)
+UnregisterSymbol(RequestVrReset)
+UnregisterSymbol(RequestPosReset)
+
+UnregisterSymbol(RotA)
+UnregisterSymbol(RotB)
+UnregisterSymbol(RotC)
+
+UnregisterSymbol(AOB_CameraCall)
+UnregisterSymbol(AOB_CameraCall_Orig)
+UnregisterSymbol(AOB_TargetsTableCall)
+UnregisterSymbol(AOB_GameSpeedScan)
+UnregisterSymbol(AOB_HideHeadScan)
+UnregisterSymbol(AOB_HideHeadCall)
+UnregisterSymbol(AOB_HideHairScan)
+UnregisterSymbol(AOB_HideHairCall)
+UnregisterSymbol(AOB_HideModelCall)
+UnregisterSymbol(AOB_GetPlayerAddress)
+UnregisterSymbol(AOB_HideUI)
+UnregisterSymbol(AOB_GetTargetTableBaseCall)
+</AssemblerScript>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>3769</ID>
+          <Description>"Internals"</Description>
+          <Options moHideChildren="1"/>
+          <LastState Value="" RealAddress="00000000"/>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>3682</ID>
+              <Description>"Enable Source"</Description>
+              <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0:Off
+1:On
+</DropDownList>
+              <VariableType>Byte</VariableType>
+              <Address>EnableSource</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3656</ID>
+              <Description>"Source Table Select"</Description>
+              <DropDownList ReadOnly="1" DisplayValueAsItem="1">0:TargetsTable1
+1:TargetsTable2
+2:CharTargetsTable1
+3:CharTargetsTable2
+</DropDownList>
+              <VariableType>Byte</VariableType>
+              <Address>SourceTableSelect</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3658</ID>
+              <Description>"Source Table Idx"</Description>
+              <VariableType>Byte</VariableType>
+              <Address>SourceTableIdx</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3654</ID>
+              <Description>"Enable Target"</Description>
+              <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0:Off
+1:Use Table
+2:POV
+</DropDownList>
+              <VariableType>Byte</VariableType>
+              <Address>EnableTarget</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3657</ID>
+              <Description>"Target Table Select"</Description>
+              <DropDownList ReadOnly="1" DisplayValueAsItem="1">0:TargetsTable1
+1:TargetsTable2
+2:CharTargetsTable1
+3:CharTargetsTable2
+</DropDownList>
+              <VariableType>Byte</VariableType>
+              <Address>TargetTableSelect</Address>
+              <Hotkeys>
+                <Hotkey>
+                  <Action>Increase Value</Action>
+                  <Keys>
+                    <Key>22533</Key>
+                    <Key>192</Key>
+                  </Keys>
+                  <Value>1</Value>
+                  <ID>0</ID>
+                </Hotkey>
+                <Hotkey>
+                  <Action>Decrease Value</Action>
+                  <Keys>
+                    <Key>22533</Key>
+                    <Key>76</Key>
+                  </Keys>
+                  <Value>1</Value>
+                  <ID>1</ID>
+                </Hotkey>
+                <Hotkey>
+                  <Action>Set Value</Action>
+                  <Keys>
+                    <Key>22533</Key>
+                    <Key>80</Key>
+                  </Keys>
+                  <Value>0</Value>
+                  <ID>2</ID>
+                </Hotkey>
+              </Hotkeys>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3659</ID>
+              <Description>"Target Table Idx"</Description>
+              <VariableType>Byte</VariableType>
+              <Address>TargetTableIdx</Address>
+              <Hotkeys>
+                <Hotkey>
+                  <Action>Increase Value</Action>
+                  <Keys>
+                    <Key>22533</Key>
+                    <Key>38</Key>
+                  </Keys>
+                  <Value>1</Value>
+                  <ID>0</ID>
+                </Hotkey>
+                <Hotkey>
+                  <Action>Decrease Value</Action>
+                  <Keys>
+                    <Key>22533</Key>
+                    <Key>40</Key>
+                  </Keys>
+                  <Value>1</Value>
+                  <ID>1</ID>
+                </Hotkey>
+                <Hotkey>
+                  <Action>Set Value</Action>
+                  <Keys>
+                    <Key>22533</Key>
+                    <Key>39</Key>
+                  </Keys>
+                  <Value>0</Value>
+                  <ID>2</ID>
+                </Hotkey>
+              </Hotkeys>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3698</ID>
+              <Description>"GameSpeed"</Description>
+              <VariableType>Float</VariableType>
+              <Address>GameSpeed</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3695</ID>
+              <Description>"rotA"</Description>
+              <VariableType>Float</VariableType>
+              <Address>rotA</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3696</ID>
+              <Description>"rotB"</Description>
+              <VariableType>Float</VariableType>
+              <Address>RotB</Address>
+              <Hotkeys>
+                <Hotkey>
+                  <Action>Increase Value</Action>
+                  <Keys>
+                    <Key>22533</Key>
+                    <Key>75</Key>
+                  </Keys>
+                  <Value>25</Value>
+                  <ID>0</ID>
+                  <ActivateSound TTS="EN">Multiplier {MRValue}</ActivateSound>
+                </Hotkey>
+                <Hotkey>
+                  <Action>Decrease Value</Action>
+                  <Keys>
+                    <Key>22533</Key>
+                    <Key>74</Key>
+                  </Keys>
+                  <Value>25</Value>
+                  <ID>1</ID>
+                  <ActivateSound TTS="EN">Multiplier {MRValue}</ActivateSound>
+                </Hotkey>
+              </Hotkeys>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3697</ID>
+              <Description>"rotC"</Description>
+              <VariableType>Float</VariableType>
+              <Address>RotC</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3699</ID>
+              <Description>"FPVHideHead"</Description>
+              <VariableType>Byte</VariableType>
+              <Address>FPVHideHead</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3700</ID>
+              <Description>"FPVHidePlayer"</Description>
+              <VariableType>Byte</VariableType>
+              <Address>FPVHidePlayer</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3701</ID>
+              <Description>"Request Pos Reset"</Description>
+              <VariableType>Byte</VariableType>
+              <Address>RequestPosReset</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3702</ID>
+              <Description>"Request Vr Reset"</Description>
+              <VariableType>Byte</VariableType>
+              <Address>RequestVrReset</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3703</ID>
+              <Description>"Camera Clipping DIstance"</Description>
+              <VariableType>Float</VariableType>
+              <Address>CameraClippingDist</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3767</ID>
+              <Description>"P1 Break Gauge"</Description>
+              <VariableType>4 Bytes</VariableType>
+              <Address>CharBreakGaugeTable1Ptr</Address>
+              <Offsets>
+                <Offset>20</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3768</ID>
+              <Description>"P2 Break Gauge"</Description>
+              <VariableType>4 Bytes</VariableType>
+              <Address>CharBreakGaugeTable2Ptr</Address>
+              <Offsets>
+                <Offset>20</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3773</ID>
+              <Description>"Hide UI"</Description>
+              <VariableType>Byte</VariableType>
+              <Address>HideUI</Address>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>3872</ID>
+      <Description>"bryanyora2525's scripts"</Description>
+      <LastState Value="" RealAddress="00000000"/>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>3871</ID>
+          <Description>"0200_Over Kill"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[enable]
+aobscanmodule(AOB_OverKill_A,DOA6.exe,FF C8 89 45 20 40 84 FF 0F 85 18 03 00 00)
+aobscanmodule(AOB_OverKill_B,DOA6.exe,C6 80 27 01 00 00 01 4C 8B 05 * * * *)
+aobscanmodule(AOB_OverKill_C,DOA6.exe,80 B8 27 01 00 00 00 0F 84 F4 00 00 00 0F B6 4D 28)
+aobscanmodule(AOB_OverKill_D,DOA6.exe,84 DB 48 8B 5C 24 20 75 07 B0 01 48 83 C4 28)
+aobscanmodule(AOB_OverKill_E,DOA6.exe,48 8B 05 41 81 D5 00 F6 40 68 01 74 43)
+aobscanmodule(AOB_OverKill_F,DOA6.exe,38 48 32 0F 94 C0 48 83 C4 48 C3 48 8D 0D 3D 8F 5C 00)
+registersymbol(AOB_OverKill_A)
+registersymbol(AOB_OverKill_B)
+registersymbol(AOB_OverKill_C)
+registersymbol(AOB_OverKill_D)
+registersymbol(AOB_OverKill_E)
+registersymbol(AOB_OverKill_F)
+alloc(newmem,1024,"DOA6.exe")
+
+label(OverKill_A)
+label(OverKill_A_SKIP)
+label(OverKill_A_RET)
+
+label(OverKill_B)
+label(OverKill_B_SKIP)
+label(OverKill_B_RET)
+
+label(OverKill_C)
+label(OverKill_C_SKIP)
+label(OverKill_C_RET)
+
+label(OverKill_E)
+label(OverKill_E_SKIP)
+label(OverKill_E_RET)
+
+newmem:
+OverKill_A:
+cmp eax,00000001
+je OverKill_A_SKIP
+db FF C8
+db 89 45 20
+OverKill_A_SKIP:
+jmp OverKill_A_RET
+
+OverKill_B:
+xor r8d,r8d
+cmp r8w,[rax+00000550]
+jae OverKill_B_SKIP
+db C6 80 27 01 00 00 00
+jmp OverKill_B_RET
+OverKill_B_SKIP:
+db C6 80 27 01 00 00 01
+jmp OverKill_B_RET
+
+OverKill_C:
+xor ecx,ecx
+cmp cx,[rax+00000550]
+jae OverKill_C_SKIP
+cmp al,al
+jmp OverKill_C_RET
+OverKill_C_SKIP:
+db 80 B8 27 01 00 00 00
+jmp OverKill_C_RET
+
+OverKill_E:
+mov rax,[DOA6.exe+25B0AA0]
+test rax,rax
+je OverKill_E_SKIP
+lea rax,[rax+000008F0]
+cmp byte ptr [rax+00000308],0F
+jne OverKill_E_SKIP
+cmp byte ptr [rax+00000229],00
+jne OverKill_E_JMP
+OverKill_E_SKIP:
+mov rax,[DOA6.exe+256D958]
+jmp OverKill_E_RET
+OverKill_E_JMP:
+jmp OverKill_E_RET+6
+
+AOB_OverKill_A:
+jmp OverKill_A
+OverKill_A_RET:
+
+AOB_OverKill_B:
+jmp OverKill_B
+nop
+nop
+OverKill_B_RET:
+
+AOB_OverKill_C:
+jmp OverKill_C
+nop
+nop
+OverKill_C_RET:
+
+AOB_OverKill_D+09:
+db 32 C0
+
+AOB_OverKill_E:
+jmp OverKill_E
+nop
+nop
+OverKill_E_RET:
+
+AOB_OverKill_F+03:
+db 30 C0
+db 90
+
+[disable]
+unregistersymbol(AOB_OverKill_A)
+unregistersymbol(AOB_OverKill_B)
+unregistersymbol(AOB_OverKill_C)
+unregistersymbol(AOB_OverKill_D)
+unregistersymbol(AOB_OverKill_E)
+unregistersymbol(AOB_OverKill_F)
+dealloc(newmem)
+
+AOB_OverKill_A:
+db FF C8
+db 89 45 20
+
+AOB_OverKill_B:
+db C6 80 27 01 00 00 01
+
+AOB_OverKill_C:
+db 80 B8 27 01 00 00 00
+
+AOB_OverKill_D+09:
+db B0 01
+
+AOB_OverKill_E:
+db 48 8B 05 41 81 D5 00
+
+AOB_OverKill_F+03:
+db 0F 94 C0
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>3868</ID>
+          <Description>"0120_Left Side(CameraMode)"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[enable]
+aobscanmodule(AOB_CameraMuki_A,DOA6.exe,88 83 48 01 00 00 E8 * * * * 48 8B D6 48 8B CB)
+registersymbol(AOB_CameraMuki_A)
+alloc(newmem,1024,"DOA6.exe")
+
+newmem:
+CameraMuki_A:
+//cmp byte ptr [BryanyoraMem],01
+//jne CameraMuki_A_SKIP
+xor al,al
+CameraMuki_A_SKIP:
+db 88 83 48 01 00 00
+jmp CameraMuki_A_RET
+
+AOB_CameraMuki_A:
+jmp CameraMuki_A
+nop
+CameraMuki_A_RET:
+
+[disable]
+unregistersymbol(AOB_CameraMuki_A)
+dealloc(newmem)
+
+AOB_CameraMuki_A:
+db 88 83 48 01 00 00
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>3648</ID>
+          <Description>"0020_Disable Raising Dust"</Description>
+          <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[enable]
+aobscanmodule(AOB_Sunabokori_A,DOA6.exe,4C 8B F9 4D 85 E4 0F 84 B2 0C 00 00)
+alloc(newmem,$1000,"DOA6.exe")
+registersymbol(AOB_Sunabokori_A)
+registersymbol(EFFECT_MEM)
+label(Sunabokori_A)
+label(Sunabokori_A_SKIP)
+label(Sunabokori_A_JMP)
+label(Sunabokori_A_RET)
+label(EFFECT_MEM)
+
+newmem:
+Sunabokori_A:
+db 4C 8B F9
+cmp [r15+20],05ED852F
+je Sunabokori_A_SKIP
+cmp [r15+20],464A6307
+je Sunabokori_A_SKIP
+cmp byte ptr [EFFECT_MEM],01
+je Sunabokori_A_JMP
+cmp [r15+20],8C72E695
+je Sunabokori_A_JMP
+cmp [r15+20],80FB8106
+je Sunabokori_A_JMP
+cmp [r15+20],F45B5605
+je Sunabokori_A_JMP
+cmp [r15+20],CCBC830C
+je Sunabokori_A_JMP
+cmp [r15+20],E35B1EB5
+je Sunabokori_A_JMP
+cmp [r15+20],6FFB49B6
+je Sunabokori_A_JMP
+cmp [r15+20],A7895933
+je Sunabokori_A_JMP
+cmp [r15+20],283B6715
+je Sunabokori_A_JMP
+cmp [r15+20],7F5957F4
+je Sunabokori_A_JMP
+Sunabokori_A_SKIP:
+db 4D 85 E4
+jmp Sunabokori_A_RET
+Sunabokori_A_JMP:
+cmp r12,r12
+jmp Sunabokori_A_RET
+
+newmem+100:
+EFFECT_MEM:
+db 00
+
+AOB_Sunabokori_A:
+jmp Sunabokori_A
+nop
+Sunabokori_A_RET:
+
+[disable]
+unregistersymbol(AOB_Sunabokori_A)
+unregistersymbol(EFFECT_MEM)
+dealloc(newmem)
+
+AOB_Sunabokori_A:
+db 4C 8B F9
+db 4D 85 E4
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>3652</ID>
+              <Description>"Almost Effect"</Description>
+              <DropDownList DisplayValueAsItem="1">00:OFF
+01:ON
+</DropDownList>
+              <ShowAsHex>1</ShowAsHex>
+              <VariableType>Byte</VariableType>
+              <Address>EFFECT_MEM</Address>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+  <LuaScript>speedAddr = nil
+overkillAddr = nil
+sourceTableAddr = nil
+targetTableAddr = nil
+enableSrcAddr = nil
+enableTgtAddr = nil
+enableHideModelAddr = nil
+hideHeadPlayerAddr = nil
+requestVrResetAddr = nil
+requestPosResetAddr = nil
+rotAAddr = nil
+
+
+leftHeld = false
+rightHeld = false
+
+POV_MODE_COUNT = 5
+
+povMode = 0
+
+function startTimer()
+    if hotkeyTimer then
+        object_destroy(hotkeyTimer)
+        hotkeyTimer = nil
+    else
+        local list = getAddressList()
+        speedAddr = list.getMemoryRecordByDescription("GameSpeed")
+        overkillAddr = list.getMemoryRecordByDescription("0200_Over Kill")
+        sourceTableAddr = list.getMemoryRecordByDescription("Source Table Select")
+        targetTableAddr = list.getMemoryRecordByDescription("Target Table Select")
+        enableSrcAddr = list.getMemoryRecordByDescription("Enable Source")
+        enableTgtAddr = list.getMemoryRecordByDescription("Enable Target")
+        enableHideModelAddr = list.getMemoryRecordByDescription("FPVHidePlayer")
+        hideHeadPlayerAddr = list.getMemoryRecordByDescription("FPVHideHead")
+        requestVrResetAddr = list.getMemoryRecordByDescription("Request Pos Reset")
+        requestPosResetAddr = list.getMemoryRecordByDescription("Request Vr Reset")
+        rotAAddr = list.getMemoryRecordByDescription("RotA")
+
+        hotkeyTimer = createTimer(getMainForm())
+        hotkeyTimer.interval = 100
+        hotkeyTimer.OnTimer = handleTimer
+        beep()
+    end
+end
+
+
+function handleTimer(timer)
+    local lbHeld = false
+    local rbHeld = false
+    gamepad = getXBox360ControllerState(0)
+
+    if gamepad == nil then
+       return
+    end
+
+    -- Always pausable with trigger
+    if gamepad.LeftTrigger &gt; 0 then
+        if not leftHeld then
+            leftHeld = true
+            togglePause()
+        end
+    elseif leftHeld then
+        leftHeld = false
+    end
+
+
+    if gamepad.GAMEPAD_DPAD_UP then
+
+    elseif gamepad.GAMEPAD_DPAD_DOWN then
+        -- Speed controls (some down used by dx3d)
+    elseif gamepad.GAMEPAD_DPAD_RIGHT then
+        -- camera controls
+        if false then --tonumber(povAddr.Value) == POV_MODE_COUNT then
+            -- FLY CAMERA
+            if gamepad.GAMEPAD_RIGHT_SHOULDER then
+                if gamepad.GAMEPAD_X then
+                    --toggleTarget(flyCameraTargetAddr)
+                elseif gamepad.GAMEPAD_Y then
+                    --incAddr(flyCameraCenteringAddr, 3)
+                elseif gamepad.GAMEPAD_A then
+                    --changeRot(-10, flyCameraZAxisAddr)
+                elseif gamepad.GAMEPAD_B then
+                    --changeRot(10, flyCameraZAxisAddr)
+                elseif gamepad.GAMEPAD_START then
+                    --incAddr(flyCameraModeAddr, 2 )
+                end
+            else
+                if gamepad.GAMEPAD_X then
+                    --changeRot(-10, flyCameraXAxisAddr)
+                elseif gamepad.GAMEPAD_Y then
+                    --changeRot(10, flyCameraXAxisAddr)
+                elseif gamepad.GAMEPAD_A then
+                    --changeAxis(-10, flyCameraYAxisAddr)
+                elseif gamepad.GAMEPAD_B then
+                    --changeAxis(10, flyCameraYAxisAddr)
+                elseif gamepad.GAMEPAD_START then
+                    --setRot(0, flyCameraXAxisAddr)
+                    --setRot(0, flyCameraYAxisAddr)
+                    --setRot(0, flyCameraZAxisAddr)
+                end
+            end
+        else -- POV CAMERA
+            if gamepad.GAMEPAD_RIGHT_SHOULDER then
+                if gamepad.GAMEPAD_X then
+                    --toggleOrigin(cameraOriginAddr)
+                elseif gamepad.GAMEPAD_Y then
+                    --toggleTarget(cameraTargetAddr)
+                elseif gamepad.GAMEPAD_A then
+                    --changeZoom(-.05, cameraZoomAddr)
+                elseif gamepad.GAMEPAD_B then
+                    --changeZoom(.05, cameraZoomAddr)
+                elseif gamepad.GAMEPAD_START then
+                    --setZoom(0, cameraZoomAddr)
+                end
+            elseif gamepad.GAMEPAD_LEFT_SHOULDER then
+                if gamepad.GAMEPAD_X then
+                elseif gamepad.GAMEPAD_Y then
+                elseif gamepad.GAMEPAD_A then
+                    --cameraTiltAddr.Value = tonumber(cameraTiltAddr.Value) + .1
+                elseif gamepad.GAMEPAD_B then
+                    --cameraTiltAddr.Value = tonumber(cameraTiltAddr.Value) - .1
+                elseif gamepad.GAMEPAD_START then
+                    --cameraTiltAddr.Value = 0
+                end
+            else
+                if gamepad.GAMEPAD_X then
+                    --changeRot(-1, cameraYRotAddr)
+                elseif gamepad.GAMEPAD_Y then
+                    --changeRot(1, cameraYRotAddr)
+                elseif gamepad.GAMEPAD_A then
+                    --changeAxis(-1, cameraYAxisAddr)
+                elseif gamepad.GAMEPAD_B then
+                    --changeAxis(1, cameraYAxisAddr)
+                elseif gamepad.GAMEPAD_START then
+                    --setRot(0, cameraYRotAddr)
+                    --setAxis(0, cameraYAxisAddr)
+                end
+            end
+        end
+    elseif gamepad.GAMEPAD_DPAD_LEFT then
+    else
+        -- no dpad held, default
+        speedDelta = 0.001
+        if gamepad.GAMEPAD_LEFT_SHOULDER then
+            speedDelta = speedDelta * 50
+            lbHeld = true
+        end
+        if gamepad.GAMEPAD_RIGHT_SHOULDER then
+            rbHeld = true
+        end
+
+        if gamepad.GAMEPAD_LEFT_THUMB then
+            changeSpeed(speedDelta)
+        elseif gamepad.GAMEPAD_RIGHT_THUMB then
+            changeSpeed(-speedDelta)
+        end
+
+        if rbHeld then
+            if gamepad.GAMEPAD_A then
+                setSpeed(0.995)
+            elseif gamepad.GAMEPAD_B then
+                setSpeed(0.97)
+            elseif gamepad.GAMEPAD_X then
+                setSpeed(1.0)
+            elseif gamepad.GAMEPAD_Y then
+                setSpeed(0.4)
+            end
+        end
+
+        if gamepad.GAMEPAD_A then
+            if lbHeld then
+                speak("Toggle overkill")
+                toggleOverkill()
+            end
+        end
+
+
+        if gamepad.GAMEPAD_B then
+            if lbHeld then
+                speak( "Reset position" )
+                requestPosResetAddr.Value = 1
+            end
+        end
+
+        if gamepad.GAMEPAD_Y then
+            if lbHeld then
+                toggleFreeCam()
+            end
+        end
+
+        if gamepad.GAMEPAD_X then
+            if lbHeld then
+                setPovMode( povMode - 1)
+            end
+        end
+
+        if gamepad.GAMEPAD_BACK then
+            if lbHeld and rbHeld then
+                speak("Reset V R")
+                requestVrResetAddr.Value = 1
+            elseif lbHeld then
+                --toggleUi()
+            elseif rbHeld then
+                toggleModel()
+            else
+                setPovMode( povMode + 1 )
+            end
+        end
+    end
+end
+
+
+
+function setPovMode( mode )
+    if mode &gt; POV_MODE_COUNT then
+        mode = 0
+    end
+    if mode &lt; 0 then
+        mode = POV_MODE_COUNT
+    end
+    povMode = mode
+
+    if mode == 0 then -- Source and target off
+        speak("Control off")
+        enableSrcAddr.Value = 0
+        enableTgtAddr.Value = 0
+        hideHeadPlayerAddr.Value = 0 -- show heads
+        enableHideModelAddr.Value = 0 -- show models
+    elseif povMode == 1 then -- P1 POV
+        speak( "Player 1 POV" )
+        enableSrcAddr.Value = 1
+        enableTgtAddr.Value = 2 -- pov mode
+        sourceTableAddr.Value = 0 -- p1 looks
+        targetTableAddr.Value = 1 -- at p2
+        hideHeadPlayerAddr.Value = 1
+    elseif povMode == 2 then -- P1 head target P2 head
+        speak("Player 1 to 2" )
+        enableSrcAddr.Value = 1
+        enableTgtAddr.Value = 1 -- target mode
+        sourceTableAddr.Value = 0 -- p1 looks
+        targetTableAddr.Value = 1 -- at p2
+        hideHeadPlayerAddr.Value = 1
+    elseif povMode == 3 then -- P2 POV
+       speak("Player 2 POV" )
+        enableSrcAddr.Value = 1
+        enableTgtAddr.Value = 2 -- pov mode
+        sourceTableAddr.Value = 1 -- p1 looks
+        targetTableAddr.Value = 0 -- at p2
+        hideHeadPlayerAddr.Value = 2
+    elseif povMode == 4 then -- P2 head target P1 head
+        speak("Player 2 to 1" )
+        enableSrcAddr.Value = 1
+        enableTgtAddr.Value = 1 -- target mode
+        sourceTableAddr.Value = 1 -- p2 looks
+        targetTableAddr.Value = 0 -- at p1
+        hideHeadPlayerAddr.Value = 2
+    end
+    requestPosResetAddr.Value = 1
+end
+
+function toggleOverkill()
+    overkillAddr.Active = not overkillAddr.Active
+    if overkillAddr.Active then
+        beep()
+    end
+end
+
+
+nextModelMode = 0
+function toggleModel()
+    nextModelMode = ( nextModelMode + 1 ) % 3
+    if( nextModelMode == 0 ) then
+        enableHideModelAddr.Value = 0
+        hideHeadPlayerAddr.Value = 0
+    elseif( nextModelMode == 1 ) then
+        enableHideModelAddr.Value = 0
+        hideHeadPlayerAddr.Value = 1
+    elseif( nextModelMode == 2 ) then
+        enableHideModelAddr.Value = 1
+        hideHeadPlayerAddr.Value = 1
+    end
+end
+
+
+-- really rotation
+freeCamMode = 7
+function toggleFreeCam()
+    if( freeCamMode == 0 ) then
+        rotAAddr.Value = 1
+        freeCamMode = 1
+        speak("Rotate1")
+    else
+        speak("Rotate0")
+        rotAAddr.Value = 0
+        freeCamMode = 0
+    end
+end
+
+
+function incAddr(addr, maxIdx)
+    local nextTarget = ( tonumber(addr.Value) + 1 ) % maxIdx
+    addr.Value = nextTarget
+end
+
+function toggleTarget(addr)
+    local nextTarget = ( tonumber(addr.Value) + 1 ) % 8
+    addr.Value = nextTarget
+end
+
+function toggleOrigin(addr)
+    local nextOrigin = ( tonumber(addr.Value) + 1 ) % 8
+    addr.Value = nextOrigin
+end
+
+function togglePause()
+    local curSpeed = tonumber(speedAddr.Value)
+    if curSpeed &lt; 1 then
+        setSpeed(1)
+    else
+        setSpeed(0)
+    end
+end
+
+
+function changeAxis(delta, addr)
+    local curVal = tonumber(addr.Value)
+    local newValue = curVal + delta
+    setAxis(newValue, addr)
+end
+
+function setAxis(value, addr)
+    if value &lt; -500 then
+        value = 500
+    elseif value &gt; 500 then
+        value = 500
+    end
+
+    addr.Value = value
+end
+
+function changeRot(delta, addr)
+    local curVal = tonumber(addr.Value)
+    local newValue = curVal + delta
+    setRot(newValue, addr)
+end
+
+function setRot(value, addr)
+    if value &lt; -500 then
+        value = 500
+    elseif value &gt; 500 then
+        value = 500
+    end
+    addr.Value = value
+end
+
+function changeZoom(delta, addr)
+    local curVal = tonumber(addr.Value)
+    local newValue = curVal + delta
+    setZoom(newValue, addr)
+end
+
+function setZoom(value, addr)
+    --[[if value &lt; -0.5 then
+        value = -0.5
+    elseif value &gt; 2 then
+        value = 2
+    end]]
+    addr.Value = value
+end
+
+function changeSpeed(delta)
+    local curSpeed = tonumber(speedAddr.Value)
+    local newValue = curSpeed + delta
+    if delta &lt; 0 and curSpeed == 0 then
+        newValue = 1 -- Was playing, now stopped.
+    end
+    setSpeed(newValue)
+end
+
+function setSpeed(value)
+    if value &lt; 0 then
+        value = 0
+    elseif value &gt; 1 then
+        value = 1
+    end
+    speedAddr.Value = value
+end
+
+
+--- Create hotkey
+if hotkey then
+   hotkey.destroy()
+   hotkey=nil
+end
+hotkey = createHotkey( startTimer, VK_F2 )
+</LuaScript>
+  <DisassemblerComments>
+    <DisassemblerComment>
+      <Address>"DOA6.exe"+17EECCF</Address>
+      <Comment>rcx+30 is CameraSource
+</Comment>
+    </DisassemblerComment>
+    <DisassemblerComment>
+      <Address>"DOA6.exe"+17EECD6</Address>
+      <Comment>Camera Call
+</Comment>
+    </DisassemblerComment>
+    <DisassemblerComment>
+      <Address>"DOA6.exe"+182D044</Address>
+      <Comment>Cam3?
+</Comment>
+    </DisassemblerComment>
+    <DisassemblerComment>
+      <Address>"DOA6.exe"+182D188</Address>
+      <Comment>Cam1
+</Comment>
+    </DisassemblerComment>
+    <DisassemblerComment>
+      <Address>"DOA6.exe"+182EB20</Address>
+      <Comment>Cam2
+</Comment>
+    </DisassemblerComment>
+    <DisassemblerComment>
+      <Address>"DOA6.exe"+1891B40</Address>
+      <Comment>hide character
+</Comment>
+    </DisassemblerComment>
+    <DisassemblerComment>
+      <Address>"DOA6.exe"+1891B44</Address>
+      <Comment>Hide Character?
+</Comment>
+    </DisassemblerComment>
+  </DisassemblerComments>
+</CheatTable>
