@@ -14,7 +14,9 @@ namespace
     void QuaternionFromMatrix(vr::HmdMatrix34_t m, Quaternion& q);
     Vector3 GetPosition(vr::HmdMatrix34_t matrix);
     vr::HmdQuaternionf_t QuatMult(vr::HmdQuaternionf_t& aA, vr::HmdQuaternionf_t& aB);
-
+    void rotate_vector_by_quaternion(const Vector3& v, const Quaternion& q, Vector3& vprime);
+    void GetForwardVector(const Vector3& aVectIn, const Quaternion& aRot, Vector3& aVectOut);
+    bool VectorHasNan(const Vector3& aVect);
 
     inline float to_degrees(float radians) {
         return radians * (180.0f / M_PI_F);
@@ -35,10 +37,23 @@ namespace
         return vector;
     }
 
+    inline bool VectorHasNan(const Vector3& aVect)
+    {
+        return isnan(aVect.X) || isnan(aVect.Y) || isnan(aVect.Z);
+    }
+
     void GetLocalOrthsNoRoll(const Vector3& aForward, Vector3& aRightOut, Vector3& aUpOut)
     {
         aRightOut = Vector3::Normalized(Vector3::Cross(Vector3::Up(), aForward));
         aUpOut = Vector3::Cross(aRightOut, aForward);
+    }
+
+    void GetForwardVector(const Vector3& aVectIn, const Quaternion& aRot, Vector3& aVectOut)
+    {
+        // Convert vect/rot movement to 'forward' being Z
+        Quaternion rotQuat = aRot;
+        rotate_vector_by_quaternion(aVectIn, rotQuat, aVectOut);
+        aVectOut.Y = -aVectOut.Y;
     }
 
     // Adapted from https://steamcommunity.com/app/250820/discussions/0/1728711392744037419/

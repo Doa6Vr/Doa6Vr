@@ -6,15 +6,51 @@
 
 #pragma comment(lib, "XInput.lib")
 
+
+namespace
+{
+    const LPCWSTR sLockModeStrings[] =
+    {
+        L"NONE",
+        L"SOURCE",
+        L"TARGET",
+        L"SOURCE AND TARGET",
+        L"GAMEPAD MOVE Y",
+        L"ALL",
+        L"ALL PLUS HMD",
+    };
+
+    const LPCWSTR sHmdLockModeStrings[] =
+    {
+        L"NONE",
+        L"Y",
+        L"X Z",
+        L"ALL",
+    };
+
+    const LPCWSTR sFreeRoamStrings[] =
+    {
+        L"Game Cam",                // FREE_MODE_GAME_CAM,
+        L"Game no target",          // FREE_MODE_SRC_GAME_TARGET_NONE,
+        L"Game with target",         // FREE_MODE_SRC_GAME_TARGET_TABLE,
+        L"Cheat Engine Values",     // FREE_MODE_NO_CHANGE,
+        L"Source and Target On",    // FREE_MODE_SOURCE_AND_TARGET,
+        L"POV",                      // FREE_MODE_POV,
+        L"Source Off Target On",    // FREE_MODE_NO_SOURCE,
+        L"Source and Target Off",   // FREE_MODE_NO_SOURCE_NO_TARGET,
+                                    // FREE_MODE_CNT
+        };
+}
+
 namespace CamMod
 {
     UserInput::UserInput()
         : mSwapAxis( false )
-        , mChaseCam( false )
         , mZoom( 0.f )
-        , mFreeRoam( false )
-        , mLockHeight( false )
-        , mLockPitch( false )
+        , mFreeRoam( 0 )
+        , mLockHeight(LOCK_MODE_NONE )
+        , mHmdLockMode(HMD_LOCK_MODE_NONE )
+        , mLockPitch( 0 )
         , mFullBoosts()
         , mFullHealths()
         , mHideUi()
@@ -34,6 +70,17 @@ namespace CamMod
     {
         bool ok = mTts.Init();
         return ok;
+    }
+
+    void
+    UserInput::Reset()
+    {
+        mSwapAxis = false;
+        mZoom = 0.f;
+        mFreeRoam = 0;
+        mLockHeight = 0;
+        mLockPitch = 0;
+        mHidePlayer = 0;
     }
 
     bool
@@ -63,45 +110,52 @@ namespace CamMod
         {
             aCommands.altFunc = true;
         }
+        else
+        {
+            aCommands.altFunc = false;
+        }
 
 
         if (leftTrigger > 0.f)
         {
+            const int8_t offset = (aCommands.altFunc ? -1 : 1);
             if CLICKED(XINPUT_GAMEPAD_A)
             {
-                mFullBoosts[0] = (mFullBoosts[0] + 1) % 3;
-
-                std::wstringstream stream;
-                stream << "P 1 Boost " << (mFullBoosts[0]);
-                mTts.Speak(stream.str().c_str());
+                RotateOption(mFullBoosts[0], 3, L"P 1 Break");
             }
             else if CLICKED(XINPUT_GAMEPAD_B)
             {
-                mFullBoosts[1] = (mFullBoosts[1] + 1) % 3;
-
-                std::wstringstream stream;
-                stream << "P 2 Boost " << (mFullBoosts[1]);
-                mTts.Speak(stream.str().c_str());
+                RotateOption(mFullBoosts[1], 3, L"P 2 Break");
             }
             else if CLICKED(XINPUT_GAMEPAD_X)
             {
-                mFullHealths[0] = (mFullHealths[0] + 1) % 2;
-
-                std::wstringstream stream;
-                stream << "P 1 Health " << (mFullHealths[0]);
-                mTts.Speak(stream.str().c_str());
+                RotateOption(mFullHealths[0], 2, L"P 1 Health", aCommands.altFunc);
             }
             else if CLICKED(XINPUT_GAMEPAD_Y)
             {
-                mFullHealths[1] = (mFullHealths[1] + 1) % 2;
-
-                std::wstringstream stream;
-                stream << "P 2 Health " << (mFullHealths[1]);
-                mTts.Speak(stream.str().c_str());
+                RotateOption(mFullHealths[1], 2, L"P 2 Health", aCommands.altFunc);
             }
         }
 
-        aCommands.hidePlayer = 0;
+        if (rightTrigger > 0.f)
+        {
+            if (CLICKED(XINPUT_GAMEPAD_X))
+            {
+                RotateOption(mHmdLockMode, HMD_LOCK_MODE_CNT, L"Headset Lock", aCommands.altFunc, sHmdLockModeStrings);
+            }
+            else if (CLICKED(XINPUT_GAMEPAD_B))
+            {
+                if (aCommands.altFunc)
+                {
+                    RotateOption(mCpu2Level, MAX_CPU_LEVEL, L"CPU 2 Level");
+                }
+                else
+                {
+                    RotateOption(mCpu1Level, MAX_CPU_LEVEL, L"CPU 1 Level");
+                }
+            }
+        }
+
         if( lbHeld && rbHeld && CLICKED(XINPUT_GAMEPAD_BACK) )
         {
             mLockCam = !mLockCam;
@@ -115,59 +169,50 @@ namespace CamMod
         }
         else if (rbHeld && CLICKED(XINPUT_GAMEPAD_BACK))
         {
-            mHidePlayer = (mHidePlayer + 1) % 5;
-            aCommands.hidePlayer = mHidePlayer + 1;
+            RotateOption(mHidePlayer, 6, L"", aCommands.altFunc);
         }
 
         if (CLICKED(XINPUT_GAMEPAD_LEFT_THUMB))
         {
             if (lbHeld && rbHeld)
             {
-                mLockPitch = !mLockPitch;
-                std::wstringstream stream;
-                stream << "Pitch Lock " << (mLockPitch ? "On" : "Off");
-                mTts.Speak(stream.str().c_str());
+                RotateOption(mLockPitch, 8, L"Lock Pitch", aCommands.altFunc);
             }
             else if (rbHeld)
             {
-                mLockHeight = !mLockHeight;
-                std::wstringstream stream;
-                stream << "Height Lock " << (mLockHeight ? "On" : "Off");
-                mTts.Speak(stream.str().c_str());
+                RotateOption(mLockHeight, LOCK_MODE_CNT, L"Height Lock", aCommands.altFunc, sLockModeStrings);
             }
         }
         if (CLICKED(XINPUT_GAMEPAD_RIGHT_THUMB))
         {
             if (lbHeld && rbHeld)
             {
-                mChaseCam = !mChaseCam;
+                Reset();
             }
             else if (lbHeld)
             {
-                mSwapAxis = !mSwapAxis;
+                // used by lua speed control
             }
             else if (rbHeld)
             {
-                mFreeRoam = (mFreeRoam + 1) % 4;
-
-
-                std::wstringstream stream;
-                stream << "Free roam is " << mFreeRoam;
-                mTts.Speak(stream.str().c_str());
+                RotateOption(mFreeRoam, FREE_MODE_CNT, L"Free Roam", aCommands.altFunc, sFreeRoamStrings);
             }
             else
             {
                 mSwapAxis = !mSwapAxis;
             }
         }
-        aCommands.chaseCam = mChaseCam;
         aCommands.freeRoam = mFreeRoam;
         aCommands.lockHeight = mLockHeight;
         aCommands.lockPitch = mLockPitch;
+        aCommands.hmdLockMode = mHmdLockMode;
         memcpy(&aCommands.fullBoost, mFullBoosts, sizeof(mFullBoosts));
         memcpy(&aCommands.fullHealth, mFullHealths, sizeof(mFullHealths));
         aCommands.lockCam = mLockCam;
         aCommands.hideUI = mHideUi;
+        aCommands.hidePlayer = mHidePlayer;
+        aCommands.cpu1Level = mCpu1Level;
+        aCommands.cpu2Level = mCpu2Level;
 
         if (0 != (state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB)
             && 0 != (state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB))
@@ -230,7 +275,7 @@ namespace CamMod
 
         if (abs(state.Gamepad.sThumbLX) >= lDeadzoneMult*XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE || abs(state.Gamepad.sThumbLY) >= lDeadzoneMult*XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
         {
-            aCommands.posDelta.X = -posMult*lX;
+            aCommands.posDelta.X = posMult*lX;
 
             if (lbHeld && mSwapAxis )
             {
@@ -238,7 +283,7 @@ namespace CamMod
             }
             else
             {
-                aCommands.posDelta.Z = posMult*lY;
+                aCommands.posDelta.Z = -posMult*lY;
             }
 
         }
@@ -247,4 +292,40 @@ namespace CamMod
         return true;
     }
 
+
+    /* private */ void
+    UserInput::RotateOption(uint8_t& aOption, uint8_t aMax, LPCWSTR aOptionName, bool aDecrement, const LPCWSTR* aStringArray )
+    {
+        if (aDecrement)
+        {
+            if (aOption == 0)
+            {
+                aOption = aMax - 1;
+            }
+            else
+            {
+                aOption--;
+            }
+
+        }
+        else
+        {
+            aOption = (aOption + 1) % aMax;
+        }
+
+        if (aOptionName[0] != L'\0')
+        {
+            std::wstringstream stream;
+            stream << aOptionName << " is ";
+            if (aStringArray)
+            {
+                stream << aStringArray[aOption];
+            }
+            else
+            {
+                stream << aOption;
+            }
+            mTts.Speak(stream.str().c_str());
+        }
+    }
 }

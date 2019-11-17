@@ -130,6 +130,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CamMod.cpp" />
+    <ClCompile Include="CamVector.cpp" />
+    <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="HmdServerIntf.cpp" />
     <ClCompile Include="HmdVorpx.cpp" />
     <ClCompile Include="SpeakTts.cpp" />
@@ -138,6 +140,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CamMod.h" />
+    <ClInclude Include="CamVector.hpp" />
+    <ClInclude Include="GameCamera.hpp" />
     <ClInclude Include="HmdServerIntf.hpp" />
     <ClInclude Include="HmdVorpx.hpp" />
     <ClInclude Include="IHmd.hpp" />

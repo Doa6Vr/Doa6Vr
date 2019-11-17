@@ -17,7 +17,15 @@ typedef byte TargetType; enum
 {
     TARGET_OFF,
     TARGET_TABLE,
-    TARGET_POV
+    TARGET_POV,
+    TARGET_ORIG
+};
+
+typedef byte SourceTargetType; enum
+{
+    SOURCE_OFF,
+    SOURCE_TABLE,
+    SOURCE_ORIG
 };
 
 
@@ -35,7 +43,7 @@ typedef struct Camera_s
     float unused_tgt;
     vr::HmdVector4_t unk;
     float zoom;
-    float rotation;
+    float roll;
     float clippingDist;
     float unkf2;
 } Camera;
@@ -106,7 +114,7 @@ typedef struct VariableBlock_s
     float rotB;
     float rotC;
     TargetType targetType;
-    byte enableSource;
+    byte sourceType;
     byte SourceTableSelect;
     byte TargetTableSelect;
     byte SourceTableIdx;
@@ -116,6 +124,8 @@ typedef struct VariableBlock_s
     byte RequestVrReset;
     byte RequestPosReset;
     byte HideUI;
+    byte P1CpuLevel;
+    byte P2CpuLevel;
 } VariableBlock;
 #pragma pack(pop)
 

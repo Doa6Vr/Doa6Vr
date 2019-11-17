@@ -374,9 +374,9 @@ Vector3 Vector3::Backward() { return Vector3(0, 0, -1); }
 float Vector3::Angle(Vector3 a, Vector3 b)
 {
     float v = Dot(a, b) / (Magnitude(a) * Magnitude(b));
-    v = fmax(v, -1.0f);
-    v = fmin(v, 1.0f);
-    return acos(v);
+    v = fmaxf(v, -1.0f);
+    v = fminf(v, 1.0f);
+    return acosf(v);
 }
 
 Vector3 Vector3::ClampMagnitude(Vector3 vector, float maxLength)
@@ -413,9 +413,9 @@ float Vector3::Dot(Vector3 lhs, Vector3 rhs)
 Vector3 Vector3::FromSpherical(float rad, float theta, float phi)
 {
     Vector3 v;
-    v.X = rad * sin(theta) * cos(phi);
-    v.Y = rad * sin(theta) * sin(phi);
-    v.Z = rad * cos(theta);
+    v.X = rad * sinf(theta) * cosf(phi);
+    v.Y = rad * sinf(theta) * sinf(phi);
+    v.Z = rad * cosf(theta);
     return v;
 }
 
@@ -433,7 +433,7 @@ Vector3 Vector3::LerpUnclamped(Vector3 a, Vector3 b, float t)
 
 float Vector3::Magnitude(Vector3 v)
 {
-    return sqrt(SqrMagnitude(v));
+    return sqrtf(SqrMagnitude(v));
 }
 
 Vector3 Vector3::Max(Vector3 a, Vector3 b)
@@ -515,8 +515,8 @@ Vector3 Vector3::RotateTowards(Vector3 current, Vector3 target,
     float magTar = Magnitude(target);
     float newMag = magCur + maxMagnitudeDelta *
         ((magTar > magCur) - (magCur > magTar));
-    newMag = fmin(newMag, fmax(magCur, magTar));
-    newMag = fmax(newMag, fmin(magCur, magTar));
+    newMag = fminf(newMag, fmaxf(magCur, magTar));
+    newMag = fmaxf(newMag, fminf(magCur, magTar));
 
     float totalAngle = Angle(current, target) - maxRadiansDelta;
     if (totalAngle <= 0)
@@ -531,8 +531,8 @@ Vector3 Vector3::RotateTowards(Vector3 current, Vector3 target,
     else
         axis /= magAxis;
     current = Normalized(current);
-    Vector3 newVector = current * cos(maxRadiansDelta) +
-        Cross(axis, current) * sin(maxRadiansDelta);
+    Vector3 newVector = current * cosf(maxRadiansDelta) +
+        Cross(axis, current) * sinf(maxRadiansDelta);
     return newVector * newMag;
 }
 
@@ -555,11 +555,11 @@ Vector3 Vector3::SlerpUnclamped(Vector3 a, Vector3 b, float t)
     a /= magA;
     b /= magB;
     float dot = Dot(a, b);
-    dot = fmax(dot, -1.0f);
-    dot = fmin(dot, 1.0f);
-    float theta = acos(dot) * t;
+    dot = fmaxf(dot, -1.0f);
+    dot = fminf(dot, 1.0f);
+    float theta = acosf(dot) * t;
     Vector3 relativeVec = Normalized(b - a * dot);
-    Vector3 newVec = a * cos(theta) + relativeVec * sin(theta);
+    Vector3 newVec = a * cosf(theta) + relativeVec * sinf(theta);
     return newVec * (magA + (magB - magA) * t);
 }
 
@@ -573,10 +573,10 @@ void Vector3::ToSpherical(Vector3 vector, float &rad, float &theta,
 {
     rad = Magnitude(vector);
     float v = vector.Z / rad;
-    v = fmax(v, -1.0f);
-    v = fmin(v, 1.0f);
-    theta = acos(v);
-    phi = atan2(vector.Y, vector.X);
+    v = fmaxf(v, -1.0f);
+    v = fminf(v, 1.0f);
+    theta = acosf(v);
+    phi = atan2f(vector.Y, vector.X);
 }
 
 

@@ -103,10 +103,22 @@ namespace HmdServer
             return false;
         }
 
+        // for somebody asking for the default figure out the time from now to photons.
+        float fSecondsSinceLastVsync;
+        mVrSystem->GetTimeSinceLastVsync(&fSecondsSinceLastVsync, NULL);
+
+        float fDisplayFrequency = mVrSystem->GetFloatTrackedDeviceProperty(vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_DisplayFrequency_Float);
+        float fFrameDuration = 1.f / fDisplayFrequency;
+        float fVsyncToPhotons = mVrSystem->GetFloatTrackedDeviceProperty(vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_SecondsFromVsyncToPhotons_Float);
+
+        float fPredictedSecondsFromNow = fFrameDuration - fSecondsSinceLastVsync + fVsyncToPhotons;
+
+
+
         vr::TrackedDevicePose_t hmdPose;
         vr::TrackedDevicePose_t poseArray[vr::k_unMaxTrackedDeviceCount];
 
-        mVrSystem->GetDeviceToAbsoluteTrackingPose(vr::TrackingUniverseSeated, mExpectedFrameLag, poseArray, vr::k_unMaxTrackedDeviceCount);
+        mVrSystem->GetDeviceToAbsoluteTrackingPose(vr::TrackingUniverseSeated, fPredictedSecondsFromNow, poseArray, vr::k_unMaxTrackedDeviceCount);
         hmdPose = poseArray[mHmdIdx];
 
         bool success = hmdPose.bPoseIsValid;

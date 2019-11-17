@@ -7,6 +7,7 @@
 #include "HmdVorpx.hpp"
 #include "UserInput.hpp"
 #include "Utils.hpp"
+#include "GameCamera.hpp"
 
 #define DllExport   __declspec( dllexport )
 
@@ -18,13 +19,15 @@
 #define RETRY_FRAME_CNT 200
 CamMod::IHmdServerIntf* gHmdServer = nullptr;
 CamMod::UserInput gUserInput;
-Vector3 gSourceRotAmount;
-Vector3 gSourcePosAmount;
-Vector3 gTargetPosAmount;
-float gZoomAmount;
-float gRollAmount;
+float gZoomAmount = 0.f;
+uint8_t gPrevTargetIdx = 0;
+uint8_t gPrevTargetTbl = 0;
+uint8_t gPrevSrcIdx = 0;
+uint8_t gPrevSrcTbl = 0;
+CamMod::GameCamera gCamera;
 
 Vector3 gCamSourceLock;
+HmdServer::UpdateResponse gPrevStateUpdate;
 
 const Quaternion sOrigCamRoll( Quaternion(0.f, 1.f, 0.f, 0.f) );
 
@@ -56,27 +59,10 @@ void printVectDeg(std::stringstream& stream, Vector3& vect)
            << std::setw(9) << to_degrees(vect.Z) << ", " << std::endl;
 }
 
-void GetCameraPitchYaw(const Vector3& aVect, float& aPitch, float& aYaw)
-{
-    // Determine the pitch/yaw of the vector from Right
-    Vector3 xyProject = Vector3::ProjectOnPlane(aVect, Vector3::Up());
-    aPitch = Vector3::Angle(aVect, xyProject);
-    aYaw = Vector3::Angle(Vector3::Right(), xyProject);
-
-    // If Z is below the Right axis then flip
-    if (xyProject.Z < 0.f)
-    {
-        aYaw = (2.f * M_PI_F - aYaw);
-    }
-    aPitch += M_PI_F / 2; // Default is looking straight up, so fix it
-    if (aVect.Y > 0.f)
-    {
-        aPitch = (M_PI_F - aPitch);
-    }
-}
-
 void InitHmdServer();
 bool GetStateUpdate(HmdServer::UpdateResponse& aState);
+bool GetPosition(VariableBlock* aVarBlock, byte aTable, byte aIdx, PointDir& aPointDir);
+void SetBreakAndHealth(VariableBlock* aVarBlock, uint8_t aP1Health, uint8_t aP1Break, uint8_t aP2Health, uint8_t aP2Break);
 
 void targetBaseToTargetTables(void* aBase, CharTableEntry** aP1, CharTableEntry** aP2)
 {
@@ -98,13 +84,12 @@ extern "C" DllExport void _cdecl AdjustCamera(VariableBlock* varBlock)
     {
         return;
     }
-    PointDir source;
-    PointDir target;
     Camera& mainCamera = varBlock->Cameras->cams[0];
     HmdServer::UpdateResponse stateUpdate = {};
     CamMod::UserInput::UserCommands commands = {};
-    bool targetUseDeltas = false;
-    bool sourceUseDeltas = false;
+
+    gCamera.BeginFrame(mainCamera);
+
 
     if (GetStateUpdate(stateUpdate))
     {
@@ -125,6 +110,8 @@ extern "C" DllExport void _cdecl AdjustCamera(VariableBlock* varBlock)
 
         stateUpdate.headsetRotEuler.roll += M_PI_F; // Oculus always flipped?
 
+        stateUpdate.headsetRotEulerDelta.pitch *= 12.f;
+
 
         //std::stringstream dbg;
         //dbg << "HeadsetRot:  ";
@@ -135,26 +122,12 @@ extern "C" DllExport void _cdecl AdjustCamera(VariableBlock* varBlock)
 
     if (gUserInput.GetInput(commands))
     {
-        if (commands.altFunc)
-        {
-            gTargetPosAmount += commands.posDelta;
-        }
-        else
-        {
-            gSourcePosAmount += commands.posDelta;
-            gSourceRotAmount += commands.rotDelta;
-        }
-
         gZoomAmount += commands.zoom;
-        gRollAmount += commands.rotDelta.roll;
 
         if (commands.resetPos)
         {
-            gSourceRotAmount = Vector3::Zero();
-            gSourcePosAmount = Vector3::Zero();
-            gTargetPosAmount = Vector3::Zero();
+            gCamera.Reset();
             gZoomAmount = 0.f;
-            gRollAmount = 0.f;
             varBlock->Cameras->camRoll = sOrigCamRoll;
             if (gHmdServer)
             {
@@ -165,353 +138,242 @@ extern "C" DllExport void _cdecl AdjustCamera(VariableBlock* varBlock)
 
     }
 
+    SetBreakAndHealth( varBlock, commands.fullHealth[0], commands.fullBoost[0], commands.fullHealth[1], commands.fullBoost[1]);
 
-    if(varBlock->playerTableFp )
-    {
-        auto table1 = varBlock->playerTableFp(0);
-        auto table2 = varBlock->playerTableFp(1);
-
-        if (table1)
-        {
-            switch (commands.fullBoost[0])
-            {
-            case 0:
-                break;
-
-            case 1:
-                table1->boost = 200;
-                table1->boost_display = 200;
-                break;
-
-            case 2:
-                table1->boost = 0;
-                break;
-            }
-
-            switch (commands.fullHealth[0])
-            {
-            case 1:
-                table1->health = 500;
-                table1->health_display = 500;
-            }
-        }
-
-        if (table2)
-        {
-            switch (commands.fullBoost[1])
-            {
-            case 0:
-                break;
-
-            case 1:
-                table2->boost = 200;
-                table2->boost_display = 200;
-                break;
-
-            case 2:
-                table2->boost = 0;
-                break;
-            }
-
-            switch (commands.fullHealth[1])
-            {
-            case 1:
-                table2->health = 500;
-                table2->health_display = 500;
-            }
-        }
-    }
-
-    uint8_t enableSource = varBlock->enableSource;
+    uint8_t sourceType = varBlock->sourceType;
     uint8_t targetType = varBlock->targetType;
 
     switch (commands.freeRoam)
     {
-    case 0: // nothing
+    case CamMod::UserInput::FREE_MODE_GAME_CAM:
+        sourceType = SOURCE_ORIG;
+        targetType = TARGET_ORIG;
         break;
 
-    case 1: // no source
-        enableSource = false;
-        targetType = 1;
+    case CamMod::UserInput::FREE_MODE_SRC_GAME_TARGET_NONE:
+        sourceType = SOURCE_ORIG;
+        targetType = TARGET_OFF;
         break;
 
-    case 2: // no source no target
-        enableSource = false;
-        targetType = 0;
+    case CamMod::UserInput::FREE_MODE_SRC_GAME_TARGET_TABLE:
+        sourceType = SOURCE_ORIG;
+        targetType = TARGET_TABLE;
         break;
 
-    case 3: // source, no target
-        stateUpdate.headsetPosDelta = Vector3::Zero();
-        stateUpdate.headsetRotEulerDelta = Vector3::Zero();
+    case CamMod::UserInput::FREE_MODE_NO_SOURCE:
+        targetType = TARGET_TABLE;
         break;
+
+    case CamMod::UserInput::FREE_MODE_NO_SOURCE_NO_TARGET:        
+        break;
+
+    case CamMod::UserInput::FREE_MODE_POV:
+        sourceType = TARGET_TABLE;
+        targetType = TARGET_POV;
+        break;
+
+    case CamMod::UserInput::FREE_MODE_SOURCE_AND_TARGET:
+        sourceType = TARGET_TABLE;
+        targetType = TARGET_TABLE;
+        break;
+
+    default:
+    case CamMod::UserInput::FREE_MODE_NO_CHANGE: // nothing
+        break;
+
     }
     
-    if (commands.lockPitch)
+    if (commands.lockPitch > 0)
     {
-        stateUpdate.headsetRotEuler.pitch = 0.f;
-        stateUpdate.headsetRotEuler.roll = 0.f;
-    }
+        static HmdServer::UpdateResponse sLastUsedUpdate = stateUpdate;
+        static int ROT_ALLOWED_FRAMES = 40;
+        static int sRotAllowedCnt = 0;
 
-    if (enableSource)
-    {
-        byte sourceIdx = varBlock->SourceTableIdx;
-        switch (varBlock->SourceTableSelect)
+        float MIN_POS_DELTA;
+        float MIN_ROT_DELTA;
+
+        switch (commands.lockPitch)
         {
-            case TARGET_TABLE_1:
-            {
-                auto targetTable = varBlock->TargetsTablePtr[0];
-                if (targetTable)
-                {
-                    source.pos = targetTable[sourceIdx].pos;
-                    source.rot = targetTable[sourceIdx].rot;
-                }
-                else
-                {
-                    source.pos = mainCamera.source;
-                }
-
+            case 1:
+                MIN_POS_DELTA = 0.5f;
+                MIN_ROT_DELTA = .01f;
+                ROT_ALLOWED_FRAMES = 20;
                 break;
-            }
 
-            case TARGET_TABLE_2:
-            {
-                auto targetTable = varBlock->TargetsTablePtr[1];
-                if (targetTable)
-                {
-                    source.pos = targetTable[sourceIdx].pos;
-                    source.rot = targetTable[sourceIdx].rot;
-                }
-                else
-                {
-                    source.pos = mainCamera.source;
-                }
+            case 2:
+                MIN_POS_DELTA = 0.5f;
+                MIN_ROT_DELTA = .01f;
+                ROT_ALLOWED_FRAMES = 40;
+
+            case 3:
+                MIN_POS_DELTA = 2.0f;
+                MIN_ROT_DELTA = .05f;
+                ROT_ALLOWED_FRAMES = 40;
                 break;
-            }
 
-            case CHAR_TARGET_TABLE_1:
-            {
-                CharTableEntry* targetTable;
-                targetBaseToTargetTables(varBlock->TargetTableBasePtr, &targetTable, nullptr);
-                if (targetTable)
-                {
-                    source.pos = targetTable[sourceIdx].pos;
-                    source.rot = targetTable[sourceIdx].rot;
-                }
-                else
-                {
-                    source.pos = mainCamera.source;
-                }
+            case 4:
+                MIN_POS_DELTA = 2.0f;
+                MIN_ROT_DELTA = .05f;
+                ROT_ALLOWED_FRAMES = 80;
                 break;
-            }
 
-            case CHAR_TARGET_TABLE_2:
-            {
-                CharTableEntry* targetTable;
-                targetBaseToTargetTables(varBlock->TargetTableBasePtr, nullptr, &targetTable );
 
-                if (targetTable)
-                {
-                    source.pos = targetTable[sourceIdx].pos;
-                    source.rot = targetTable[sourceIdx].rot;
-                }
-                else
-                {
-                    source.pos = mainCamera.source;
-                }
+            case 5:
+                MIN_POS_DELTA = 8.0f;
+                MIN_ROT_DELTA = .4f;
+                ROT_ALLOWED_FRAMES = 80;
                 break;
-            }
+
+            case 6:
+                MIN_POS_DELTA = 8.0f;
+                MIN_ROT_DELTA = .4f;
+                ROT_ALLOWED_FRAMES = 800;
+                break;
+
+            case 7:
+                MIN_POS_DELTA = 99999.f;
+                MIN_ROT_DELTA = 99999.f;
+                ROT_ALLOWED_FRAMES = 100;
+                break;
 
             default:
-                source.pos = mainCamera.source;
                 break;
         }
 
-        mainCamera.source = source.pos;
+        float sinceLastRotMag = Vector3::Magnitude( sLastUsedUpdate.headsetRotEuler - stateUpdate.headsetRotEuler );
+        float sinceLastPosMag = Vector3::Magnitude(sLastUsedUpdate.headsetPos - stateUpdate.headsetPos);
+        float rotMag = Vector3::Magnitude(stateUpdate.headsetRotEulerDelta);
+        float posMag = Vector3::Magnitude(stateUpdate.headsetPosDelta);
+
+        // If standing still
+        if ( ( rotMag < MIN_ROT_DELTA && posMag < MIN_POS_DELTA )
+          && ( sinceLastRotMag < 2 * MIN_ROT_DELTA && sinceLastPosMag < 2 * MIN_POS_DELTA) )
+        {
+            if (sRotAllowedCnt > 0)
+            {
+                sRotAllowedCnt--;
+            }
+            else
+            {
+                stateUpdate.headsetPos = gPrevStateUpdate.headsetPos;
+                stateUpdate.headsetRot = gPrevStateUpdate.headsetRot;
+                stateUpdate.headsetRotEuler = gPrevStateUpdate.headsetRotEuler;
+                stateUpdate.headsetPosDelta = Vector3::Zero();
+                stateUpdate.headsetRotEulerDelta = Vector3::Zero();
+            }
+        }
+        else
+        {
+            sRotAllowedCnt = ROT_ALLOWED_FRAMES;
+            sLastUsedUpdate = stateUpdate;
+        }
     }
-    else
+
+    PointDir sourcePos;
+    if (sourceType == SOURCE_TABLE && GetPosition( varBlock, varBlock->SourceTableSelect, varBlock->SourceTableIdx, sourcePos ) )
     {
-        sourceUseDeltas = true;
+        switch (commands.lockHeight)
+        {
+        case CamMod::UserInput::LOCK_MODE_LOCK_SOURCE:
+        case CamMod::UserInput::LOCK_MODE_LOCK_SOURCE_AND_TARGET:
+        case CamMod::UserInput::LOCK_MODE_LOCK_ALL:
+        case CamMod::UserInput::LOCK_MODE_LOCK_ALL_PLUS_HMD:
+            sourcePos.pos.Y = gCamera.GetSrcTargetVector().GetStart().Y;
+            break;
+        }
+        gCamera.SetSource(sourcePos.pos);
+    }
+    else if (sourceType == SOURCE_ORIG)
+    {
+        gCamera.SetSource(gCamera.GetFrameStartVector().GetStart());
     }
 
-
+    PointDir targetPos;
     // Handle targets
-    if (targetType == TARGET_POV && enableSource)
+    if (targetType == TARGET_POV && sourceType == SOURCE_TABLE)
     {
-        Vector3 adjVector;
-        rotate_vector_by_quaternion(Vector3::Right(), source.rot, adjVector);
-        mainCamera.target = source.pos + ( 10 * adjVector );
+        gCamera.LookDir(sourcePos.rot, 10.f);
     }
-    else if (targetType == TARGET_TABLE)
+    else if (targetType == TARGET_TABLE && GetPosition( varBlock, varBlock->TargetTableSelect, varBlock->TargetTableIdx, targetPos ) )
     {
-        byte targetIdx = varBlock->TargetTableIdx;
-        switch (varBlock->TargetTableSelect)
+        switch (commands.lockHeight)
         {
-        case TARGET_TABLE_1:
-        {
-            auto tableEntry = &(varBlock->TargetsTablePtr[0])[targetIdx];
-            if (tableEntry)
-            {
-                target.pos = tableEntry->pos;
-                target.rot = tableEntry->rot;
-            }
-            break;
+            case CamMod::UserInput::LOCK_MODE_LOCK_TARGET:
+            case CamMod::UserInput::LOCK_MODE_LOCK_SOURCE_AND_TARGET:
+            case CamMod::UserInput::LOCK_MODE_LOCK_ALL:
+            case CamMod::UserInput::LOCK_MODE_LOCK_ALL_PLUS_HMD:
+                targetPos.pos.Y = gCamera.GetSrcTargetVector().GetEnd().Y;
+                break;
         }
-
-        case TARGET_TABLE_2:
-        {
-            auto tableEntry = &(varBlock->TargetsTablePtr[1])[targetIdx];
-            if (tableEntry)
-            {
-                target.pos = tableEntry->pos;
-                target.rot = tableEntry->rot;
-            }
-            break;
-        }
-
-        case CHAR_TARGET_TABLE_1:
-        {
-            CharTableEntry* targetTable;
-            targetBaseToTargetTables(varBlock->TargetTableBasePtr, &targetTable, nullptr);
-            auto tableEntry = &targetTable[targetIdx];
-            if (tableEntry)
-            {
-                target.pos = tableEntry->pos;
-                target.rot = tableEntry->rot;
-            }
-            break;
-        }
-
-        case CHAR_TARGET_TABLE_2:
-        {
-            CharTableEntry* targetTable;
-            targetBaseToTargetTables(varBlock->TargetTableBasePtr, nullptr, &targetTable);
-            auto tableEntry = &targetTable[targetIdx];
-            if (tableEntry)
-            {
-                target.pos = tableEntry->pos;
-                target.rot = tableEntry->rot;
-            }
-            break;
-        }
-
-        default:
-            target.pos = mainCamera.target;
-            break;
-
-        }
-
-        mainCamera.target = target.pos;
+        gCamera.SetTarget(targetPos.pos);
     }
-    else
+    else if (targetType == TARGET_ORIG)
     {
-        targetUseDeltas = true; // If we didn't set the target then only apply deltas to it.
+        gCamera.SetTarget(gCamera.GetFrameStartVector().GetEnd());
     }
 
 
-
-    if (commands.lockCam)
+    if (varBlock->rotC > 0.f)
     {
-        mainCamera.source = gCamSourceLock;
+        gCamera.Reverse();
     }
 
     // Apply position offsets
-    if( true )
+    if (Vector3::Magnitude(commands.posDelta) > 0.f)
     {
-        // Convert headset movement to 'forward' being Z
-        Vector3 headsetMovement = -stateUpdate.headsetPosDelta;
-        Quaternion rotQuat = stateUpdate.headsetRot;
-        rotQuat.W = -rotQuat.W;
-        Vector3 headsetForward;
-        rotate_vector_by_quaternion(headsetMovement, rotQuat, headsetForward);
+        Vector3 camMovement;
+        gCamera.ToWorldCoords(commands.posDelta, camMovement);
 
-
-        Vector3 camForward = Vector3::Normalized(mainCamera.target - mainCamera.source);
-        Vector3 camUp;
-        Vector3 camRight;
-        GetLocalOrthsNoRoll(camForward, camRight, camUp);
-
-
-        Vector3 moveOffset = Vector3::Zero();
-        if (sourceUseDeltas)
+        // Only apply lock if we didn't use controller to change height
+        if (commands.posDelta.Y == 0)
         {
-            Vector3 adjVect = commands.posDelta + headsetForward;
-            moveOffset = (adjVect.X * camRight) + (adjVect.Y * camUp) + (adjVect.Z * camForward);
-        }
-        else
-        {
-            gSourcePosAmount += headsetForward;
-            Vector3 adjVect = gSourcePosAmount;
-            moveOffset = (adjVect.X * camRight) + (adjVect.Y * camUp) + (adjVect.Z * camForward);
+            switch (commands.lockHeight)
+            {
+            case CamMod::UserInput::LOCK_MODE_LOCK_GAMEPAD_MOVE_Y:
+            case CamMod::UserInput::LOCK_MODE_LOCK_ALL:
+            case CamMod::UserInput::LOCK_MODE_LOCK_ALL_PLUS_HMD:
+                camMovement.Y = 0.f;
+                break;
+            }
         }
 
-        if (commands.lockHeight)
-        {
-            moveOffset.Y = 0;
-        }
-        mainCamera.source += moveOffset;
-        mainCamera.target += moveOffset;
+        gCamera.Translate(camMovement, commands.altFunc /* target if true, source if false */);
     }
 
+    if (Vector3::Magnitude(stateUpdate.headsetPosDelta) > 0.f)
+    {
+        switch (commands.hmdLockMode)
+        {
+            case CamMod::UserInput::HMD_LOCK_MODE_NONE:
+                break;
+
+            case CamMod::UserInput::HMD_LOCK_MODE_Y:
+                stateUpdate.headsetPosDelta.Y = 0.f;
+                break;
+
+            case CamMod::UserInput::HMD_LOCK_MODE_XZ:
+                stateUpdate.headsetPosDelta.X = 0.f;
+                stateUpdate.headsetPosDelta.Z = 0.f;
+                break;
+
+            case CamMod::UserInput::HMD_LOCK_MODE_ALL:
+                stateUpdate.headsetPosDelta = Vector3::Zero();
+                break;
+        }
+        // Convert headset movement to Z-forward
+        Vector3 headsetForwardDelta;
+        GetForwardVector(stateUpdate.headsetPosDelta, stateUpdate.headsetRot, headsetForwardDelta);
+        Vector3 camMovement;
+        gCamera.ToWorldCoords(headsetForwardDelta, camMovement);
+        gCamera.Translate(camMovement, false);
+    }
 
     // Apply HMD + Controller rotations
-    {
-        Vector3 camVect = mainCamera.target - mainCamera.source;
-        Vector3 camRight;
-        Vector3 camUp;
-        GetLocalOrthsNoRoll(camVect, camRight, camUp);
+    gCamera.SetRotation(stateUpdate.headsetRotEuler, commands.rotDelta );
+    gCamera.SetSourceLock(commands.lockCam);
 
-        // Figure out total pitch/yaw adjustments
-        float yawAdj;
-        float pitchAdj;
-        if(targetUseDeltas)
-        {
-            yawAdj = stateUpdate.headsetRotEulerDelta.yaw + commands.rotDelta.yaw;
-            pitchAdj = stateUpdate.headsetRotEulerDelta.pitch + commands.rotDelta.pitch;
-        }
-        else
-        {
-            yawAdj = stateUpdate.headsetRotEuler.yaw + gSourceRotAmount.yaw;
-            pitchAdj = -(stateUpdate.headsetRotEuler.pitch + gSourceRotAmount.pitch);
-        }
-
-        // Create an adjustment vector
-        Quaternion pitchQuat = Quaternion::FromAngleAxis(pitchAdj, camRight);
-        Quaternion yawQuat = Quaternion::FromAngleAxis(yawAdj, camUp);
-        Quaternion rotQuat = yawQuat*pitchQuat;
-        Vector3 adjVector;
-        if (!isnan(rotQuat.W))
-        {
-            rotate_vector_by_quaternion(camVect, rotQuat, adjVector);
-        }
-        else
-        {
-            adjVector = Vector3::Zero();
-        }
-
-        if ( false && commands.lockPitch)
-        {
-            adjVector.Y = 0;
-        }
-
-        if(targetUseDeltas) 
-        {
-            mainCamera.target = mainCamera.source + adjVector;
-        }
-        else
-        {
-            mainCamera.target += 100 * adjVector;
-        }
-    }
-
-    // Apply total screen roll
-    {
-        Vector3 camForward = Vector3::Normalized(mainCamera.target - mainCamera.source);
-        float rollTheta = gRollAmount + stateUpdate.headsetRotEuler.roll;
-        rollTheta *= 2;
-        Quaternion fromEuler = Quaternion::FromAngleAxis(rollTheta, camForward);
-        varBlock->Cameras->camRoll = fromEuler * sOrigCamRoll;
-
-    }
+    // Set camera parameters
+    gCamera.GetCamInfo(mainCamera.source, mainCamera.target, varBlock->Cameras->camRoll);
 
     // Apply zoom
     mainCamera.zoom = NORM_ZOOM + gZoomAmount;
@@ -524,9 +386,11 @@ extern "C" DllExport void _cdecl AdjustCamera(VariableBlock* varBlock)
         mainCamera.clippingDist = 0.001f;
     }
 
-
     gCamSourceLock = mainCamera.source;
+    gPrevStateUpdate = stateUpdate;
 
+    varBlock->P1CpuLevel = commands.cpu1Level;
+    varBlock->P2CpuLevel = commands.cpu2Level;
     varBlock->HideUI = commands.hideUI;
     switch (commands.hidePlayer)
     {
@@ -559,6 +423,19 @@ extern "C" DllExport void _cdecl AdjustCamera(VariableBlock* varBlock)
         default:
             break;
     }
+
+    if( commands.altFunc &&
+       ( gPrevSrcIdx != varBlock->SourceTableIdx
+     || gPrevSrcTbl != varBlock->SourceTableSelect
+     || gPrevTargetIdx != varBlock->TargetTableIdx
+     || gPrevTargetTbl != varBlock->TargetTableSelect))
+    {
+        gCamera.Reset();
+    }
+    gPrevSrcIdx = varBlock->SourceTableIdx;
+    gPrevSrcTbl = varBlock->SourceTableSelect;
+    gPrevTargetIdx = varBlock->TargetTableIdx;
+    gPrevTargetTbl = varBlock->TargetTableSelect;
 }
 
 
@@ -629,4 +506,177 @@ BOOL APIENTRY DllMain(HINSTANCE hInst     /* Library instance handle. */,
 
     /* Returns TRUE on success, FALSE on failure */
     return TRUE;
+}
+
+
+
+enum TargetTableItems
+{
+    TARGET_CHEST = 0,
+    TARGET_RIGHT_HIP = 1,
+    TARGET_LEFT_HIP = 2,
+    TARGET_RIGHT_FOOT = 3,
+    TARGET_LEFT_FOOT = 4,
+    TARGET_UNK1 = 5,  // Hip?
+    TARGET_RIGHT_TOES = 6,
+    TARGET_LEFT_TOES = 7,
+    TARGET_RIGHT_ELBOW = 8,
+    TARGET_LEFT_ELBOW = 9,
+    TARGET_FACE = 10,
+    TARGET_RIGHT_HAND = 11,
+    TARGET_LEFT_HAND = 12,   // Between feet one match?
+    TARGET_RIGHT_FINGERS = 13,
+    TARGET_LEFT_FINGERS = 14,
+    TARGET_UNK2 = 15, // Between feet
+};
+
+enum CharTableItems
+{
+    CHAR_BETWEEN_FEET = 0,
+    CHAR_HIP1 = 1,
+    CHAR_HIP2 = 2,
+    CHAR_HIP3 = 3,
+    CHAR_HIP4 = 4,
+    CHAR_LEFT_KNEE = 5,
+    CHAR_RIGHT_KNEE = 6,
+    CHAR_LEFT_FOOT = 7,
+    CHAR_RIGHT_FOOT = 8,
+    CHAR_TORSO = 9,
+    CHAR_TORSO_2 = 10,
+    CHAR_CHEST = 11,
+    CHAR_NECK = 12,
+    CHAR_CHEST2 = 13,
+    CHAR_CHEST_RIGHT = 14,
+    CHAR_LEFT_SHOULDER = 15,
+    CHAR_RIGHT_SHOULDER = 16,
+    CHAR_LEFT_ELBOW = 17,
+    CHAR_RIGHT_ELBOW = 18,
+    CHAR_LEFT_HAND = 19,
+    CHAR_RIGHT_HAND = 20,
+    CHAR_LEFT_FINGERS = 21,
+    CHAR_RIGHT_FINGERS = 22,
+    CHAR_LEFT_FOOT2 = 23,
+    CHAR_RIGHT_FOOT2 = 24,
+    CHAR_HIP5 = 25,
+    CHAR_BETWEEN_FEET_2 = 26,
+};
+
+bool GetPosition(VariableBlock* aVarBlock, byte aTable, byte aIdx, PointDir& aPointDir)
+{
+    bool ok = false;
+    switch (aTable)
+    {
+        case TARGET_TABLE_1:
+        {
+            auto targetTable = aVarBlock->TargetsTablePtr[0];
+            if (targetTable)
+            {
+                targetTable -= 10;
+                aPointDir.pos = targetTable[aIdx].pos;
+                aPointDir.rot = targetTable[aIdx].rot;
+                ok = true;
+            }
+            break;
+        }
+
+        case TARGET_TABLE_2:
+        {
+            auto targetTable = aVarBlock->TargetsTablePtr[1];
+            if (targetTable)
+            {
+                targetTable -= 10;
+                aPointDir.pos = targetTable[aIdx].pos;
+                aPointDir.rot = targetTable[aIdx].rot;
+                ok = true;
+            }
+            break;
+        }
+
+        case CHAR_TARGET_TABLE_1:
+        {
+            CharTableEntry* targetTable;
+            targetBaseToTargetTables(aVarBlock->TargetTableBasePtr, &targetTable, nullptr);
+            if (targetTable)
+            {
+                aPointDir.pos = targetTable[aIdx].pos;
+                aPointDir.rot = targetTable[aIdx].rot;
+                ok = true;
+            }
+            break;
+        }
+
+        case CHAR_TARGET_TABLE_2:
+        {
+            CharTableEntry* targetTable;
+            targetBaseToTargetTables(aVarBlock->TargetTableBasePtr, nullptr, &targetTable);
+            if (targetTable)
+            {
+                aPointDir.pos = targetTable[aIdx].pos;
+                aPointDir.rot = targetTable[aIdx].rot;
+                ok = true;
+            }
+            break;
+        }
+    }
+    return ok;
+}
+
+
+void SetBreakAndHealth(VariableBlock* aVarBlock, uint8_t aP1Health, uint8_t aP1Break, uint8_t aP2Health, uint8_t aP2Break)
+{
+    if (aVarBlock->playerTableFp)
+    {
+        auto table1 = aVarBlock->playerTableFp(0);
+        auto table2 = aVarBlock->playerTableFp(1);
+
+        if (table1)
+        {
+            switch (aP1Break)
+            {
+            case 0:
+                break;
+
+            case 1:
+                table1->boost = 200;
+                table1->boost_display = 200;
+                break;
+
+            case 2:
+                table1->boost = 0;
+                break;
+            }
+
+            switch (aP1Health)
+            {
+            case 1:
+                table1->health = 500;
+                table1->health_display = 500;
+            }
+        }
+
+        if (table2)
+        {
+            switch (aP2Break)
+            {
+            case 0:
+                break;
+
+            case 1:
+                table2->boost = 200;
+                table2->boost_display = 200;
+                break;
+
+            case 2:
+                table2->boost = 0;
+                break;
+            }
+
+            switch (aP2Health)
+            {
+            case 1:
+                table2->health = 500;
+                table2->health_display = 500;
+            }
+        }
+    }
 }

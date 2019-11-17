@@ -70,7 +70,7 @@ int main(int* argc, int* argv)
 
         if (pipeConnected)
         {
-            _tprintf(TEXT("Client connected!\n"));
+            _tprintf(TEXT("Client connected, creating handler thread!\n"));
             DWORD threadId;
             // Create a thread for this client. 
             HANDLE threadHndl = CreateThread(
@@ -99,7 +99,7 @@ int main(int* argc, int* argv)
 
 DWORD WINAPI PipeThreadFunc(LPVOID lpvParam)
 {
-    _tprintf(TEXT("Pipe handler thread!\n"));
+    _tprintf(TEXT("HMD Server is communicating\n"));
 
     HANDLE pipeHndl = (HANDLE)lpvParam;
 
@@ -120,7 +120,7 @@ DWORD WINAPI PipeThreadFunc(LPVOID lpvParam)
     FlushFileBuffers(pipeHndl);
     DisconnectNamedPipe(pipeHndl);
     CloseHandle(pipeHndl);
-    _tprintf(TEXT("Pipe handler thread is exiting\n"));
+    _tprintf(TEXT("HMD handler thread is exiting\n"));
     return 0;
 }
 
@@ -183,16 +183,6 @@ ReceiveRequest(HANDLE aPipeHndl, HmdServer::IpcRequestType* aRequest)
     return true;
 }
 
-
-vr::HmdVector4_t SubVects( vr::HmdVector4_t& a, vr::HmdVector4_t& b )
-{
-    vr::HmdVector4_t ret;
-    for( uint32_t i = 0; i < sizeof(ret.v)/sizeof(ret.v[0]); ++i )
-    {
-        ret.v[i] = a.v[i] - b.v[i];
-    }
-    return ret;
-}
 
 
 void
@@ -262,9 +252,14 @@ PerformUpdate()
 
 void CheckHeadset()
 {
-    if (gVrHmd.GetHeadsetPosition(&gHmdPosOffset, &gHmdRotEuler, &gHmdRotOffset ))
+    Vector3 newPos;
+    Vector3 newEuler;
+    Quaternion newRot;
+    if (gVrHmd.GetHeadsetPosition(&newPos, &newEuler, &newRot ) )
     {
-
+        gHmdPosOffset = newPos;
+        gHmdRotEuler = newEuler;
+        gHmdRotOffset = newRot;
     }
 }
 

@@ -8,7 +8,7 @@
       <LastState/>
       <VariableType>Auto Assembler Script</VariableType>
       <AssemblerScript>[enable]
-aobScanModule( AOB_CameraCallScan, DOA6.exe, 80 7c 24 20 00 74 1e )
+aobScanModule( AOB_CameraCallScan, DOA6.exe, 48 8b cb ?? ?? ?? ?? ?? 48 8b d6 48 8b cb 48 8b 5c 24 30 48 8b 74 24 38 )
 aobScanModule( AOB_TargetsTableCall, DOA6.exe, 48 8B 01 48 8D 54 24 60 FF 50 08)
 aobScanModule( AOB_GameSpeedScan, DOA6.exe, C7 44 24 58 01 00 00 00 33 D2 41 F7 F0 )
 aobScanModule( AOB_HideHeadScan, DOA6.exe, 48 8B 5B 28 48 85 DB 74 7C 49 8B 06 49 8B CE FF 50 18 44 0F B6 D0 44 89 93 20 03 00 00 )
@@ -17,6 +17,7 @@ aobScanModule( AOB_HideModelCall, DOA6.exe, 80 B9 1C 02 00 00 00 0F 94 C0 C3 )
 aobScanModule( AOB_GetCharTableFuncPtr, DOA6.exe, 88 4c 24 08 53 56 57 48 81 ec a0 00 00 00 ) // use this passing 0 or 1 in RCX, returns in rax
 aobScanModule( AOB_HideUI, DOA6.exe, 48 8B 13 80 7A 22 00 75 0D 49 8B 45 00 )
 aobScanModule( AOB_GetTargetTableBaseCall, DOA6.exe, 4c 8b 49 10 4d 8b c1 49 8b 49 08 )
+aobScanModule( AOB_SetCpuDifficultyCall, DOA6.exe, 8b 14 8a 43 89 54 82 28 ) // rcx is difficulty idx, r8 is player idx
 //aobScanModule( AOB_GetCameraAddr, DOA6.exe, 33 db 48 85 d2 8b c3 49 0f 45 c0 )
 
 
@@ -41,6 +42,8 @@ label(FPVHidePlayer)
 label(RequestVrReset)
 label(RequestPosReset)
 label(HideUI)
+label(P1Difficulty)
+label(P2Difficulty)
 
 label(RotA)
 label(RotB)
@@ -66,13 +69,14 @@ RegisterSymbol(FPVHideHead)
 RegisterSymbol(FPVHidePlayer)
 RegisterSymbol(RequestVrReset)
 RegisterSymbol(RequestPosReset)
+RegisterSymbol(P1Difficulty)
+RegisterSymbol(P2Difficulty)
 
 RegisterSymbol(RotA)
 RegisterSymbol(RotB)
 RegisterSymbol(RotC)
 
 RegisterSymbol(AOB_CameraCall)
-RegisterSymbol(AOB_CameraCall_Orig)
 RegisterSymbol(AOB_TargetsTableCall)
 RegisterSymbol(AOB_GameSpeedScan)
 RegisterSymbol(AOB_HideHeadScan)
@@ -83,6 +87,7 @@ RegisterSymbol(AOB_HideModelCall)
 RegisterSymbol(AOB_GetCharTableFuncPtr)
 RegisterSymbol(AOB_HideUI)
 RegisterSymbol(AOB_GetTargetTableBaseCall)
+RegisterSymbol(AOB_SetCpuDifficultyCall)
 //RegisterSymbol(AOB_GetCameraAddr)
 
 
@@ -108,6 +113,9 @@ label(HideModelPatchSkip)
 label(HideModelPatchRet)
 label(HideModelPatchOrig)
 label(GameSpeedPatchSkip)
+label(SetCpuDifficultyPatch)
+label(SetCpuDifficultyPatchSkip)
+label(SetCpuDifficultyPatchRet)
 label(HideUIPatch)
 label(HideUIPatchSkip)
 label(HideUIPatchRet)
@@ -124,13 +132,8 @@ loadLibrary(CamMod.dll)
 // #Patches#
 
 //*******************************************
-// Backup the original AOB_CameraCall
-alloc( AOB_CameraCall_Orig, 32, "DOA6.exe" )
-AOB_CameraCall_Orig:
-ReadMem( AOB_CameraCallScan+1b, 32 )
-
 // Overwrite the original AOB_CameraCall
-AOB_CameraCallScan+1b:
+AOB_CameraCallScan+13:
 AOB_CameraCall:
 jmp long CameraCallPatch
 CameraCallPatchRet:
@@ -200,6 +203,15 @@ HideUIPatchRet:
 
 
 //*******************************************
+// Patch the call to override CPU difficulty
+AOB_SetCpuDifficultyCall:
+jmp long SetCpuDifficultyPatch
+nop
+nop
+nop
+SetCpuDifficultyPatchRet:
+
+//*******************************************
 // Patch the call to get target table base addr
 AOB_GetTargetTableBaseCall:
 jmp long GetTargetTableBasePatch
@@ -224,7 +236,7 @@ jmp GetTargetTableBasePatchRet
 //********************************************************************
 // Patch the UI display
 HideUIPatch:   // rax is usable in this function
-mov rax, [HideUI]
+movzx rax, byte ptr [HideUI]
 cmp rax, 0
 jne HideUIPatchSkip  // If Hide UI is off then run original code
 
@@ -233,6 +245,29 @@ db 80 7a 22 00  // cmp byte ptr [rdx+22],00   &lt;-- if equal then draw UI
 HideUIPatchSkip:
 jmp HideUIPatchRet
 
+
+//********************************************************************
+// Patch the CPU difficulty
+SetCpuDifficultyPatch:
+// rcx is difficulty idx, r8 is player idx
+
+push rax
+
+// Get difficulty override setting in rax
+lea rax, [P1Difficulty]
+movzx rax, byte ptr [rax+r8]
+
+cmp rax, 0
+je SetCpuDifficultyPatchSkip
+
+dec rax
+mov rcx, rax  // override difficulty
+
+SetCpuDifficultyPatchSkip:
+pop rax
+db 8b 14 8a       // mov edx,[rdx+rcx*4]
+db 43 89 54 82 28 // mov [r10+r8*4+28],edx
+jmp SetCpuDifficultyPatchRet
 
 
 //********************************************************************
@@ -309,20 +344,22 @@ jmp GameSpeedPatchRet
 //********************************************************************
 // Patch the camera movement calls
 CameraCallPatch:
+db 48 8b 74 24 38
+
+push rcx
+push rdx
 
 add rcx,30
 mov [CameraSource], rcx
-
-// Store the Function pointer to get char table.  This should be moved somewhere better that gets called once
-mov rcx, AOB_GetCharTableFuncPtr
-mov [GetCharTableFuncPtr], rcx
-
 
 // Now we have camera source, camera target, and the table of coordinates
 sub rsp,20
 lea rcx,[VariableBlock]
 call CamMod.AdjustCamera
 add rsp,20
+
+pop rdx
+pop rcx
 
 CameraCallPatchSkip:
 jmp CameraCallPatchRet
@@ -418,7 +455,7 @@ dq 0000000000000000
 CameraSource:
 dq 0000000000000000
 GetCharTableFuncPtr:
-dq 0000000000000000
+dq AOB_GetCharTableFuncPtr
 Zoom:
 db 00 00 00 00
 CameraClippingDist:
@@ -455,6 +492,10 @@ RequestPosReset:
 db 00
 HideUI:
 db 00
+P1Difficulty:
+db 00
+P2Difficulty:
+db 00
 
 
 
@@ -466,7 +507,7 @@ createThread( CamMod.Unload )
 //*******************************************
 // Restore the original AOB_CameraCall
 AOB_CameraCall:
-readmem( AOB_CameraCall_Orig, 32 )
+db 48 8b 74 24 38
 
 
 //*******************************************
@@ -499,7 +540,11 @@ db 80 b9 1c 02 00 00 00 0f 94 c0
 //db 33 db
 //db 48 85 d2
 
-
+//*******************************************
+// Restore the original AOB_SetCpuDifficultyCall
+AOB_SetCpuDifficultyCall:
+db 8b 14 8a
+db 43 89 54 82 28
 
 //*******************************************
 // Restore the original AOB_GameSpeedScan
@@ -540,13 +585,14 @@ UnregisterSymbol(FPVHideHead)
 UnregisterSymbol(FPVHidePlayer)
 UnregisterSymbol(RequestVrReset)
 UnregisterSymbol(RequestPosReset)
+UnregisterSymbol(P1Difficulty)
+UnregisterSymbol(P2Difficulty)
 
 UnregisterSymbol(RotA)
 UnregisterSymbol(RotB)
 UnregisterSymbol(RotC)
 
 UnregisterSymbol(AOB_CameraCall)
-UnregisterSymbol(AOB_CameraCall_Orig)
 UnregisterSymbol(AOB_TargetsTableCall)
 UnregisterSymbol(AOB_GameSpeedScan)
 UnregisterSymbol(AOB_HideHeadScan)
@@ -557,20 +603,22 @@ UnregisterSymbol(AOB_HideModelCall)
 UnregisterSymbol(AOB_GetPlayerAddress)
 UnregisterSymbol(AOB_HideUI)
 UnregisterSymbol(AOB_GetTargetTableBaseCall)
+UnregisterSymbol(AOB_SetCpuDifficultyCall)
 </AssemblerScript>
       <CheatEntries>
         <CheatEntry>
           <ID>3769</ID>
           <Description>"Internals"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" RealAddress="00000000"/>
+          <LastState Value="" Activated="1" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
               <ID>3682</ID>
               <Description>"Enable Source"</Description>
               <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0:Off
-1:On
+1:Table
+2:Original
 </DropDownList>
               <VariableType>Byte</VariableType>
               <Address>EnableSource</Address>
@@ -591,6 +639,56 @@ UnregisterSymbol(AOB_GetTargetTableBaseCall)
               <Description>"Source Table Idx"</Description>
               <VariableType>Byte</VariableType>
               <Address>SourceTableIdx</Address>
+              <Hotkeys>
+                <Hotkey>
+                  <Action>Increase Value</Action>
+                  <Keys>
+                    <Key>17</Key>
+                    <Key>221</Key>
+                  </Keys>
+                  <Value>1</Value>
+                  <ID>0</ID>
+                </Hotkey>
+                <Hotkey>
+                  <Action>Decrease Value</Action>
+                  <Keys>
+                    <Key>17</Key>
+                    <Key>219</Key>
+                  </Keys>
+                  <Value>1</Value>
+                  <ID>1</ID>
+                </Hotkey>
+                <Hotkey>
+                  <Action>Increase Value</Action>
+                  <Keys>
+                    <Key>22535</Key>
+                    <Key>22533</Key>
+                    <Key>22544</Key>
+                  </Keys>
+                  <Value>1</Value>
+                  <ID>2</ID>
+                </Hotkey>
+                <Hotkey>
+                  <Action>Decrease Value</Action>
+                  <Keys>
+                    <Key>22535</Key>
+                    <Key>22533</Key>
+                    <Key>22545</Key>
+                  </Keys>
+                  <Value>1</Value>
+                  <ID>3</ID>
+                </Hotkey>
+                <Hotkey>
+                  <Action>Set Value</Action>
+                  <Keys>
+                    <Key>22535</Key>
+                    <Key>22533</Key>
+                    <Key>22547</Key>
+                  </Keys>
+                  <Value>10</Value>
+                  <ID>4</ID>
+                </Hotkey>
+              </Hotkeys>
             </CheatEntry>
             <CheatEntry>
               <ID>3654</ID>
@@ -598,6 +696,7 @@ UnregisterSymbol(AOB_GetTargetTableBaseCall)
               <DropDownList ReadOnly="1" DescriptionOnly="1" DisplayValueAsItem="1">0:Off
 1:Use Table
 2:POV
+3:Original
 </DropDownList>
               <VariableType>Byte</VariableType>
               <Address>EnableTarget</Address>
@@ -651,8 +750,9 @@ UnregisterSymbol(AOB_GetTargetTableBaseCall)
                 <Hotkey>
                   <Action>Increase Value</Action>
                   <Keys>
-                    <Key>22533</Key>
-                    <Key>38</Key>
+                    <Key>22535</Key>
+                    <Key>22532</Key>
+                    <Key>22544</Key>
                   </Keys>
                   <Value>1</Value>
                   <ID>0</ID>
@@ -660,8 +760,9 @@ UnregisterSymbol(AOB_GetTargetTableBaseCall)
                 <Hotkey>
                   <Action>Decrease Value</Action>
                   <Keys>
-                    <Key>22533</Key>
-                    <Key>40</Key>
+                    <Key>22535</Key>
+                    <Key>22532</Key>
+                    <Key>22545</Key>
                   </Keys>
                   <Value>1</Value>
                   <ID>1</ID>
@@ -669,11 +770,30 @@ UnregisterSymbol(AOB_GetTargetTableBaseCall)
                 <Hotkey>
                   <Action>Set Value</Action>
                   <Keys>
-                    <Key>22533</Key>
-                    <Key>39</Key>
+                    <Key>22535</Key>
+                    <Key>22532</Key>
+                    <Key>22547</Key>
                   </Keys>
-                  <Value>0</Value>
+                  <Value>10</Value>
                   <ID>2</ID>
+                </Hotkey>
+                <Hotkey>
+                  <Action>Increase Value</Action>
+                  <Keys>
+                    <Key>18</Key>
+                    <Key>221</Key>
+                  </Keys>
+                  <Value>1</Value>
+                  <ID>3</ID>
+                </Hotkey>
+                <Hotkey>
+                  <Action>Decrease Value</Action>
+                  <Keys>
+                    <Key>18</Key>
+                    <Key>219</Key>
+                  </Keys>
+                  <Value>1</Value>
+                  <ID>4</ID>
                 </Hotkey>
               </Hotkeys>
             </CheatEntry>
@@ -776,6 +896,18 @@ UnregisterSymbol(AOB_GetTargetTableBaseCall)
               <Description>"Hide UI"</Description>
               <VariableType>Byte</VariableType>
               <Address>HideUI</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3881</ID>
+              <Description>"P1 Cpu Difficulty"</Description>
+              <VariableType>Byte</VariableType>
+              <Address>P1Difficulty</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3882</ID>
+              <Description>"P2 Cpu Difficulty"</Description>
+              <VariableType>Byte</VariableType>
+              <Address>P2Difficulty</Address>
             </CheatEntry>
           </CheatEntries>
         </CheatEntry>
@@ -928,7 +1060,7 @@ db 0F 94 C0
         <CheatEntry>
           <ID>3868</ID>
           <Description>"0120_Left Side(CameraMode)"</Description>
-          <LastState/>
+          <LastState Activated="1"/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[enable]
 aobscanmodule(AOB_CameraMuki_A,DOA6.exe,88 83 48 01 00 00 E8 * * * * 48 8B D6 48 8B CB)
@@ -961,7 +1093,7 @@ db 88 83 48 01 00 00
           <ID>3648</ID>
           <Description>"0020_Disable Raising Dust"</Description>
           <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
-          <LastState/>
+          <LastState Activated="1"/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[enable]
 aobscanmodule(AOB_Sunabokori_A,DOA6.exe,4C 8B F9 4D 85 E4 0F 84 B2 0C 00 00)
@@ -1033,6 +1165,7 @@ db 4D 85 E4
               <DropDownList DisplayValueAsItem="1">00:OFF
 01:ON
 </DropDownList>
+              <LastState Value="00" RealAddress="7FF7F7CD0100"/>
               <ShowAsHex>1</ShowAsHex>
               <VariableType>Byte</VariableType>
               <Address>EFFECT_MEM</Address>
@@ -1041,7 +1174,56 @@ db 4D 85 E4
         </CheatEntry>
       </CheatEntries>
     </CheatEntry>
+    <CheatEntry>
+      <ID>3876</ID>
+      <Description>"CPU Player 1"</Description>
+      <LastState Value="0" RealAddress="2BAF38FB980"/>
+      <VariableType>4 Bytes</VariableType>
+      <Address>doa6.exe+0256dcd0</Address>
+      <Offsets>
+        <Offset>f10</Offset>
+        <Offset>8</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>3880</ID>
+      <Description>"CPU Player 2"</Description>
+      <LastState Value="1" RealAddress="2BAF38FB984"/>
+      <VariableType>4 Bytes</VariableType>
+      <Address>DOA6.exe+256DCD0</Address>
+      <Offsets>
+        <Offset>f14</Offset>
+        <Offset>8</Offset>
+      </Offsets>
+    </CheatEntry>
   </CheatEntries>
+  <CheatCodes>
+    <CodeEntry>
+      <Description>Change of jmp DOA6.exe+18B1658</Description>
+      <AddressString>7FF7AD5A00C4</AddressString>
+      <Before>
+        <Byte>48</Byte>
+        <Byte>8B</Byte>
+        <Byte>74</Byte>
+        <Byte>24</Byte>
+        <Byte>38</Byte>
+      </Before>
+      <Actual>
+        <Byte>E9</Byte>
+        <Byte>8F</Byte>
+        <Byte>15</Byte>
+        <Byte>8C</Byte>
+        <Byte>01</Byte>
+      </Actual>
+      <After>
+        <Byte>48</Byte>
+        <Byte>83</Byte>
+        <Byte>C1</Byte>
+        <Byte>30</Byte>
+        <Byte>48</Byte>
+      </After>
+    </CodeEntry>
+  </CheatCodes>
   <UserdefinedSymbols/>
   <LuaScript>speedAddr = nil
 overkillAddr = nil
@@ -1049,10 +1231,14 @@ sourceTableAddr = nil
 targetTableAddr = nil
 enableSrcAddr = nil
 enableTgtAddr = nil
+srcIdxAddr = nil
+tgtIdxAddr = nil
 enableHideModelAddr = nil
 hideHeadPlayerAddr = nil
 requestVrResetAddr = nil
 requestPosResetAddr = nil
+p1CpuAddr = nil
+p2CpuAddr = nil
 rotAAddr = nil
 
 
@@ -1067,6 +1253,7 @@ function startTimer()
     if hotkeyTimer then
         object_destroy(hotkeyTimer)
         hotkeyTimer = nil
+        speak("Deactivated")
     else
         local list = getAddressList()
         speedAddr = list.getMemoryRecordByDescription("GameSpeed")
@@ -1075,16 +1262,20 @@ function startTimer()
         targetTableAddr = list.getMemoryRecordByDescription("Target Table Select")
         enableSrcAddr = list.getMemoryRecordByDescription("Enable Source")
         enableTgtAddr = list.getMemoryRecordByDescription("Enable Target")
+        srcIdxAddr = list.getMemoryRecordByDescription("Source Table Idx")
+        tgtIdxAddr = list.getMemoryRecordByDescription("Target Table Idx")
         enableHideModelAddr = list.getMemoryRecordByDescription("FPVHidePlayer")
         hideHeadPlayerAddr = list.getMemoryRecordByDescription("FPVHideHead")
         requestVrResetAddr = list.getMemoryRecordByDescription("Request Pos Reset")
         requestPosResetAddr = list.getMemoryRecordByDescription("Request Vr Reset")
+        p1CpuAddr = list.getMemoryRecordByDescription("CPU Player 1")
+        p2CpuAddr = list.getMemoryRecordByDescription("CPU Player 2")
         rotAAddr = list.getMemoryRecordByDescription("RotA")
 
         hotkeyTimer = createTimer(getMainForm())
         hotkeyTimer.interval = 100
         hotkeyTimer.OnTimer = handleTimer
-        beep()
+        speak("Activated")
     end
 end
 
@@ -1147,9 +1338,11 @@ function handleTimer(timer)
         else -- POV CAMERA
             if gamepad.GAMEPAD_RIGHT_SHOULDER then
                 if gamepad.GAMEPAD_X then
-                    --toggleOrigin(cameraOriginAddr)
+                    toggleBool(p1CpuAddr)
+                    speak( "P1 is " .. p1CpuAddr.value )
                 elseif gamepad.GAMEPAD_Y then
-                    --toggleTarget(cameraTargetAddr)
+                    toggleBool(p2CpuAddr)
+                    speak( "P2 is " .. p2CpuAddr.value )
                 elseif gamepad.GAMEPAD_A then
                     --changeZoom(-.05, cameraZoomAddr)
                 elseif gamepad.GAMEPAD_B then
@@ -1239,11 +1432,15 @@ function handleTimer(timer)
             end
         end
 
-        if gamepad.GAMEPAD_BACK then
-            if lbHeld and rbHeld then
+        if gamepad.GAMEPAD_START then
+           if lbHeld and rbHeld then
                 speak("Reset V R")
                 requestVrResetAddr.Value = 1
-            elseif lbHeld then
+           end
+        end
+
+        if gamepad.GAMEPAD_BACK then
+            if lbHeld then
                 --toggleUi()
             elseif rbHeld then
                 toggleModel()
@@ -1271,34 +1468,43 @@ function setPovMode( mode )
         enableTgtAddr.Value = 0
         hideHeadPlayerAddr.Value = 0 -- show heads
         enableHideModelAddr.Value = 0 -- show models
-    elseif povMode == 1 then -- P1 POV
-        speak( "Player 1 POV" )
-        enableSrcAddr.Value = 1
-        enableTgtAddr.Value = 2 -- pov mode
-        sourceTableAddr.Value = 0 -- p1 looks
-        targetTableAddr.Value = 1 -- at p2
         hideHeadPlayerAddr.Value = 1
-    elseif povMode == 2 then -- P1 head target P2 head
+    elseif povMode == 1 then -- P1 head target P2 head
         speak("Player 1 to 2" )
         enableSrcAddr.Value = 1
         enableTgtAddr.Value = 1 -- target mode
         sourceTableAddr.Value = 0 -- p1 looks
         targetTableAddr.Value = 1 -- at p2
+        srcIdxAddr.Value = 10 -- Source is head
+        tgtIdxAddr.Value = 10 -- Target is head
         hideHeadPlayerAddr.Value = 1
-    elseif povMode == 3 then -- P2 POV
-       speak("Player 2 POV" )
+    elseif povMode == 2 then -- P1 target self
+        speak("Player 1 to self" )
         enableSrcAddr.Value = 1
-        enableTgtAddr.Value = 2 -- pov mode
-        sourceTableAddr.Value = 1 -- p1 looks
-        targetTableAddr.Value = 0 -- at p2
-        hideHeadPlayerAddr.Value = 2
-    elseif povMode == 4 then -- P2 head target P1 head
+        enableTgtAddr.Value = 1 -- target mode
+        sourceTableAddr.Value = 0 -- p1 looks
+        targetTableAddr.Value = 0 -- at p1
+        srcIdxAddr.Value = 10 -- Source is between head
+        tgtIdxAddr.Value = 9 -- Target is ?
+        hideHeadPlayerAddr.Value = 0
+    elseif povMode == 3 then -- P2 head target P1 head
         speak("Player 2 to 1" )
         enableSrcAddr.Value = 1
         enableTgtAddr.Value = 1 -- target mode
         sourceTableAddr.Value = 1 -- p2 looks
         targetTableAddr.Value = 0 -- at p1
+        srcIdxAddr.Value = 10 -- Source is head
+        tgtIdxAddr.Value = 10 -- Target is head
         hideHeadPlayerAddr.Value = 2
+    elseif povMode == 4 then -- P2 target self
+        speak("Player 2 to self" )
+        enableSrcAddr.Value = 1
+        enableTgtAddr.Value = 1 -- target mode
+        sourceTableAddr.Value = 1 -- p2 looks
+        targetTableAddr.Value = 1 -- at p2
+        srcIdxAddr.Value = 10 -- Source is between head
+        tgtIdxAddr.Value = 9 -- Target is ?
+        hideHeadPlayerAddr.Value = 0
     end
     requestPosResetAddr.Value = 1
 end
@@ -1366,6 +1572,10 @@ function togglePause()
     end
 end
 
+function toggleBool(addr)
+    local nextBool = ( tonumber(addr.Value) + 1 ) % 2
+    addr.Value = nextBool
+end
 
 function changeAxis(delta, addr)
     local curVal = tonumber(addr.Value)
@@ -1439,41 +1649,4 @@ if hotkey then
 end
 hotkey = createHotkey( startTimer, VK_F2 )
 </LuaScript>
-  <DisassemblerComments>
-    <DisassemblerComment>
-      <Address>"DOA6.exe"+17EECCF</Address>
-      <Comment>rcx+30 is CameraSource
-</Comment>
-    </DisassemblerComment>
-    <DisassemblerComment>
-      <Address>"DOA6.exe"+17EECD6</Address>
-      <Comment>Camera Call
-</Comment>
-    </DisassemblerComment>
-    <DisassemblerComment>
-      <Address>"DOA6.exe"+182D044</Address>
-      <Comment>Cam3?
-</Comment>
-    </DisassemblerComment>
-    <DisassemblerComment>
-      <Address>"DOA6.exe"+182D188</Address>
-      <Comment>Cam1
-</Comment>
-    </DisassemblerComment>
-    <DisassemblerComment>
-      <Address>"DOA6.exe"+182EB20</Address>
-      <Comment>Cam2
-</Comment>
-    </DisassemblerComment>
-    <DisassemblerComment>
-      <Address>"DOA6.exe"+1891B40</Address>
-      <Comment>hide character
-</Comment>
-    </DisassemblerComment>
-    <DisassemblerComment>
-      <Address>"DOA6.exe"+1891B44</Address>
-      <Comment>Hide Character?
-</Comment>
-    </DisassemblerComment>
-  </DisassemblerComments>
 </CheatTable>

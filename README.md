@@ -1,4 +1,4 @@
-Virtual Reality Mod for Dead or Alive 6
+Virtual Reality Mod for Dead or Alive 6 v1.12
 
 This is a free-camera mod for DOA6 with a VR component. The free camera can be used without VR.
 I heavily based this on the work by https://bryanyora2525.com/
@@ -7,34 +7,65 @@ This is very much in an Alpha state. If you try running this, don't expect it to
 
 
 Quick directions if you want to try to get it to work:
-    Cam Mod:
-        Get Cheat Engine. I used 7.0 : https://www.cheatengine.org/downloads.php
-        Place Doa6_VrMod.ct and CamMod.dll together in a folder, and open Doa6_VrMod.ct in Cheat Engine
-            Say yes to run the Lua script if prompted
-        Start Dead or Alive 6
-        Select "Open process" and select DOA6.exe
-        Click the checkbox next to "VR Mod" to inject the DLL and start the mod
-        Press F2 to start the Lua script. It's needed for some controls to work. You'll hear a 'beep' after pressing F2 to indicate the script is active.
+    * Cam Mod:
+        * Get Cheat Engine. I used 7.0 : https://www.cheatengine.org/downloads.php
+        * Place Doa6_VrMod.ct and CamMod.dll together in a folder, and open Doa6_VrMod.ct in Cheat Engine
+            * Say yes to run the Lua script if prompted
+        * Start Dead or Alive 6
+        * Select "Open process" and select DOA6.exe
+        * Click the checkbox next to "VR Mod" to inject the DLL and start the mod
+        *Press F2 to start the Lua script. It's needed for some controls to work. You'll hear a 'beep' after pressing F2 to indicate the script is active.
         
-    Cam Controls:
-        Controls are a mess. Here's the basics:
-        Left joystick - Move around
-        Right joystick - Look around  (click the stick to toggle Y axis between 'look up/down' and 'move/up down'
-        Right trigger - speed up joystick movements by amount trigger pressed
-        RB+Right joystick - Up/Down zooms, left/right rolls
-        Left trigger - Pause/Unpause game
-        Left stick click - Slow down game (hold LB to slow down faster)
-        Right stick click - Speed up game (hold LB to speed up faster)
-        RB + A,B,X,Y - Speed presets
-        Back - Switch forward through P1/P2 point of views
-        LB + X - Switch backward through P1/P2 point of views
-        LB + Back - Toggle UI
-        RB + Right-Stick - Switch through 'Camera modes'.  Roughly, mode 0 is player point of view, mode 2 is camera only moves when you move.
-        RB + Back - Toggle character heads/bodies
-        Left stick click + Right stick click - Reset camera position
-        RB + left stick click - Toggle height lock
-        RB + LB + Back - Toggle camera lock. Useful to stop the game changing scenes from moving the camera
         
+    Most of these controls only work when the game camera is active (during an unpaused match)
+        
+    * Cam Controls:
+        * Controls are a mess. Here's the basics:
+        * Left joystick - Move around
+        * Right joystick - Look around  (click the stick to toggle Y axis between 'look up/down' and 'move/up down'
+            * Moving joysticks while clicking the left stick will move the camera *target* instead of camera position
+        * Right trigger - speed up joystick movements by amount trigger pressed
+        * RB+Right joystick - Up/Down zooms, left/right rolls
+        * Left trigger - Pause/Unpause game
+        * Left stick click - Slow down game (hold LB to slow down faster)
+        * Right stick click - Speed up game (hold LB to speed up faster)
+        * RB + A,B,X,Y - Speed presets
+        * Back - Switch forward through P1/P2 target/source camera presets
+        * LB + X - Switch backward through P1/P2 target/source camera presets
+        * LB + Back - Toggle UI  (control is not active when paused. Must unpause first to bring back pause menu)
+        * RB + Right-Stick - Switch through 'Camera modes'
+            * See Camera Modes details below
+        * RB + Back - Toggle character heads/bodies
+        * Left stick click + Right stick click - Reset camera position
+        * RB + left stick click - Toggle height lock modes (lock source height, target height, both)
+        * RB + LB + Back - Toggle camera lock. Useful to stop the game changing scenes from moving the camera (I think this is broken right now)
+        
+   * Other controls:
+        * 3D  (these controls are set in dxdi.ini and are handled by 3d migoto)
+            * While holding in DPAD_LEFT, pressing A/B will cycle forward/backward between convergence/depth presets
+            * While holding in DPAD_DOWN, pressing A/B will cycle through convergence settings
+            * While holding in DPAD_DOWN, pressing X/Y will cycle through depth settings
+        * CPU controls (most of these controls only take affect after passing through the Character Select menu)
+            * While holding in RB and DPAD_RIGHT, X toggles CPU control of Player 1
+            * While holding in RB and DPAD_RIGHT, Y toggles CPU control of Player 2
+            * While holding in RightTrigger, B cycles through P1 Cpu difficulty level (0 means use level chosen in game)
+            * While holding in RightTrigger and clicking the left stick, B cycles through P2 Cpu difficulty level
+        * Gameplayer
+            * While holding in LeftTrigger, A cycles through P1 Break Meter ( 0 - don't touch, 1 - always full, 2 - always empty ). Visual bar glit
+            * While holding in LeftTrigger, B cycles through P2 Break Meter
+            * While holding in LeftTrigger, X toggles P1 always full health
+            * While holding in LeftTrigger, Y toggles P2 always full health
+            
+
+    * Camera Modes - control how the base camera position and target are set. Camera presets are cycled through with BACK
+        * Game Cam - use the normal game camera.
+        * Game, no target - Position is game camera, the target is not updated
+        * Game, with target - Game camera, but looking at the target from the current camera preset
+        * Cheat Engine Values - Don't modify any values, use whatever cheat engine set
+        * Source and Target On - Set the position and target to the current camera preset
+        * POV - Set the source to the camera preset, then set the target to 'look out' from the source
+        * Source Off Target On - leave the camera alone, but keep following the target
+        * Source and target off - leave the camera completely alone. Position is entirely under player control
         
     You'll get lost a lot. Sometimes the camera doesn't seem to stick where you want it to. Best bet is to try combinations
     of 'reset camera position',  switching point of views, and changing camera mode until the camera decides to get back on task.
