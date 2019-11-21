@@ -37,6 +37,7 @@ namespace CamMod
             FREE_MODE_GAME_CAM,
             FREE_MODE_SRC_GAME_TARGET_NONE,
             FREE_MODE_SRC_GAME_TARGET_TABLE,
+            FREE_MODE_NO_SOURCE_TARGET_GAME,
             FREE_MODE_NO_CHANGE,
             FREE_MODE_SOURCE_AND_TARGET,
             FREE_MODE_POV,

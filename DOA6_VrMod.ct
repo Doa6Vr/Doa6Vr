@@ -11,8 +11,8 @@
 aobScanModule( AOB_CameraCallScan, DOA6.exe, 48 8b cb ?? ?? ?? ?? ?? 48 8b d6 48 8b cb 48 8b 5c 24 30 48 8b 74 24 38 )
 aobScanModule( AOB_TargetsTableCall, DOA6.exe, 48 8B 01 48 8D 54 24 60 FF 50 08)
 aobScanModule( AOB_GameSpeedScan, DOA6.exe, C7 44 24 58 01 00 00 00 33 D2 41 F7 F0 )
-aobScanModule( AOB_HideHeadScan, DOA6.exe, 48 8B 5B 28 48 85 DB 74 7C 49 8B 06 49 8B CE FF 50 18 44 0F B6 D0 44 89 93 20 03 00 00 )
-aobScanModule( AOB_HideHairScan, DOA6.exe, 48 8B 5B 40 48 85 DB 74 7C 49 8B 06 49 8B CE FF 50 18 44 0F B6 D0 44 89 93 20 03 00 00 )
+aobScanModule( AOB_HideHeadScan, DOA6.exe, 48 8B 5B 28 48 85 DB 74 7C 49 8B 06 49 8B CE FF 50 18 44 0F B6 D0 44 89 93 28 03 00 00 )
+aobScanModule( AOB_HideHairScan, DOA6.exe, 48 8B 5B 40 48 85 DB 74 7C 49 8B 06 49 8B CE FF 50 18 44 0F B6 D0 44 89 93 28 03 00 00 )
 aobScanModule( AOB_HideModelCall, DOA6.exe, 80 B9 1C 02 00 00 00 0F 94 C0 C3 )
 aobScanModule( AOB_GetCharTableFuncPtr, DOA6.exe, 88 4c 24 08 53 56 57 48 81 ec a0 00 00 00 ) // use this passing 0 or 1 in RCX, returns in rax
 aobScanModule( AOB_HideUI, DOA6.exe, 48 8B 13 80 7A 22 00 75 0D 49 8B 45 00 )
@@ -387,7 +387,7 @@ jne HideHeadPatchSkip // Skip if not FPV player
 mov r10, 0 // Set r10 to zero to hide head
 
 HideHeadPatchSkip:
-db 44 89 93 20 03 00 00
+db 44 89 93 28 03 00 00
 jmp HideHeadPatchRet
 //*********end HideHeadPatch***************************************
 
@@ -410,7 +410,7 @@ jne HideHairPatchSkip // Skip if not FPV player
 mov r10, 0 // Set r10 to zero to hide head
 
 HideHairPatchSkip:
-db 44 89 93 20 03 00 00
+db 44 89 93 28 03 00 00
 jmp HideHairPatchRet
 //*********end HideHairPatch***************************************
 
@@ -520,12 +520,12 @@ db ff 50 08
 //*******************************************
 // Restore the original AOB_HideHeadCall
 AOB_HideHeadCall:
-db 44 89 93 20 03 00 00
+db 44 89 93 28 03 00 00
 
 //*******************************************
 // Restore the original AOB_HideHairCall
 AOB_HideHairCall:
-db 44 89 93 20 03 00 00
+db 44 89 93 28 03 00 00
 
 //*******************************************
 // Restore the original AOB_HideModelCall
@@ -610,7 +610,7 @@ UnregisterSymbol(AOB_SetCpuDifficultyCall)
           <ID>3769</ID>
           <Description>"Internals"</Description>
           <Options moHideChildren="1"/>
-          <LastState Value="" Activated="1" RealAddress="00000000"/>
+          <LastState Value="" RealAddress="00000000"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
@@ -874,24 +874,6 @@ UnregisterSymbol(AOB_SetCpuDifficultyCall)
               <Address>CameraClippingDist</Address>
             </CheatEntry>
             <CheatEntry>
-              <ID>3767</ID>
-              <Description>"P1 Break Gauge"</Description>
-              <VariableType>4 Bytes</VariableType>
-              <Address>CharBreakGaugeTable1Ptr</Address>
-              <Offsets>
-                <Offset>20</Offset>
-              </Offsets>
-            </CheatEntry>
-            <CheatEntry>
-              <ID>3768</ID>
-              <Description>"P2 Break Gauge"</Description>
-              <VariableType>4 Bytes</VariableType>
-              <Address>CharBreakGaugeTable2Ptr</Address>
-              <Offsets>
-                <Offset>20</Offset>
-              </Offsets>
-            </CheatEntry>
-            <CheatEntry>
               <ID>3773</ID>
               <Description>"Hide UI"</Description>
               <VariableType>Byte</VariableType>
@@ -926,11 +908,11 @@ UnregisterSymbol(AOB_SetCpuDifficultyCall)
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[enable]
 aobscanmodule(AOB_OverKill_A,DOA6.exe,FF C8 89 45 20 40 84 FF 0F 85 18 03 00 00)
-aobscanmodule(AOB_OverKill_B,DOA6.exe,C6 80 27 01 00 00 01 4C 8B 05 * * * *)
-aobscanmodule(AOB_OverKill_C,DOA6.exe,80 B8 27 01 00 00 00 0F 84 F4 00 00 00 0F B6 4D 28)
+aobscanmodule(AOB_OverKill_B,DOA6.exe,C6 80 37 01 00 00 01 4C 8B 05 * * * *)
+aobscanmodule(AOB_OverKill_C,DOA6.exe,80 B8 37 01 00 00 00 0F 84 F4 00 00 00 0F B6 4D 28)
 aobscanmodule(AOB_OverKill_D,DOA6.exe,84 DB 48 8B 5C 24 20 75 07 B0 01 48 83 C4 28)
-aobscanmodule(AOB_OverKill_E,DOA6.exe,48 8B 05 41 81 D5 00 F6 40 68 01 74 43)
-aobscanmodule(AOB_OverKill_F,DOA6.exe,38 48 32 0F 94 C0 48 83 C4 48 C3 48 8D 0D 3D 8F 5C 00)
+aobscanmodule(AOB_OverKill_E,DOA6.exe,48 8B 05 *  *  D6 00 F6 40 68 01 74 43)
+aobscanmodule(AOB_OverKill_F,DOA6.exe,38 48 32 0F 94 C0 48 83 C4 48 C3 48 8D 0D * * 5C 00)
 registersymbol(AOB_OverKill_A)
 registersymbol(AOB_OverKill_B)
 registersymbol(AOB_OverKill_C)
@@ -966,26 +948,26 @@ jmp OverKill_A_RET
 
 OverKill_B:
 xor r8d,r8d
-cmp r8w,[rax+00000550]
+cmp r8w,[rax+00000560]
 jae OverKill_B_SKIP
-db C6 80 27 01 00 00 00
+db C6 80 37 01 00 00 00
 jmp OverKill_B_RET
 OverKill_B_SKIP:
-db C6 80 27 01 00 00 01
+db C6 80 23 01 00 00 01
 jmp OverKill_B_RET
 
 OverKill_C:
 xor ecx,ecx
-cmp cx,[rax+00000550]
+cmp cx,[rax+00000560]
 jae OverKill_C_SKIP
 cmp al,al
 jmp OverKill_C_RET
 OverKill_C_SKIP:
-db 80 B8 27 01 00 00 00
+db 80 B8 37 01 00 00 00
 jmp OverKill_C_RET
 
 OverKill_E:
-mov rax,[DOA6.exe+25B0AA0]
+mov rax,[DOA6.exe+25EABA0]
 test rax,rax
 je OverKill_E_SKIP
 lea rax,[rax+000008F0]
@@ -994,7 +976,7 @@ jne OverKill_E_SKIP
 cmp byte ptr [rax+00000229],00
 jne OverKill_E_JMP
 OverKill_E_SKIP:
-mov rax,[DOA6.exe+256D958]
+mov rax,[DOA6.exe+25A78A8]
 jmp OverKill_E_RET
 OverKill_E_JMP:
 jmp OverKill_E_RET+6
@@ -1042,16 +1024,16 @@ db FF C8
 db 89 45 20
 
 AOB_OverKill_B:
-db C6 80 27 01 00 00 01
+db C6 80 37 01 00 00 01
 
 AOB_OverKill_C:
-db 80 B8 27 01 00 00 00
+db 80 B8 37 01 00 00 00
 
 AOB_OverKill_D+09:
 db B0 01
 
 AOB_OverKill_E:
-db 48 8B 05 41 81 D5 00
+db 48 8B 05 91 62 D6 00
 
 AOB_OverKill_F+03:
 db 0F 94 C0
@@ -1060,7 +1042,7 @@ db 0F 94 C0
         <CheatEntry>
           <ID>3868</ID>
           <Description>"0120_Left Side(CameraMode)"</Description>
-          <LastState Activated="1"/>
+          <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[enable]
 aobscanmodule(AOB_CameraMuki_A,DOA6.exe,88 83 48 01 00 00 E8 * * * * 48 8B D6 48 8B CB)
@@ -1093,7 +1075,7 @@ db 88 83 48 01 00 00
           <ID>3648</ID>
           <Description>"0020_Disable Raising Dust"</Description>
           <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
-          <LastState Activated="1"/>
+          <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[enable]
 aobscanmodule(AOB_Sunabokori_A,DOA6.exe,4C 8B F9 4D 85 E4 0F 84 B2 0C 00 00)
@@ -1165,7 +1147,6 @@ db 4D 85 E4
               <DropDownList DisplayValueAsItem="1">00:OFF
 01:ON
 </DropDownList>
-              <LastState Value="00" RealAddress="7FF7F7CD0100"/>
               <ShowAsHex>1</ShowAsHex>
               <VariableType>Byte</VariableType>
               <Address>EFFECT_MEM</Address>
@@ -1177,53 +1158,26 @@ db 4D 85 E4
     <CheatEntry>
       <ID>3876</ID>
       <Description>"CPU Player 1"</Description>
-      <LastState Value="0" RealAddress="2BAF38FB980"/>
+      <LastState Value="1" RealAddress="2CB8164B770"/>
       <VariableType>4 Bytes</VariableType>
-      <Address>doa6.exe+0256dcd0</Address>
+      <Address>doa6.exe+25a5c30</Address>
       <Offsets>
-        <Offset>f10</Offset>
-        <Offset>8</Offset>
+        <Offset>90</Offset>
+        <Offset>b48</Offset>
       </Offsets>
     </CheatEntry>
     <CheatEntry>
-      <ID>3880</ID>
+      <ID>3888</ID>
       <Description>"CPU Player 2"</Description>
-      <LastState Value="1" RealAddress="2BAF38FB984"/>
+      <LastState Value="1" RealAddress="2CB8164B774"/>
       <VariableType>4 Bytes</VariableType>
-      <Address>DOA6.exe+256DCD0</Address>
+      <Address>doa6.exe+25a5c30</Address>
       <Offsets>
-        <Offset>f14</Offset>
-        <Offset>8</Offset>
+        <Offset>94</Offset>
+        <Offset>b48</Offset>
       </Offsets>
     </CheatEntry>
   </CheatEntries>
-  <CheatCodes>
-    <CodeEntry>
-      <Description>Change of jmp DOA6.exe+18B1658</Description>
-      <AddressString>7FF7AD5A00C4</AddressString>
-      <Before>
-        <Byte>48</Byte>
-        <Byte>8B</Byte>
-        <Byte>74</Byte>
-        <Byte>24</Byte>
-        <Byte>38</Byte>
-      </Before>
-      <Actual>
-        <Byte>E9</Byte>
-        <Byte>8F</Byte>
-        <Byte>15</Byte>
-        <Byte>8C</Byte>
-        <Byte>01</Byte>
-      </Actual>
-      <After>
-        <Byte>48</Byte>
-        <Byte>83</Byte>
-        <Byte>C1</Byte>
-        <Byte>30</Byte>
-        <Byte>48</Byte>
-      </After>
-    </CodeEntry>
-  </CheatCodes>
   <UserdefinedSymbols/>
   <LuaScript>speedAddr = nil
 overkillAddr = nil

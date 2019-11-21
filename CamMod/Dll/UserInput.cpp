@@ -30,15 +30,16 @@ namespace
 
     const LPCWSTR sFreeRoamStrings[] =
     {
-        L"Game Cam",                // FREE_MODE_GAME_CAM,
-        L"Game no target",          // FREE_MODE_SRC_GAME_TARGET_NONE,
+        L"Game Cam",                 // FREE_MODE_GAME_CAM,
+        L"Game no target",           // FREE_MODE_SRC_GAME_TARGET_NONE,
         L"Game with target",         // FREE_MODE_SRC_GAME_TARGET_TABLE,
-        L"Cheat Engine Values",     // FREE_MODE_NO_CHANGE,
-        L"Source and Target On",    // FREE_MODE_SOURCE_AND_TARGET,
+        L"No source, game target",   // FREE_MODE_NO_SOURCE_TARGET_GAME,
+        L"Cheat Engine Values",      // FREE_MODE_NO_CHANGE,
+        L"Source and Target On",     // FREE_MODE_SOURCE_AND_TARGET,
         L"POV",                      // FREE_MODE_POV,
-        L"Source Off Target On",    // FREE_MODE_NO_SOURCE,
-        L"Source and Target Off",   // FREE_MODE_NO_SOURCE_NO_TARGET,
-                                    // FREE_MODE_CNT
+        L"Source Off Target On",     // FREE_MODE_NO_SOURCE,
+        L"Source and Target Off",    // FREE_MODE_NO_SOURCE_NO_TARGET,
+                                     // FREE_MODE_CNT
         };
 }
 
@@ -147,11 +148,11 @@ namespace CamMod
             {
                 if (aCommands.altFunc)
                 {
-                    RotateOption(mCpu2Level, MAX_CPU_LEVEL, L"CPU 2 Level");
+                    RotateOption(mCpu2Level, MAX_CPU_LEVEL, L"P 2 Level");
                 }
                 else
                 {
-                    RotateOption(mCpu1Level, MAX_CPU_LEVEL, L"CPU 1 Level");
+                    RotateOption(mCpu1Level, MAX_CPU_LEVEL, L"P 1 Level");
                 }
             }
         }

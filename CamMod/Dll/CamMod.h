@@ -87,11 +87,12 @@ typedef struct TargetsTableEntry_s
 
 typedef struct PlayerBoostTableEntry_s
 {
-    char unk1[0x550];
-    uint16_t health_display;
+    char unk1[0x560];
     uint16_t health;
-    char unk2[0x1160];
+    uint16_t health_display;
+    char unk2[0x30];
     uint32_t boost_display;
+    char unk3[0x1130];
     uint32_t boost;
 } PlayerBoostTableEntry;
 

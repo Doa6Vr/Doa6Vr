@@ -160,6 +160,11 @@ extern "C" DllExport void _cdecl AdjustCamera(VariableBlock* varBlock)
         targetType = TARGET_TABLE;
         break;
 
+    case CamMod::UserInput::FREE_MODE_NO_SOURCE_TARGET_GAME:
+        sourceType = SOURCE_OFF;
+        targetType = TARGET_ORIG;
+        break;
+
     case CamMod::UserInput::FREE_MODE_NO_SOURCE:
         targetType = TARGET_TABLE;
         break;
