@@ -233,7 +233,7 @@ namespace CamMod
         }
 
         // Update aEnd to be the rotated vector
-        aEnd = aStart + rotAdjVector;
+        aEnd = aStart + 1888.f*rotAdjVector;
 
         mCameraFrameEndVector = CamVector(aStart, aEnd, mSrcTargetVector.GetRoll());
 
@@ -248,6 +248,12 @@ namespace CamMod
     GameCamera::GetFrameStartVector() const
     {
         return mCameraFrameStartVector;
+    }
+
+    const CamVector&
+        GameCamera::GetFrameEndVector() const
+    {
+        return mCameraFrameEndVector;
     }
 
     const CamVector&

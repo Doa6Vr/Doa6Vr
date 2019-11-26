@@ -110,7 +110,7 @@ extern "C" DllExport void _cdecl AdjustCamera(VariableBlock* varBlock)
 
         stateUpdate.headsetRotEuler.roll += M_PI_F; // Oculus always flipped?
 
-        stateUpdate.headsetRotEulerDelta.pitch *= 12.f;
+        //stateUpdate.headsetRotEulerDelta.pitch *= 12.f;
 
 
         //std::stringstream dbg;
@@ -152,7 +152,7 @@ extern "C" DllExport void _cdecl AdjustCamera(VariableBlock* varBlock)
 
     case CamMod::UserInput::FREE_MODE_SRC_GAME_TARGET_NONE:
         sourceType = SOURCE_ORIG;
-        targetType = TARGET_OFF;
+        targetType = TARGET_LOCKED;
         break;
 
     case CamMod::UserInput::FREE_MODE_SRC_GAME_TARGET_TABLE:
@@ -161,7 +161,7 @@ extern "C" DllExport void _cdecl AdjustCamera(VariableBlock* varBlock)
         break;
 
     case CamMod::UserInput::FREE_MODE_NO_SOURCE_TARGET_GAME:
-        sourceType = SOURCE_OFF;
+        sourceType = SOURCE_LOCKED;
         targetType = TARGET_ORIG;
         break;
 
@@ -254,17 +254,28 @@ extern "C" DllExport void _cdecl AdjustCamera(VariableBlock* varBlock)
         if ( ( rotMag < MIN_ROT_DELTA && posMag < MIN_POS_DELTA )
           && ( sinceLastRotMag < 2 * MIN_ROT_DELTA && sinceLastPosMag < 2 * MIN_POS_DELTA) )
         {
-            if (sRotAllowedCnt > 0)
+            if (sRotAllowedCnt <= 0)
             {
-                sRotAllowedCnt--;
-            }
-            else
-            {
+                // Periodically reset the MIN_x_DELTA base position
+                if (sRotAllowedCnt <= -ROT_ALLOWED_FRAMES)
+                {
+                    sLastUsedUpdate = stateUpdate;
+                    sRotAllowedCnt = 0;
+                }
+                else
+                {
+                    sRotAllowedCnt--; // keep decrementing until -ROT_ALLOWED_FRAMES
+                }
+
                 stateUpdate.headsetPos = gPrevStateUpdate.headsetPos;
                 stateUpdate.headsetRot = gPrevStateUpdate.headsetRot;
                 stateUpdate.headsetRotEuler = gPrevStateUpdate.headsetRotEuler;
                 stateUpdate.headsetPosDelta = Vector3::Zero();
                 stateUpdate.headsetRotEulerDelta = Vector3::Zero();
+            }
+            else
+            {
+                sRotAllowedCnt--;
             }
         }
         else
@@ -292,6 +303,10 @@ extern "C" DllExport void _cdecl AdjustCamera(VariableBlock* varBlock)
     {
         gCamera.SetSource(gCamera.GetFrameStartVector().GetStart());
     }
+    else if (sourceType == SOURCE_LOCKED)
+    {
+        gCamera.SetSource(gCamera.GetSrcTargetVector().GetStart());
+    }
 
     PointDir targetPos;
     // Handle targets
@@ -315,6 +330,10 @@ extern "C" DllExport void _cdecl AdjustCamera(VariableBlock* varBlock)
     else if (targetType == TARGET_ORIG)
     {
         gCamera.SetTarget(gCamera.GetFrameStartVector().GetEnd());
+    }
+    else if (targetType == TARGET_LOCKED)
+    {
+        gCamera.SetTarget(gCamera.GetSrcTargetVector().GetEnd());
     }
 
 

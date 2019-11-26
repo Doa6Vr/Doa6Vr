@@ -113,7 +113,11 @@ namespace HmdServer
 
         float fPredictedSecondsFromNow = fFrameDuration - fSecondsSinceLastVsync + fVsyncToPhotons;
 
-
+        // DOA6 renders frame 3 frames after we set camera position. Assume 60fps
+        const int FRAMES_TO_DELAY = 3;
+        const int FRAMES_PER_SECOND = 60;
+        fPredictedSecondsFromNow += (FRAMES_TO_DELAY / (float)FRAMES_PER_SECOND);
+        fPredictedSecondsFromNow = 0.f;
 
         vr::TrackedDevicePose_t hmdPose;
         vr::TrackedDevicePose_t poseArray[vr::k_unMaxTrackedDeviceCount];

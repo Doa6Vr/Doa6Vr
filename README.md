@@ -1,10 +1,13 @@
 Virtual Reality Mod for Dead or Alive 6 v1.14
 
 This is a free-camera mod for DOA6 with a VR component. The free camera can be used without VR.
-I heavily based this on the work by https://bryanyora2525.com/
+This wouldn't have been possible without using the work of https://bryanyora2525.com/ as a starting reference. Check out his awesome Cheat Engine tables!
 
 This is very much in an Alpha state. If you try running this, don't expect it to be in a user-friendly state.
 
+For the most part, the directions below are more for how it *should* work than how it *does* work. This is an alpha build.
+
+Currently the axises are a bit messed up for free roaming. Rotation works fine, but other things like, eg, leaning forward may or may not go as planend.
 
 Quick directions if you want to try to get it to work:
 
@@ -15,10 +18,10 @@ Quick directions if you want to try to get it to work:
         * Start Dead or Alive 6
         * Select "Open process" and select DOA6.exe
         * Click the checkbox next to "VR Mod" to inject the DLL and start the mod
-        *Press F2 to start the Lua script. It's needed for some controls to work. You'll hear a 'beep' after pressing F2 to indicate the script is active.
+        * Press F2 to start the Lua script. It's needed for some controls to work. You'll hear a 'beep' after pressing F2 to indicate the script is active.
         
         
-    Most of these controls only work when the game camera is active (during an unpaused match)
+Most of these controls only work when the game camera is active (during an unpaused match)
         
     * Cam Controls:
         * Controls are a mess. Here's the basics:
@@ -40,19 +43,21 @@ Quick directions if you want to try to get it to work:
         * Left stick click + Right stick click - Reset camera position
         * RB + left stick click - Toggle height lock modes (lock source height, target height, both)
         * RB + LB + Back - Toggle camera lock. Useful to stop the game changing scenes from moving the camera (I think this is broken right now)
+        * Right trigger + X - Headset lock modes. Prevents moving the headset from causing the camera to move in game (position only, does not apply to rotation)
         
    * Other controls:
         * 3D  (these controls are set in dxdi.ini and are handled by 3d migoto)
-            * While holding in DPAD_LEFT, pressing A/B will cycle forward/backward between convergence/depth presets
-            * While holding in DPAD_DOWN, pressing A/B will cycle through convergence settings
-            * While holding in DPAD_DOWN, pressing X/Y will cycle through depth settings
+            * While holding in LB and DPAD_LEFT, pressing A/B will cycle forward/backward between convergence/depth presets
+            * While holding in LB and DPAD_DOWN, pressing A/B will cycle through convergence settings   (hold in RB instead of LB to cycle slower)
+            * While holding in LB and DPAD_DOWN, pressing X/Y will cycle through depth settings
+            * While holding in LB and DPAB_UP, pressing B will show the current depth/convergence settings
         * CPU controls (most of these controls only take affect after passing through the Character Select menu)
             * While holding in RB and DPAD_RIGHT, X toggles CPU control of Player 1
             * While holding in RB and DPAD_RIGHT, Y toggles CPU control of Player 2
             * While holding in RightTrigger, B cycles through P1 Cpu difficulty level (0 means use level chosen in game)
             * While holding in RightTrigger and clicking the left stick, B cycles through P2 Cpu difficulty level
-        * Gameplayer
-            * While holding in LeftTrigger, A cycles through P1 Break Meter ( 0 - don't touch, 1 - always full, 2 - always empty ). Visual bar glit
+        * Gameplay
+            * While holding in LeftTrigger, A cycles through P1 Break Meter ( 0 - don't touch, 1 - always full, 2 - always empty ). Visual bar may not reflect actual break meter
             * While holding in LeftTrigger, B cycles through P2 Break Meter
             * While holding in LeftTrigger, X toggles P1 always full health
             * While holding in LeftTrigger, Y toggles P2 always full health
@@ -105,6 +110,26 @@ Quick directions if you want to try to get it to work:
             
             
 Tips:
+
     * Left stick + Right stick resets the view. Always try this first if something is off
+    * For many settings that you must rotate through many values to get to the one you want, you can hold in Left Stick while changing the setting to scroll backwards.
+        * Useful in case you scroll past your target.
     * Selecting camera presets selects camera source and target. Then, switching Camera Modes determines how those targets are used.
     * You'll probably want "Game Cam", "Source and Target On", or "Source and target off", and then pick a camera preset.
+    
+    
+Modes to try out:
+    * Here's some examples to help demonstrate how to select a camera mode.
+    * View from Player 1 to Player 2:  
+        * Set Camera Preset to "Player 1 to Player 2"
+        * Set Camera Mode to "Source on, Target on"
+        * Set headset lock to "All"
+    * Game cam, favor P2
+        * Set Camera Preset to any one that ends with "to Player 2"
+        * Set Camera Mode to "Game cam, Target on"
+        * Set height lock to Target (prevents the camere from moving up and down as the character falls and gets up)
+        * Hold in Left Stick and move the stick left a bit  (this moves the 'target' of the camera instead of moving the camera. This makes the camera look between P2 and P1.
+    * Room scale free roam [probably not a great idea while the axises are messed up]
+        * Set Camera Mode to "Source off, Target off". Now the only thing controlling the camera is the movement of the headset and the controller.
+        * You can now fly around as you please, or walk around.
+    

@@ -18,14 +18,16 @@ typedef byte TargetType; enum
     TARGET_OFF,
     TARGET_TABLE,
     TARGET_POV,
-    TARGET_ORIG
+    TARGET_ORIG,
+    TARGET_LOCKED
 };
 
 typedef byte SourceTargetType; enum
 {
     SOURCE_OFF,
     SOURCE_TABLE,
-    SOURCE_ORIG
+    SOURCE_ORIG,
+    SOURCE_LOCKED,
 };
 
 

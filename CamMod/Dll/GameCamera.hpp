@@ -33,6 +33,7 @@ public:
     void GetCamInfo( Vector3& aStart, Vector3& aEnd, Quaternion& aRoll );
 
     const CamVector& GetFrameStartVector() const;
+    const CamVector& GetFrameEndVector() const;
     const CamVector& GetSrcTargetVector() const;
 
 private:

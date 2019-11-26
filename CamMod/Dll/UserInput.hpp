@@ -79,7 +79,7 @@ namespace CamMod
         void Reset();
 
     private:
-        void RotateOption(uint8_t& aOption, uint8_t aMax, LPCWSTR aOptionName = L"", bool aDecrement = false, const LPCWSTR* aStringArray = nullptr);
+        void RotateOption(uint8_t& aOption, uint8_t aMax, LPCWSTR aOptionName = L"", bool aDecrement = false, const LPCWSTR* aStringArray = nullptr, bool aSpeakIdx = false );
 
         bool mSwapAxis;
         float mZoom;

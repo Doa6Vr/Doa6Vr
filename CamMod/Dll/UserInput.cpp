@@ -181,7 +181,7 @@ namespace CamMod
             }
             else if (rbHeld)
             {
-                RotateOption(mLockHeight, LOCK_MODE_CNT, L"Height Lock", aCommands.altFunc, sLockModeStrings);
+                RotateOption(mLockHeight, LOCK_MODE_CNT, L"Height Lock", aCommands.altFunc, sLockModeStrings, true);
             }
         }
         if (CLICKED(XINPUT_GAMEPAD_RIGHT_THUMB))
@@ -196,7 +196,7 @@ namespace CamMod
             }
             else if (rbHeld)
             {
-                RotateOption(mFreeRoam, FREE_MODE_CNT, L"Free Roam", aCommands.altFunc, sFreeRoamStrings);
+                RotateOption(mFreeRoam, FREE_MODE_CNT, L"Free Roam", aCommands.altFunc, sFreeRoamStrings, true);
             }
             else
             {
@@ -295,7 +295,7 @@ namespace CamMod
 
 
     /* private */ void
-    UserInput::RotateOption(uint8_t& aOption, uint8_t aMax, LPCWSTR aOptionName, bool aDecrement, const LPCWSTR* aStringArray )
+    UserInput::RotateOption(uint8_t& aOption, uint8_t aMax, LPCWSTR aOptionName, bool aDecrement, const LPCWSTR* aStringArray, bool aSpeakIdx )
     {
         if (aDecrement)
         {
@@ -320,6 +320,10 @@ namespace CamMod
             stream << aOptionName << " is ";
             if (aStringArray)
             {
+                if (aSpeakIdx)
+                {
+                    stream << aOption << ", ";
+                }
                 stream << aStringArray[aOption];
             }
             else
