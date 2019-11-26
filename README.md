@@ -119,6 +119,7 @@ Tips:
     
     
 Modes to try out:
+
     * Here's some examples to help demonstrate how to select a camera mode.
     * View from Player 1 to Player 2:  
         * Set Camera Preset to "Player 1 to Player 2"
