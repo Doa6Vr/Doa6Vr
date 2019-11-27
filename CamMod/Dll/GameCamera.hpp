@@ -20,6 +20,7 @@ public:
 
     void BeginFrame(const Camera& aCamera);
     void ToWorldCoords(const Vector3& aLocalIn, Vector3& aWorldOut);
+    void FromWorldCoords(const Vector3& aWorldIn, Vector3& aCamOut);
 
     void SetInvertY(bool aInvertY);
     void Reset();
@@ -29,6 +30,7 @@ public:
     void SetSource(const Vector3& aPos);
     void SetSourceLock(bool aLock);
     void Translate(const Vector3& aWorldMove, bool mMoveTarget = false );
+    void MoveCamera(const Vector3& aOffset, bool mMoveTarget = false);
     void SetRotation(const Vector3& aHeadsetRot, const Vector3& aRotDelta );
     void GetCamInfo( Vector3& aStart, Vector3& aEnd, Quaternion& aRoll );
 

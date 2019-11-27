@@ -81,9 +81,18 @@ namespace CamMod
     void
     GameCamera::ToWorldCoords(const Vector3& aLocalIn, Vector3& aWorldOut)
     {
-        aWorldOut = mCameraFrameStartVector.GetTransMatrix() * aLocalIn;
+        const auto& forward = mCameraFrameEndVector;
+        //auto forwardUnit = Vector3::Normalized(forward.GetEnd() - forward.GetStart());
+        aWorldOut = forward.GetBasisMatrix() * aLocalIn;
     }
 
+
+    void
+    GameCamera::FromWorldCoords(const Vector3& aWorldIn, Vector3& aLocalOut)
+    {
+        const auto& forward = mCameraFrameEndVector;
+        aLocalOut = forward.GetBasisInverseMatrix() * aWorldIn;
+    }
 
     void
     GameCamera::SetInvertY( bool aSetInvertY )
@@ -142,16 +151,32 @@ namespace CamMod
 
 
     void
-    GameCamera::Translate( const Vector3& aWorldMove, bool mMoveTarget )
+    GameCamera::Translate( const Vector3& aWorldMove, bool aMoveTarget )
     {
-        Vector3& offset = (mMoveTarget ? mTargetOffset : mSrcOffset);
-        Vector3 adjOffset = Matrix3x3::Inverse(mSrcTargetVector.GetTransMatrix()) * aWorldMove;
+        // Given aWorldMove, how must we change the current offset to accomplish that world move?
+        Vector3& offset = (aMoveTarget ? mTargetOffset : mSrcOffset);
+        Vector3 adjOffset;
+        adjOffset = mSrcTargetVector.GetBasisInverseMatrix()*aWorldMove;
+        //FromWorldCoords(aWorldMove, adjOffset);
         offset += adjOffset;
 
         // If no target was set and we just moved the source, then also move the target
-        if (!mMoveTarget && !mTargetSet)
+        if (!aMoveTarget && !mTargetSet)
         {
             Translate(aWorldMove, true);
+        }
+    }
+
+    void
+    GameCamera::MoveCamera(const Vector3& aOffset, bool aMoveTarget)
+    {
+        Vector3& targetOffset = (aMoveTarget ? mTargetOffset : mSrcOffset);
+        targetOffset += aOffset;
+
+        // If no target was set and we just moved the source, then also move the target
+        if (!aMoveTarget && !mTargetSet)
+        {
+            MoveCamera(aOffset, true);
         }
     }
 
@@ -194,8 +219,8 @@ namespace CamMod
 
 
         // Apply position offsets
-        aStart = mSrcTargetVector.GetStart() + mSrcTargetVector.GetTransMatrix()*mSrcOffset;
-        aEnd = mSrcTargetVector.GetEnd() + mSrcTargetVector.GetTransMatrix()*mTargetOffset;
+        aStart = mSrcTargetVector.GetStart() + mSrcTargetVector.GetBasisMatrix()*mSrcOffset;
+        aEnd = mSrcTargetVector.GetEnd() + mSrcTargetVector.GetBasisMatrix()*mTargetOffset;
 
 
         // Now rotate the end point
@@ -233,7 +258,7 @@ namespace CamMod
         }
 
         // Update aEnd to be the rotated vector
-        aEnd = aStart + 1888.f*rotAdjVector;
+        aEnd = aStart + 1000.f*rotAdjVector;
 
         mCameraFrameEndVector = CamVector(aStart, aEnd, mSrcTargetVector.GetRoll());
 

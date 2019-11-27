@@ -8,8 +8,10 @@ namespace CamMod
         : mStart( aStart )
         , mEnd( aEnd )
         , mRoll( aRoll )
-        , mTransMatrix()
-        , mTransMatrixReady( false )
+        , mBasisMatrix()
+        , mBasisInvMatrix()
+        , mBasisVectorReady( false )
+        , mBasisInvMatrixReady( false )
     {
         if (aNormalize)
         {
@@ -24,21 +26,24 @@ namespace CamMod
     CamVector::SetStart(const Vector3& aPos)
     {
         mStart = aPos;
-        mTransMatrixReady = false;
+        mBasisVectorReady = false;
+        mBasisInvMatrixReady = false;
     }
 
     void
     CamVector::SetEnd(const Vector3& aPos)
     {
         mEnd = aPos;
-        mTransMatrixReady = false;
+        mBasisVectorReady = false;
+        mBasisInvMatrixReady = false;
     }
 
     void
     CamVector::SetRoll(float aRoll)
     {
         mRoll = aRoll;
-        mTransMatrixReady = false;
+        mBasisVectorReady = false;
+        mBasisInvMatrixReady = false;
     }
 
     const Vector3&
@@ -60,9 +65,9 @@ namespace CamMod
     }
 
     const Matrix3x3& 
-    CamVector::GetTransMatrix() const
+    CamVector::GetBasisMatrix() const
     {
-        if (!mTransMatrixReady )
+        if (!mBasisVectorReady )
         {
             Vector3 right;
             Vector3 up;
@@ -74,20 +79,32 @@ namespace CamMod
             //right = rollQuat * right;
             //up = rollQuat * up;
 
-            mTransMatrix = Matrix3x3::Transpose(Matrix3x3(right, up, forward));
-            mTransMatrixReady = true;
+            mBasisMatrix = Matrix3x3::Transpose(Matrix3x3(right, up, forward));
+            mBasisVectorReady = true;
         }
-        return mTransMatrix;
+        return mBasisMatrix;
+    }
+
+
+    const Matrix3x3&
+    CamVector::GetBasisInverseMatrix() const
+    {
+        if (!mBasisInvMatrixReady)
+        {
+            mBasisInvMatrix = Matrix3x3::Inverse(GetBasisMatrix());
+            mBasisInvMatrixReady = true;
+        }
+        return mBasisInvMatrix;
     }
 
     void
     CamVector::GetBasis(Vector3& aRight, Vector3& aUp, Vector3& aForward) const
     {
-        auto transMatrix = GetTransMatrix();
+        auto transMatrix = GetBasisMatrix();
         aRight =   Vector3(transMatrix.D00, transMatrix.D10, transMatrix.D20);
         aUp =      Vector3(transMatrix.D01, transMatrix.D11, transMatrix.D21);
         aForward = Vector3(transMatrix.D02, transMatrix.D12, transMatrix.D22);
-    };
+    }
 
     bool
     CamVector::operator==(const CamVector& aOth) const

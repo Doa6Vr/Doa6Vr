@@ -18,7 +18,8 @@ namespace CamMod
         const Vector3& GetEnd() const;
         float GetRoll() const;
 
-        const Matrix3x3& GetTransMatrix() const;
+        const Matrix3x3& GetBasisMatrix() const;
+        const Matrix3x3& GetBasisInverseMatrix() const;
         void GetBasis(Vector3& aRight, Vector3& aUp, Vector3& aForward) const;
         bool operator==(const CamVector& aOth) const;
         bool operator!=(const CamVector& aOth) const;
@@ -27,7 +28,9 @@ namespace CamMod
         Vector3 mEnd;
         float mRoll;
         
-        mutable Matrix3x3 mTransMatrix;
-        mutable bool mTransMatrixReady;
+        mutable Matrix3x3 mBasisMatrix;
+        mutable Matrix3x3 mBasisInvMatrix;
+        mutable bool mBasisVectorReady;
+        mutable bool mBasisInvMatrixReady;
     };
 }

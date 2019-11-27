@@ -178,6 +178,7 @@ struct Matrix3x3
      */
     inline Matrix3x3();
     inline Matrix3x3(float data[]);
+    inline Matrix3x3(Vector3 coords);
     inline Matrix3x3(Vector3 row0, Vector3 row1, Vector3 row2);
     inline Matrix3x3(float d00, float d01, float d02, float d10, float d11,
         float d12, float d20, float d21, float d22);
@@ -234,6 +235,8 @@ struct Matrix3x3
      */
     static inline Quaternion ToQuaternion(Matrix3x3 rotation);
 
+    static inline Vector3 ToVector(Matrix3x3 rotation);
+
     /**
      * Returns the transpose of a matrix.
      * @param matrix: The input matrix.
@@ -285,7 +288,8 @@ Matrix3x3::Matrix3x3(Vector3 row0, Vector3 row1, Vector3 row2) : D00(row0.X),
 Matrix3x3::Matrix3x3(float d00, float d01, float d02, float d10, float d11,
     float d12, float d20, float d21, float d22) : D00(d00), D01(d01),
     D02(d02), D10(d10), D11(d11), D12(d12), D20(d20), D21(d21), D22(d22) {}
-
+Matrix3x3::Matrix3x3(Vector3 coords) : D00( coords.X), D01(0.f), D02(0.f),
+    D10(0.f), D11( coords.Y ), D12( 0.f ), D20(0.f), D21(0.f), D22(coords.Z) {}
 
 Matrix3x3 Matrix3x3::Identity()
 {
@@ -376,6 +380,11 @@ Matrix3x3 Matrix3x3::Scale(Matrix3x3 a, Matrix3x3 b)
     m.D21 = a.D21 * b.D21;
     m.D22 = a.D22 * b.D22;
     return m;
+}
+
+Vector3 Matrix3x3::ToVector(Matrix3x3 rotation)
+{
+    return Vector3(rotation.D00, rotation.D11, rotation.D22);
 }
 
 Quaternion Matrix3x3::ToQuaternion(Matrix3x3 rotation)

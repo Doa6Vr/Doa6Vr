@@ -167,9 +167,12 @@ extern "C" DllExport void _cdecl AdjustCamera(VariableBlock* varBlock)
 
     case CamMod::UserInput::FREE_MODE_NO_SOURCE:
         targetType = TARGET_TABLE;
+        sourceType = SOURCE_OFF;
         break;
 
-    case CamMod::UserInput::FREE_MODE_NO_SOURCE_NO_TARGET:        
+    case CamMod::UserInput::FREE_MODE_NO_SOURCE_NO_TARGET:
+        targetType = TARGET_OFF;
+        sourceType = SOURCE_OFF;
         break;
 
     case CamMod::UserInput::FREE_MODE_POV:
@@ -345,6 +348,7 @@ extern "C" DllExport void _cdecl AdjustCamera(VariableBlock* varBlock)
     // Apply position offsets
     if (Vector3::Magnitude(commands.posDelta) > 0.f)
     {
+        // Convert the camera-based movement to world coordinates
         Vector3 camMovement;
         gCamera.ToWorldCoords(commands.posDelta, camMovement);
 
@@ -361,6 +365,7 @@ extern "C" DllExport void _cdecl AdjustCamera(VariableBlock* varBlock)
             }
         }
 
+        // Now translate the camera the calculated amount of world coordinates
         gCamera.Translate(camMovement, commands.altFunc /* target if true, source if false */);
     }
 
