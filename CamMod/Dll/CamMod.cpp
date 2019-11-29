@@ -138,7 +138,7 @@ extern "C" DllExport void _cdecl AdjustCamera(VariableBlock* varBlock)
 
     }
 
-    SetBreakAndHealth( varBlock, commands.fullHealth[0], commands.fullBoost[0], commands.fullHealth[1], commands.fullBoost[1]);
+    SetBreakAndHealth( varBlock, commands.fullHealth[0], commands.fullBreak[0], commands.fullHealth[1], commands.fullBreak[1]);
 
     uint8_t sourceType = varBlock->sourceType;
     uint8_t targetType = varBlock->targetType;
@@ -662,16 +662,17 @@ void SetBreakAndHealth(VariableBlock* aVarBlock, uint8_t aP1Health, uint8_t aP1B
         {
             switch (aP1Break)
             {
-            case 0:
+            case CamMod::UserInput::BREAK_MODE_NORMAL:
                 break;
 
-            case 1:
+            case CamMod::UserInput::BREAK_MODE_INFINITE:
                 table1->boost = 200;
                 table1->boost_display = 200;
                 break;
 
-            case 2:
+            case CamMod::UserInput::BREAK_MODE_EMPTY:
                 table1->boost = 0;
+                table1->boost_display = 0;
                 break;
             }
 
@@ -680,6 +681,7 @@ void SetBreakAndHealth(VariableBlock* aVarBlock, uint8_t aP1Health, uint8_t aP1B
             case 1:
                 table1->health = 500;
                 table1->health_display = 500;
+                break;
             }
         }
 
@@ -687,16 +689,17 @@ void SetBreakAndHealth(VariableBlock* aVarBlock, uint8_t aP1Health, uint8_t aP1B
         {
             switch (aP2Break)
             {
-            case 0:
+            case CamMod::UserInput::BREAK_MODE_NORMAL:
                 break;
 
-            case 1:
+            case CamMod::UserInput::BREAK_MODE_INFINITE:
                 table2->boost = 200;
                 table2->boost_display = 200;
                 break;
 
-            case 2:
+            case CamMod::UserInput::BREAK_MODE_EMPTY:
                 table2->boost = 0;
+                table2->boost_display = 0;
                 break;
             }
 

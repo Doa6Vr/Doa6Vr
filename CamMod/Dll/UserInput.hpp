@@ -46,6 +46,14 @@ namespace CamMod
             FREE_MODE_CNT
         };
 
+        typedef uint8_t BreakModes; enum
+        {
+            BREAK_MODE_NORMAL,
+            BREAK_MODE_INFINITE,
+            BREAK_MODE_EMPTY,
+            BREAK_MODE_CNT
+        };
+
         const uint8_t MAX_CPU_LEVEL = 9;
 
         struct UserCommands
@@ -59,7 +67,7 @@ namespace CamMod
             LockMode lockHeight;
             HmdLockMode hmdLockMode;
             uint8_t lockPitch;
-            uint8_t fullBoost[2];
+            uint8_t fullBreak[2];
             uint8_t fullHealth[2];
             bool lockCam;
             bool hideUI;
@@ -89,7 +97,7 @@ namespace CamMod
         HmdLockMode mHmdLockMode;
         uint8_t mLockPitch;
         SpeakTts mTts;
-        uint8_t mFullBoosts[2];
+        uint8_t mFullBreaks[2];
         uint8_t mFullHealths[2];
         bool mLockCam;
         bool mHideUi;

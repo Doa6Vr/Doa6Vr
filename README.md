@@ -1,4 +1,4 @@
-Virtual Reality Mod for Dead or Alive 6 v1.14
+Virtual Reality Mod for Dead or Alive 6 v1.15
 
 This is a free-camera mod for DOA6 with a VR component. The free camera can be used without VR.
 This wouldn't have been possible without using the work of https://bryanyora2525.com/ as a starting reference. Check out his awesome Cheat Engine tables!
@@ -6,8 +6,6 @@ This wouldn't have been possible without using the work of https://bryanyora2525
 This is very much in an Alpha state. If you try running this, don't expect it to be in a user-friendly state.
 
 For the most part, the directions below are more for how it *should* work than how it *does* work. This is an alpha build.
-
-Currently the axises are a bit messed up for free roaming. Rotation works fine, but other things like, eg, leaning forward may or may not go as planend.
 
 Quick directions if you want to try to get it to work:
 
@@ -130,7 +128,7 @@ Modes to try out:
         * Set Camera Mode to "Game cam, Target on"
         * Set height lock to Target (prevents the camere from moving up and down as the character falls and gets up)
         * Hold in Left Stick and move the stick left a bit  (this moves the 'target' of the camera instead of moving the camera. This makes the camera look between P2 and P1.
-    * Room scale free roam [probably not a great idea while the axises are messed up]
+    * Room scale free roam
         * Set Camera Mode to "Source off, Target off". Now the only thing controlling the camera is the movement of the headset and the controller.
         * You can now fly around as you please, or walk around.
     

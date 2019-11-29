@@ -94,7 +94,7 @@ typedef struct PlayerBoostTableEntry_s
     uint16_t health_display;
     char unk2[0x30];
     uint32_t boost_display;
-    char unk3[0x1130];
+    char unk3[0x11A0];
     uint32_t boost;
 } PlayerBoostTableEntry;
 

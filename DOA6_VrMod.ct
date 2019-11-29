@@ -897,182 +897,138 @@ UnregisterSymbol(AOB_SetCpuDifficultyCall)
     </CheatEntry>
     <CheatEntry>
       <ID>3872</ID>
-      <Description>"bryanyora2525's scripts"</Description>
+      <Description>"Scripts copied from bryanyora2525.com"</Description>
       <LastState Value="" RealAddress="00000000"/>
       <GroupHeader>1</GroupHeader>
       <CheatEntries>
         <CheatEntry>
-          <ID>3871</ID>
-          <Description>"0200_Over Kill"</Description>
+          <ID>15</ID>
+          <Description>"0000_Face Punchi Deregulate"</Description>
           <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[enable]
-aobscanmodule(AOB_OverKill_A,DOA6.exe,FF C8 89 45 20 40 84 FF 0F 85 18 03 00 00)
-aobscanmodule(AOB_OverKill_B,DOA6.exe,C6 80 37 01 00 00 01 4C 8B 05 * * * *)
-aobscanmodule(AOB_OverKill_C,DOA6.exe,80 B8 37 01 00 00 00 0F 84 F4 00 00 00 0F B6 4D 28)
-aobscanmodule(AOB_OverKill_D,DOA6.exe,84 DB 48 8B 5C 24 20 75 07 B0 01 48 83 C4 28)
-aobscanmodule(AOB_OverKill_E,DOA6.exe,48 8B 05 *  *  D6 00 F6 40 68 01 74 43)
-aobscanmodule(AOB_OverKill_F,DOA6.exe,38 48 32 0F 94 C0 48 83 C4 48 C3 48 8D 0D * * 5C 00)
-registersymbol(AOB_OverKill_A)
-registersymbol(AOB_OverKill_B)
-registersymbol(AOB_OverKill_C)
-registersymbol(AOB_OverKill_D)
-registersymbol(AOB_OverKill_E)
-registersymbol(AOB_OverKill_F)
-alloc(newmem,1024,"DOA6.exe")
+aobscanmodule(AOB_GanmenPunchi_A,DOA6.exe,40 84 FF 74 41 48 8B 3D * * * * 0F B6 9B 60 35 00 00)
+aobscanmodule(AOB_GanmenPunchi_B,DOA6.exe,40 84 FF 48 8B 7C 24 38 74 58 48 8B 0D * * * * 33 D2)
+registersymbol(AOB_GanmenPunchi_A)
+registersymbol(AOB_GanmenPunchi_B)
 
-label(OverKill_A)
-label(OverKill_A_SKIP)
-label(OverKill_A_RET)
+AOB_GanmenPunchi_A:
+db 40 38 FF
 
-label(OverKill_B)
-label(OverKill_B_SKIP)
-label(OverKill_B_RET)
-
-label(OverKill_C)
-label(OverKill_C_SKIP)
-label(OverKill_C_RET)
-
-label(OverKill_E)
-label(OverKill_E_SKIP)
-label(OverKill_E_RET)
-
-newmem:
-OverKill_A:
-cmp eax,00000001
-je OverKill_A_SKIP
-db FF C8
-db 89 45 20
-OverKill_A_SKIP:
-jmp OverKill_A_RET
-
-OverKill_B:
-xor r8d,r8d
-cmp r8w,[rax+00000560]
-jae OverKill_B_SKIP
-db C6 80 37 01 00 00 00
-jmp OverKill_B_RET
-OverKill_B_SKIP:
-db C6 80 23 01 00 00 01
-jmp OverKill_B_RET
-
-OverKill_C:
-xor ecx,ecx
-cmp cx,[rax+00000560]
-jae OverKill_C_SKIP
-cmp al,al
-jmp OverKill_C_RET
-OverKill_C_SKIP:
-db 80 B8 37 01 00 00 00
-jmp OverKill_C_RET
-
-OverKill_E:
-mov rax,[DOA6.exe+25EABA0]
-test rax,rax
-je OverKill_E_SKIP
-lea rax,[rax+000008F0]
-cmp byte ptr [rax+00000308],0F
-jne OverKill_E_SKIP
-cmp byte ptr [rax+00000229],00
-jne OverKill_E_JMP
-OverKill_E_SKIP:
-mov rax,[DOA6.exe+25A78A8]
-jmp OverKill_E_RET
-OverKill_E_JMP:
-jmp OverKill_E_RET+6
-
-AOB_OverKill_A:
-jmp OverKill_A
-OverKill_A_RET:
-
-AOB_OverKill_B:
-jmp OverKill_B
-nop
-nop
-OverKill_B_RET:
-
-AOB_OverKill_C:
-jmp OverKill_C
-nop
-nop
-OverKill_C_RET:
-
-AOB_OverKill_D+09:
-db 32 C0
-
-AOB_OverKill_E:
-jmp OverKill_E
-nop
-nop
-OverKill_E_RET:
-
-AOB_OverKill_F+03:
-db 30 C0
-db 90
+AOB_GanmenPunchi_B:
+db 40 38 FF
 
 [disable]
-unregistersymbol(AOB_OverKill_A)
-unregistersymbol(AOB_OverKill_B)
-unregistersymbol(AOB_OverKill_C)
-unregistersymbol(AOB_OverKill_D)
-unregistersymbol(AOB_OverKill_E)
-unregistersymbol(AOB_OverKill_F)
-dealloc(newmem)
+unregistersymbol(AOB_GanmenPunchi_A)
+unregistersymbol(AOB_GanmenPunchi_B)
 
-AOB_OverKill_A:
-db FF C8
-db 89 45 20
+AOB_GanmenPunchi_A:
+db 40 84 FF
 
-AOB_OverKill_B:
-db C6 80 37 01 00 00 01
-
-AOB_OverKill_C:
-db 80 B8 37 01 00 00 00
-
-AOB_OverKill_D+09:
-db B0 01
-
-AOB_OverKill_E:
-db 48 8B 05 91 62 D6 00
-
-AOB_OverKill_F+03:
-db 0F 94 C0
+AOB_GanmenPunchi_B:
+db 40 84 FF
 </AssemblerScript>
         </CheatEntry>
         <CheatEntry>
-          <ID>3868</ID>
-          <Description>"0120_Left Side(CameraMode)"</Description>
+          <ID>3629</ID>
+          <Description>"0010_BB Blood Deregulate"</Description>
+          <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
           <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[enable]
-aobscanmodule(AOB_CameraMuki_A,DOA6.exe,88 83 48 01 00 00 E8 * * * * 48 8B D6 48 8B CB)
-registersymbol(AOB_CameraMuki_A)
-alloc(newmem,1024,"DOA6.exe")
+aobscanmodule(AOB_BBBlood_A,DOA6.exe,41 8B 97 88 00 00 00 F3 44 0F 10 15)
+aobscanmodule(AOB_BBBlood_B,DOA6.exe,45 8B 5F 50 89 45 E8 49 8B 40 18 4C 8D 45 C0)
+registersymbol(AOB_BBBlood_A)
+registersymbol(AOB_BBBlood_B)
+registersymbol(BBBLOOD_TYPE)
+alloc(newmem,$1000,"DOA6.exe")
+
+label(BBBlood_A)
+label(BBBlood_A_A)
+label(BBBlood_A_SKIP)
+label(BBBlood_A_RET)
+
+label(BBBlood_B)
+label(BBBlood_B_A)
+label(BBBlood_B_SKIP)
+label(BBBlood_B_RET)
+
+label(BBBLOOD_TYPE)
 
 newmem:
-CameraMuki_A:
-//cmp byte ptr [BryanyoraMem],01
-//jne CameraMuki_A_SKIP
-xor al,al
-CameraMuki_A_SKIP:
-db 88 83 48 01 00 00
-jmp CameraMuki_A_RET
+BBBlood_A:
+mov edx,[r15+20]
+cmp edx,05ED852F
+je BBBlood_A_A
+cmp edx,464A6307
+jne BBBlood_A_SKIP
+BBBlood_A_A:
+or eax,40000000
+BBBlood_A_SKIP:
+db 41 8B 97 88 00 00 00
+jmp BBBlood_A_RET
 
-AOB_CameraMuki_A:
-jmp CameraMuki_A
+BBBlood_B:
+db 45 8B 5F 50
+db 89 45 E8
+cmp r10d,05ED852F
+je BBBlood_B_A
+cmp r10d,464A6307
+jne BBBlood_B_SKIP
+BBBlood_B_A:
+or r11d,40000000
+cmp r10d,05ED852F
+jne BBBlood_B_SKIP
+cmp byte ptr [BBBLOOD_TYPE],01
+jne BBBlood_B_SKIP
+mov r10d,E9C02E0E
+BBBlood_B_SKIP:
+jmp BBBlood_B_RET
+
+newmem+200:
+BBBLOOD_TYPE:
+db 00
+
+AOB_BBBlood_A:
+jmp BBBlood_A
 nop
-CameraMuki_A_RET:
+nop
+BBBlood_A_RET:
+
+AOB_BBBlood_B:
+jmp BBBlood_B
+nop
+nop
+BBBlood_B_RET:
 
 [disable]
-unregistersymbol(AOB_CameraMuki_A)
+unregistersymbol(AOB_BBBlood_A)
+unregistersymbol(AOB_BBBlood_B)
+unregistersymbol(BBBLOOD_TYPE)
 dealloc(newmem)
 
-AOB_CameraMuki_A:
-db 88 83 48 01 00 00
+AOB_BBBlood_A:
+db 41 8B 97 88 00 00 00
+
+AOB_BBBlood_B:
+db 45 8B 5F 50
+db 89 45 E8
 </AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>3632</ID>
+              <Description>"Blood Type"</Description>
+              <DropDownList DisplayValueAsItem="1">00:Default
+01:Heavy
+</DropDownList>
+              <ShowAsHex>1</ShowAsHex>
+              <VariableType>Byte</VariableType>
+              <Address>BBBLOOD_TYPE</Address>
+            </CheatEntry>
+          </CheatEntries>
         </CheatEntry>
         <CheatEntry>
-          <ID>3648</ID>
+          <ID>3889</ID>
           <Description>"0020_Disable Raising Dust"</Description>
           <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
           <LastState/>
@@ -1142,7 +1098,7 @@ db 4D 85 E4
 </AssemblerScript>
           <CheatEntries>
             <CheatEntry>
-              <ID>3652</ID>
+              <ID>3890</ID>
               <Description>"Almost Effect"</Description>
               <DropDownList DisplayValueAsItem="1">00:OFF
 01:ON
@@ -1153,14 +1109,1854 @@ db 4D 85 E4
             </CheatEntry>
           </CheatEntries>
         </CheatEntry>
+        <CheatEntry>
+          <ID>3416</ID>
+          <Description>"0120_Left Side (Use to fix controls in POV)"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[enable]
+aobscanmodule(AOB_CameraMuki_A,DOA6.exe,88 83 48 01 00 00 E8 * * * * 48 8B D6 48 8B CB)
+registersymbol(AOB_CameraMuki_A)
+alloc(newmem,1024,"DOA6.exe")
+
+newmem:
+CameraMuki_A:
+//cmp byte ptr [BryanyoraMem],01
+//jne CameraMuki_A_SKIP
+xor al,al
+CameraMuki_A_SKIP:
+db 88 83 48 01 00 00
+jmp CameraMuki_A_RET
+
+AOB_CameraMuki_A:
+jmp CameraMuki_A
+nop
+CameraMuki_A_RET:
+
+[disable]
+unregistersymbol(AOB_CameraMuki_A)
+dealloc(newmem)
+
+AOB_CameraMuki_A:
+db 88 83 48 01 00 00
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>13</ID>
+          <Description>"0200_Over Kill"</Description>
+          <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[enable]
+aobscanmodule(AOB_OverKill_A,DOA6.exe,FF C8 89 45 20 40 84 FF 0F 85 18 03 00 00)
+aobscanmodule(AOB_OverKill_B,DOA6.exe,C6 80 37 01 00 00 01 4C 8B 05 * * * *)
+aobscanmodule(AOB_OverKill_C,DOA6.exe,80 B8 37 01 00 00 00 0F 84 F4 00 00 00 0F B6 4D 28)
+aobscanmodule(AOB_OverKill_D,DOA6.exe,84 DB 48 8B 5C 24 20 75 07 B0 01 48 83 C4 28)
+aobscanmodule(AOB_OverKill_E,DOA6.exe,48 8B 05 B9 7F D6 00 F6 40 70 01 74 43)
+aobscanmodule(AOB_OverKill_F,DOA6.exe,38 48 32 0F 94 C0 48 83 C4 48 C3 48 8D 0D D5 E8 5C 00)
+registersymbol(AOB_OverKill_A)
+registersymbol(AOB_OverKill_B)
+registersymbol(AOB_OverKill_C)
+registersymbol(AOB_OverKill_D)
+registersymbol(AOB_OverKill_E)
+registersymbol(AOB_OverKill_F)
+alloc(newmem,1024,"DOA6.exe")
+
+label(OverKill_A)
+label(OverKill_A_SKIP)
+label(OverKill_A_RET)
+
+label(OverKill_B)
+label(OverKill_B_SKIP)
+label(OverKill_B_RET)
+
+label(OverKill_C)
+label(OverKill_C_SKIP)
+label(OverKill_C_RET)
+
+label(OverKill_E)
+label(OverKill_E_SKIP)
+label(OverKill_E_RET)
+
+newmem:
+OverKill_A:
+cmp eax,00000001
+je OverKill_A_SKIP
+db FF C8
+db 89 45 20
+OverKill_A_SKIP:
+jmp OverKill_A_RET
+
+OverKill_B:
+xor r8d,r8d
+cmp r8w,[rax+00000560]
+jae OverKill_B_SKIP
+db C6 80 37 01 00 00 00
+jmp OverKill_B_RET
+OverKill_B_SKIP:
+db C6 80 37 01 00 00 01
+jmp OverKill_B_RET
+
+OverKill_C:
+xor ecx,ecx
+cmp cx,[rax+00000560]
+jae OverKill_C_SKIP
+cmp al,al
+jmp OverKill_C_RET
+OverKill_C_SKIP:
+db 80 B8 37 01 00 00 00
+jmp OverKill_C_RET
+
+OverKill_E:
+mov rax,[DOA6.exe+25F1C40]
+test rax,rax
+je OverKill_E_SKIP
+lea rax,[rax+000008F0]
+cmp byte ptr [rax+00000308],0F
+jne OverKill_E_SKIP
+cmp byte ptr [rax+00000229],00
+jne OverKill_E_JMP
+OverKill_E_SKIP:
+mov rax,[DOA6.exe+25AE8B0]
+jmp OverKill_E_RET
+OverKill_E_JMP:
+jmp OverKill_E_RET+6
+
+AOB_OverKill_A:
+jmp OverKill_A
+OverKill_A_RET:
+
+AOB_OverKill_B:
+jmp OverKill_B
+nop
+nop
+OverKill_B_RET:
+
+AOB_OverKill_C:
+jmp OverKill_C
+nop
+nop
+OverKill_C_RET:
+
+AOB_OverKill_D+09:
+db 32 C0
+
+AOB_OverKill_E:
+jmp OverKill_E
+nop
+nop
+OverKill_E_RET:
+
+AOB_OverKill_F+03:
+db 30 C0
+db 90
+
+[disable]
+unregistersymbol(AOB_OverKill_A)
+unregistersymbol(AOB_OverKill_B)
+unregistersymbol(AOB_OverKill_C)
+unregistersymbol(AOB_OverKill_D)
+unregistersymbol(AOB_OverKill_E)
+unregistersymbol(AOB_OverKill_F)
+dealloc(newmem)
+
+AOB_OverKill_A:
+db FF C8
+db 89 45 20
+
+AOB_OverKill_B:
+db C6 80 37 01 00 00 01
+
+AOB_OverKill_C:
+db 80 B8 37 01 00 00 00
+
+AOB_OverKill_D+09:
+db B0 01
+
+AOB_OverKill_E:
+db 48 8B 05 B9 7F D6 00
+
+AOB_OverKill_F+03:
+db 0F 94 C0
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>3891</ID>
+              <Description>"0201_COM Over Kill"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>assert(DOA6.exe+1940083,48 8B 05 B6 1B CB 00)
+
+[enable]
+aobscanmodule(AOB_COMOverKill_A,DOA6.exe,75 2C 0F B6 4F 09 E8 * * * * 80 B8 00 01 00 00 0C)
+aobscanmodule(AOB_COMOverKill_B,DOA6.exe,80 B8 00 01 00 00 09 75 10 48 8B D6 48 8B CF E8 * * * *)
+aobscanmodule(AOB_COMOverKill_C,DOA6.exe,80 B8 00 01 00 00 0C 0F 85 8D 00 00 00 0F B6 4F 08 E8 * * * *)
+aobscanmodule(AOB_COMOverKill_D,DOA6.exe,0F B6 88 00 01 00 00 83 F9 10 0F 87 E0 01 00 00 8B C1)
+aobscanmodule(AOB_COMBreakBlow_A,DOA6.exe,8B 41 0C F7 D8 41 39 81 38 17 00 00 7C 48 48 8B 43 30)
+registersymbol(AOB_COMOverKill_A)
+registersymbol(AOB_COMOverKill_B)
+registersymbol(AOB_COMOverKill_C)
+registersymbol(AOB_COMOverKill_D)
+registersymbol(AOB_COMBreakBlow_A)
+alloc(newmem,1024,"DOA6.exe")
+label(COMOverKill_B)
+label(COMOverKill_B_SKIP)
+label(COMOverKill_B_JMP)
+label(COMOverKill_B_RET)
+label(COMOverKill_C)
+label(COMOverKill_C_SKIP)
+label(COMOverKill_C_JMP)
+label(COMOverKill_C_RET)
+label(COMOverKill_D)
+label(COMOverKill_D_SKIP)
+label(COMOverKill_D_JMP)
+label(COMOverKill_D_RET)
+label(COMBreakBlow_A)
+label(COMBreakBlow_A_SKIP)
+label(COMBreakBlow_A_JMP)
+label(COMBreakBlow_A_RET)
+
+newmem:
+COMOverKill_B:
+xor ecx,ecx
+cmp cx,[rax+00000560]
+jb COMOverKill_B_SKIP
+cmp byte ptr [BryanyoraMem+200],03
+je COMOverKill_B_JMP
+COMOverKill_B_SKIP:
+db 80 B8 00 01 00 00 09
+jmp COMOverKill_B_RET
+COMOverKill_B_JMP:
+test rax,rax
+jmp COMOverKill_B_RET
+
+COMOverKill_C:
+xor ecx,ecx
+cmp cx,[rax+00000560]
+jb COMOverKill_C_SKIP
+cmp byte ptr [BryanyoraMem+200],03
+je COMOverKill_C_JMP
+COMOverKill_C_SKIP:
+db 80 B8 00 01 00 00 0C
+jmp COMOverKill_C_RET
+COMOverKill_C_JMP:
+test rax,rax
+jmp COMOverKill_C_RET
+
+COMOverKill_D:
+xor ecx,ecx
+cmp cx,[rax+00000560]
+jb COMOverKill_D_SKIP
+cmp byte ptr [BryanyoraMem+200],03
+je COMOverKill_D_JMP
+COMOverKill_D_SKIP:
+db 0F B6 88 00 01 00 00
+jmp COMOverKill_D_RET
+COMOverKill_D_JMP:
+xor ecx,ecx
+jmp COMOverKill_D_RET
+
+COMBreakBlow_A:
+xor eax,eax
+cmp ax,[r9+00000560]
+jae COMBreakBlow_A_SKIP
+mov rax,[DOA6.exe+25F1C40]
+test rax,rax
+je COMBreakBlow_A_SKIP
+lea rax,[rax+000008F0]
+cmp byte ptr [rax+00000308],0F
+jne COMBreakBlow_A_SKIP
+cmp byte ptr [rax+00000229],00
+jne COMBreakBlow_A_JMP
+COMBreakBlow_A_SKIP:
+db 8B 41 0C
+db F7 D8
+jmp COMBreakBlow_A_RET
+COMBreakBlow_A_JMP:
+xor eax,eax
+jmp COMBreakBlow_A_RET
+
+AOB_COMOverKill_A:
+db EB 2C
+
+AOB_COMOverKill_B:
+jmp COMOverKill_B
+nop
+nop
+COMOverKill_B_RET:
+
+AOB_COMOverKill_C:
+jmp COMOverKill_C
+nop
+nop
+COMOverKill_C_RET:
+
+AOB_COMOverKill_D:
+jmp COMOverKill_D
+nop
+nop
+COMOverKill_D_RET:
+
+AOB_COMBreakBlow_A:
+jmp COMBreakBlow_A
+COMBreakBlow_A_RET:
+
+[disable]
+unregistersymbol(AOB_COMOverKill_A)
+unregistersymbol(AOB_COMOverKill_B)
+unregistersymbol(AOB_COMOverKill_C)
+unregistersymbol(AOB_COMOverKill_D)
+unregistersymbol(AOB_COMBreakBlow_A)
+dealloc(newmem)
+
+AOB_COMOverKill_A:
+db 75 2C
+
+AOB_COMOverKill_B:
+db 80 B8 00 01 00 00 09
+
+AOB_COMOverKill_C:
+db 80 B8 00 01 00 00 0C
+
+AOB_COMOverKill_D:
+db 0F B6 88 00 01 00 00
+
+AOB_COMBreakBlow_A:
+db 8B 41 0C
+db F7 D8
+</AssemblerScript>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>22</ID>
+          <Description>"0210_Over Kill Option"</Description>
+          <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>assert(DOA6.exe+1940083,48 8B 05 B6 1B CB 00)
+
+[enable]
+aobscanmodule(AOB_AtariHantei_A,DOA6.exe,0F B6 86 32 01 00 00 39 81 C4 01 00 00)
+aobscanmodule(AOB_AtariHantei_B,DOA6.exe,48 8B C8 48 8B 10 FF 52 40 0F B6 54 24 30)
+aobscanmodule(AOB_AtariHantei_C,DOA6.exe,4C 8B 44 24 30 45 0F B6 CC 49 8B 56 08 48 8B CD 44 88 6C 24 20)
+aobscanmodule(AOB_AtariHantei_D,DOA6.exe,49 8B 46 08 48 8D 4B A8 F3 0F 10 4B EC)
+aobscanmodule(AOB_AtariHantei_E,DOA6.exe,49 8B 46 08 48 8D 4B A8 F3 0F 10 73 EC)
+aobscanmodule(AOB_AtariHantei_F,DOA6.exe,48 8B F2 48 8B E9 41 83 F8 01 74 13 B8 FF FF 00 00)
+aobscanmodule(AOB_AtariHantei_G,DOA6.exe,8B 86 94 36 00 00 48 83 86 A8 35 00 00 02)
+aobscanmodule(AOB_HoldType_A,DOA6.exe,B8 FF FF 00 00 66 44 3B F8 74 D7 80 7D 97 00)
+aobscanmodule(AOB_DownNokezori_A,DOA6.exe,48 8D 4C 24 68 E8 * * * * 84 C0 75 3C 8B 86 08 09 00 00)
+aobscanmodule(AOB_NageHantei_A,DOA6.exe,0F 29 74 24 20 E8 * * * * 84 C0 0F 84 AE 00 00 00)
+aobscanmodule(AOB_KabeBitan_A,DOA6.exe,80 BE E0 03 00 00 00 0F 85 53 05 00 00)
+aobscanmodule(AOB_HaibokuPose_A,DOA6.exe,8B 4C 24 40 33 FF 89 B8 28 01 00 00)
+aobscanmodule(JMP_HaibokuPose_A,DOA6.exe,33 FF 0F B7 C7 48 8B 5C 24 48 48 83 C4 20)
+aobscanmodule(AOB_BreakBlow_A,DOA6.exe,8B 41 0C F7 D8 41 39 81 38 17 00 00 7D 04 C6 43 24 01)
+aobscanmodule(AOB_BreakBlow_B,DOA6.exe,8B 41 0C F7 D8 41 39 81 38 17 00 00 7D 04 C6 43 08 01)
+aobscanmodule(AOB_Counter_A,DOA6.exe,0F B7 40 30 45 33 F6 66 44 3B F0)
+aobscanmodule(AOB_Counter_B,DOA6.exe,0F B7 41 30 66 44 3B F0 73 0D)
+aobscanmodule(AOB_Counter_C,DOA6.exe,0F B7 41 30 66 3B F0 0F 82 B7 00 00 00)
+registersymbol(AOB_AtariHantei_A)
+registersymbol(AOB_AtariHantei_B)
+registersymbol(AOB_AtariHantei_C)
+registersymbol(AOB_AtariHantei_D)
+registersymbol(AOB_AtariHantei_E)
+registersymbol(AOB_AtariHantei_F)
+registersymbol(AOB_AtariHantei_G)
+registersymbol(AOB_HoldType_A)
+registersymbol(AOB_DownNokezori_A)
+registersymbol(AOB_NageHantei_A)
+registersymbol(AOB_KabeBitan_A)
+registersymbol(AOB_HaibokuPose_A)
+registersymbol(JMP_HaibokuPose_A)
+registersymbol(AOB_BreakBlow_A)
+registersymbol(AOB_BreakBlow_B)
+registersymbol(AOB_Counter_A)
+registersymbol(AOB_Counter_B)
+registersymbol(AOB_Counter_C)
+alloc(newmem,$2000,"DOA6.exe")
+
+label(AtariHantei_A)
+label(AtariHantei_A_SKIP)
+label(AtariHantei_A_RET)
+
+label(AtariHantei_B)
+label(AtariHantei_B_JMP)
+label(AtariHantei_B_SKIP)
+label(AtariHantei_B_RET)
+
+label(AtariHantei_C)
+label(AtariHantei_C_A)
+label(AtariHantei_C_B)
+label(AtariHantei_C_C)
+label(AtariHantei_C_D)
+label(AtariHantei_C_Ho_P)
+label(AtariHantei_C_Ho_P_0C)
+label(AtariHantei_C_Ho_P_10)
+label(AtariHantei_C_Ho_P_11)
+label(AtariHantei_C_Ho_K)
+label(AtariHantei_C_Ho_K_0C)
+label(AtariHantei_C_Ho_K_10)
+label(AtariHantei_C_Ho_K_11)
+label(AtariHantei_C_Ho_EX)
+label(AtariHantei_C_Ho_EX_02)
+label(AtariHantei_C_Ho_EX_04)
+label(AtariHantei_C_Ho_EX_05)
+label(AtariHantei_C_Ho_EX_07)
+label(AtariHantei_C_Ho_EX_09)
+label(AtariHantei_C_Ho_EX_10)
+label(AtariHantei_C_Ho_EX_11)
+label(AtariHantei_C_Ho_EX_12)
+label(AtariHantei_C_Ho_EX_13)
+label(AtariHantei_C_Ho_EX_14)
+label(AtariHantei_C_Ho_EX_1C)
+label(AtariHantei_C_Ho_EX_20)
+label(AtariHantei_C_Ho_PU)
+label(AtariHantei_C_Ho_PM)
+label(AtariHantei_C_Ho_PL)
+label(AtariHantei_C_Ho_KU)
+label(AtariHantei_C_Ho_KM)
+label(AtariHantei_C_Ho_KL)
+label(AtariHantei_C_Ho_END)
+label(AtariHantei_C_SKIP)
+label(AtariHantei_C_RET)
+
+label(AtariHantei_D)
+label(AtariHantei_D_A)
+label(AtariHantei_D_B)
+label(AtariHantei_D_SKIP)
+label(AtariHantei_D_RET)
+
+label(AtariHantei_E)
+label(AtariHantei_E_A)
+label(AtariHantei_E_B)
+label(AtariHantei_E_SKIP)
+label(AtariHantei_E_RET)
+
+label(AtariHantei_F)
+label(AtariHantei_F_SKIP)
+label(AtariHantei_F_RET)
+
+label(AtariHantei_G)
+label(AtariHantei_G_SKIP)
+label(AtariHantei_G_RET)
+
+label(HoldType_A)
+label(HoldType_A_A)
+label(HoldType_A_B)
+label(HoldType_A_C)
+label(HoldType_A_01)
+label(HoldType_A_02)
+label(HoldType_A_03)
+label(HoldType_A_04)
+label(HoldType_A_05)
+label(HoldType_A_06)
+label(HoldType_A_07)
+label(HoldType_A_08)
+label(HoldType_A_09)
+label(HoldType_A_0A)
+label(HoldType_A_0B)
+label(HoldType_A_0C)
+label(HoldType_A_0D)
+label(HoldType_A_0E)
+label(HoldType_A_0F)
+label(HoldType_A_10)
+label(HoldType_A_11)
+label(HoldType_A_12)
+label(HoldType_A_13)
+label(HoldType_A_14)
+label(HoldType_A_15)
+label(HoldType_A_16)
+label(HoldType_A_17)
+label(HoldType_A_18)
+label(HoldType_A_19)
+label(HoldType_A_1A)
+label(HoldType_A_1B)
+label(HoldType_A_1C)
+label(HoldType_A_1E)
+label(HoldType_A_1F)
+label(HoldType_A_20)
+label(HoldType_A_SKIP)
+label(HoldType_A_RET)
+
+label(DownNokezori_A)
+label(DownNokezori_A_SKIP)
+label(DownNokezori_A_JMP)
+label(DownNokezori_A_RET)
+
+label(KabeBitan_A)
+label(KabeBitan_A_SKIP)
+label(KabeBitan_A_RET)
+
+label(NageHantei_A)
+label(NageHantei_A_A)
+label(NageHantei_A_SKIP)
+label(NageHantei_A_JMP)
+label(NageHantei_A_RET)
+
+label(HaibokuPose_A)
+label(HaibokuPose_A_A)
+label(HaibokuPose_A_SKIP)
+label(HaibokuPose_A_JMP)
+label(HaibokuPose_A_RET)
+
+label(BreakBlow_A)
+label(BreakBlow_A_JMP)
+label(BreakBlow_A_SKIP)
+label(BreakBlow_A_RET)
+
+label(BreakBlow_B)
+label(BreakBlow_B_JMP)
+label(BreakBlow_B_SKIP)
+label(BreakBlow_B_RET)
+
+label(Counter_A)
+label(Counter_A_JMP)
+label(Counter_A_SKIP)
+label(Counter_A_RET)
+
+label(Counter_B)
+label(Counter_B_JMP)
+label(Counter_B_SKIP)
+label(Counter_B_RET)
+
+label(Counter_C)
+label(Counter_C_SKIP)
+label(Counter_C_RET)
+
+newmem:
+AtariHantei_A:
+xor eax,eax
+cmp ax,[rdi+00000560]
+jb AtariHantei_A_SKIP
+mov byte ptr [rsi+00000132],al
+AtariHantei_A_SKIP:
+db 0F B6 86 32 01 00 00
+jmp AtariHantei_A_RET
+
+AtariHantei_B:
+xor ecx,ecx
+cmp cx,[rax+00000560]
+jb AtariHantei_B_SKIP
+cmp byte ptr [BryanyoraMem+200],00
+je AtariHantei_B_SKIP
+test bx,bx
+jne AtariHantei_B_SKIP
+cmp [rax+68],62C4
+jb AtariHantei_B_SKIP
+cmp [rax+68],62F8
+ja AtariHantei_B_SKIP
+AtariHantei_B_JMP:
+mov ebx,00000001
+AtariHantei_B_SKIP:
+db 48 8B C8
+db 48 8B 10
+jmp AtariHantei_B_RET
+
+AtariHantei_C:
+db 4C 8B 44 24 30
+xor ecx,ecx
+cmp cx,[r8+00000560]
+jb AtariHantei_C_SKIP
+cmp byte ptr [BryanyoraMem+200],00
+je AtariHantei_C_SKIP
+cmp [rbp+000000F8],00001389
+je AtariHantei_C_A
+cmp [rbp+000000F8],00001392
+je AtariHantei_C_A
+cmp [rbp+000000F8],0000157C
+je AtariHantei_C_A
+cmp byte ptr [BryanyoraMem+200],03
+jne AtariHantei_C_D
+AtariHantei_C_A:
+
+{
+cmp byte ptr [rbp+000000F0],05
+je AtariHantei_C_SKIP
+cmp byte ptr [rbp+000000F0],0E
+je AtariHantei_C_SKIP
+cmp byte ptr [rbp+000000F0],10
+je AtariHantei_C_SKIP
+}
+cmp byte ptr [rbp+00000100],02
+je AtariHantei_C_B
+cmp byte ptr [rbp+00000100],03
+jne AtariHantei_C_D
+AtariHantei_C_B:
+
+cmp byte ptr [r8+00000100],0C
+je AtariHantei_C_C
+cmp [r8+68],613D
+je AtariHantei_C_C
+cmp [r8+68],613E
+je AtariHantei_C_C
+cmp [r8+68],6149
+je AtariHantei_C_C
+cmp [r8+68],614A
+je AtariHantei_C_C
+cmp [r8+68],62F6
+jne AtariHantei_C_SKIP
+
+AtariHantei_C_C:
+mov [r8+8C],00000000
+mov byte ptr [r8+00000100],08
+jmp AtariHantei_C_SKIP
+
+AtariHantei_C_D:
+cmp byte ptr [rbp+00000100],05
+jne AtariHantei_C_SKIP
+mov ecx,[rbp+68]
+cmp ecx,0000009A
+je AtariHantei_C_Ho_PM
+cmp ecx,0000009B
+je AtariHantei_C_Ho_KM
+cmp byte ptr [BryanyoraMem+206],00
+je AtariHantei_C_Ho_P
+cmp byte ptr [BryanyoraMem+206],01
+je AtariHantei_C_Ho_P
+cmp byte ptr [BryanyoraMem+206],02
+je AtariHantei_C_Ho_K
+cmp byte ptr [BryanyoraMem+206],03
+je AtariHantei_C_Ho_K
+AtariHantei_C_Ho_P:
+cmp ecx,00000098
+je AtariHantei_C_Ho_PU
+cmp ecx,0000009C
+je AtariHantei_C_Ho_PL
+cmp [rbp+000000F8],0000150E
+je AtariHantei_C_Ho_PM
+
+AtariHantei_C_Ho_P_0C:
+cmp byte ptr [rbp+14],0C
+jne AtariHantei_C_Ho_P_10
+cmp ecx,00000096
+je AtariHantei_C_Ho_PU
+cmp ecx,00000097
+je AtariHantei_C_Ho_PM
+jmp AtariHantei_C_Ho_EX
+
+AtariHantei_C_Ho_P_10:
+cmp byte ptr [rbp+14],10
+jne AtariHantei_C_Ho_P_11
+cmp ecx,00001F58
+je AtariHantei_C_Ho_PU
+jmp AtariHantei_C_Ho_EX
+
+AtariHantei_C_Ho_P_11:
+cmp byte ptr [rbp+14],11
+jne AtariHantei_C_Ho_EX
+cmp ecx,00000096
+je AtariHantei_C_Ho_PU
+cmp ecx,00000097
+je AtariHantei_C_Ho_PM
+cmp ecx,000000A0
+je AtariHantei_C_Ho_PU
+cmp ecx,000000A1
+je AtariHantei_C_Ho_PM
+jmp AtariHantei_C_Ho_EX
+
+AtariHantei_C_Ho_K:
+cmp ecx,00000098
+je AtariHantei_C_Ho_KU
+cmp ecx,0000009C
+je AtariHantei_C_Ho_KL
+cmp [rbp+000000F8],0000150E
+je AtariHantei_C_Ho_KM
+
+AtariHantei_C_Ho_K_0C:
+cmp byte ptr [rbp+14],0C
+jne AtariHantei_C_Ho_K_10
+cmp ecx,00000096
+je AtariHantei_C_Ho_KU
+cmp ecx,00000097
+je AtariHantei_C_Ho_KM
+jmp AtariHantei_C_Ho_EX
+
+AtariHantei_C_Ho_K_10:
+cmp byte ptr [rbp+14],10
+jne AtariHantei_C_Ho_K_11
+cmp ecx,00001F58
+je AtariHantei_C_Ho_PM
+jmp AtariHantei_C_Ho_EX
+
+AtariHantei_C_Ho_K_11:
+cmp byte ptr [rbp+14],11
+jne AtariHantei_C_Ho_EX
+cmp ecx,00000096
+je AtariHantei_C_Ho_KU
+cmp ecx,00000097
+je AtariHantei_C_Ho_KM
+cmp ecx,000000A0
+je AtariHantei_C_Ho_KU
+cmp ecx,000000A1
+je AtariHantei_C_Ho_KM
+jmp AtariHantei_C_Ho_EX
+
+AtariHantei_C_Ho_EX:
+AtariHantei_C_Ho_EX_02:
+cmp byte ptr [rbp+14],02
+jne AtariHantei_C_Ho_EX_04
+cmp ecx,00002161
+je AtariHantei_C_Ho_PU
+cmp ecx,00002162
+je AtariHantei_C_Ho_KM
+jmp AtariHantei_C_SKIP
+
+AtariHantei_C_Ho_EX_04:
+cmp byte ptr [rbp+14],04
+jne AtariHantei_C_Ho_EX_05
+cmp ecx,00002147
+je AtariHantei_C_Ho_PU
+cmp ecx,00002148
+je AtariHantei_C_Ho_PM
+cmp ecx,00002149
+je AtariHantei_C_Ho_KM
+cmp ecx,0000214A
+je AtariHantei_C_Ho_PL
+jmp AtariHantei_C_SKIP
+
+AtariHantei_C_Ho_EX_05:
+cmp byte ptr [rbp+14],05
+jne AtariHantei_C_Ho_EX_07
+cmp ecx,0000210A
+je AtariHantei_C_Ho_PM
+cmp ecx,0000210B
+je AtariHantei_C_Ho_KM
+jmp AtariHantei_C_SKIP
+
+AtariHantei_C_Ho_EX_07:
+cmp byte ptr [rbp+14],07
+jne AtariHantei_C_Ho_EX_09
+cmp ecx,0000213D
+je AtariHantei_C_Ho_PM
+cmp ecx,0000213E
+je AtariHantei_C_Ho_KM
+jmp AtariHantei_C_SKIP
+
+AtariHantei_C_Ho_EX_09:
+cmp byte ptr [rbp+14],09
+jne AtariHantei_C_Ho_EX_10
+cmp ecx,000020E7
+je AtariHantei_C_Ho_KM
+jmp AtariHantei_C_SKIP
+
+AtariHantei_C_Ho_EX_10:
+cmp byte ptr [rbp+14],10
+jne AtariHantei_C_Ho_EX_11
+cmp ecx,000020BC
+je AtariHantei_C_Ho_PM
+cmp ecx,000020BD
+je AtariHantei_C_Ho_KM
+jmp AtariHantei_C_SKIP
+
+AtariHantei_C_Ho_EX_11:
+cmp byte ptr [rbp+14],11
+jne AtariHantei_C_Ho_EX_12
+cmp ecx,00002087
+je AtariHantei_C_Ho_PU
+cmp ecx,00002088
+je AtariHantei_C_Ho_KU
+cmp ecx,00002089
+je AtariHantei_C_Ho_PM
+cmp ecx,0000208A
+je AtariHantei_C_Ho_KM
+cmp ecx,0000208B
+je AtariHantei_C_Ho_PL
+cmp ecx,0000208C
+je AtariHantei_C_Ho_KL
+jmp AtariHantei_C_SKIP
+
+AtariHantei_C_Ho_EX_12:
+cmp byte ptr [rbp+14],12
+jne AtariHantei_C_Ho_EX_13
+cmp ecx,00001FB6
+je AtariHantei_C_Ho_KM
+jmp AtariHantei_C_SKIP
+
+AtariHantei_C_Ho_EX_13:
+cmp byte ptr [rbp+14],13
+jne AtariHantei_C_Ho_EX_14
+cmp ecx,00002097
+je AtariHantei_C_Ho_PM
+cmp ecx,00002098
+je AtariHantei_C_Ho_KL
+jmp AtariHantei_C_SKIP
+
+AtariHantei_C_Ho_EX_14:
+cmp byte ptr [rbp+14],14
+jne AtariHantei_C_Ho_EX_1C
+cmp ecx,00001F9D
+je AtariHantei_C_Ho_PU
+cmp ecx,00001F9E
+je AtariHantei_C_Ho_PM
+cmp ecx,00001F9F
+je AtariHantei_C_Ho_KM
+cmp ecx,00001FA0
+je AtariHantei_C_Ho_PL
+cmp ecx,00001FF6
+je AtariHantei_C_Ho_KU
+cmp ecx,00001FF9
+je AtariHantei_C_Ho_KL
+jmp AtariHantei_C_SKIP
+
+AtariHantei_C_Ho_EX_1C:
+cmp byte ptr [rbp+14],1C
+jne AtariHantei_C_Ho_EX_20
+cmp ecx,00002174
+je AtariHantei_C_Ho_PM
+cmp ecx,0000210B
+je AtariHantei_C_Ho_KL
+jmp AtariHantei_C_SKIP
+
+AtariHantei_C_Ho_EX_20:
+cmp byte ptr [rbp+14],20
+jne AtariHantei_C_SKIP
+cmp ecx,00001FB0
+je AtariHantei_C_Ho_PM
+jmp AtariHantei_C_SKIP
+
+AtariHantei_C_Ho_PU:
+mov ecx,000000B0
+jmp AtariHantei_C_Ho_END
+AtariHantei_C_Ho_PM:
+mov ecx,000000B1
+jmp AtariHantei_C_Ho_END
+AtariHantei_C_Ho_PL:
+mov ecx,000000B2
+jmp AtariHantei_C_Ho_END
+AtariHantei_C_Ho_KU:
+mov ecx,000000B3
+jmp AtariHantei_C_Ho_END
+AtariHantei_C_Ho_KM:
+mov ecx,000000B4
+jmp AtariHantei_C_Ho_END
+AtariHantei_C_Ho_KL:
+mov ecx,000000B5
+AtariHantei_C_Ho_END:
+mov [r8+68],ecx
+mov byte ptr [r8+72],01
+mov byte ptr [r8+00000100],03
+AtariHantei_C_SKIP:
+jmp AtariHantei_C_RET
+
+AtariHantei_D:
+cmp byte ptr [BryanyoraMem+201],01
+jne AtariHantei_D_SKIP
+mov rax,[rsp+30]
+test rax,rax
+je AtariHantei_D_SKIP
+mov r8,rbp
+test r8,r8
+je AtariHantei_D_SKIP
+xor ecx,ecx
+cmp cx,[rax+00000560]
+jb AtariHantei_D_SKIP
+{
+cmp byte ptr [r8+00000100],10
+je AtariHantei_D_SKIP
+}
+cmp byte ptr [r8+00000100],02
+je AtariHantei_D_A
+cmp byte ptr [r8+00000100],03
+je AtariHantei_D_A
+cmp byte ptr [BryanyoraMem+200],00
+je AtariHantei_D_SKIP
+cmp byte ptr [r8+00000100],05
+je AtariHantei_D_B
+AtariHantei_D_A:
+
+cmp byte ptr [rax+00000100],0C
+je AtariHantei_D_B
+cmp [rax+68],613D
+je AtariHantei_D_B
+cmp [rax+68],613E
+je AtariHantei_D_B
+cmp [rax+68],6149
+je AtariHantei_D_B
+cmp [rax+68],614A
+je AtariHantei_D_B
+cmp [rax+68],62F6
+je AtariHantei_D_B
+jmp AtariHantei_D_SKIP
+
+AtariHantei_D_B:
+db 49 8B 46 08
+mov ecx,C2480000
+movd xmm1,ecx
+addss xmm1,[rax+14]
+movss [rax+14],xmm1
+
+AtariHantei_D_SKIP:
+db 49 8B 46 08
+db 48 8D 4B A8
+jmp AtariHantei_D_RET
+
+AtariHantei_E:
+cmp byte ptr [BryanyoraMem+201],01
+jne AtariHantei_E_SKIP
+mov rax,[rsp+30]
+test rax,rax
+je AtariHantei_E_SKIP
+mov rdx,rbp
+test rdx,rdx
+je AtariHantei_E_SKIP
+xor ecx,ecx
+cmp cx,[rax+00000560]
+jb AtariHantei_E_SKIP
+{
+cmp byte ptr [rdx+00000100],10
+je AtariHantei_E_SKIP
+}
+cmp byte ptr [rdx+00000100],02
+je AtariHantei_E_A
+cmp byte ptr [rdx+00000100],03
+je AtariHantei_E_A
+cmp byte ptr [BryanyoraMem+200],00
+je AtariHantei_E_SKIP
+cmp byte ptr [rdx+00000100],05
+je AtariHantei_E_B
+AtariHantei_E_A:
+cmp byte ptr [rax+00000100],0C
+je AtariHantei_E_B
+cmp [rax+68],613D
+je AtariHantei_E_B
+cmp [rax+68],613E
+je AtariHantei_E_B
+cmp [rax+68],6149
+je AtariHantei_E_B
+cmp [rax+68],614A
+je AtariHantei_E_B
+cmp [rax+68],62F6
+je AtariHantei_E_B
+jmp AtariHantei_E_SKIP
+
+AtariHantei_E_B:
+db 49 8B 46 08
+mov ecx,C2480000
+movd xmm6,ecx
+addss xmm6,[rax+14]
+movss [rax+14],xmm6
+
+AtariHantei_E_SKIP:
+db 49 8B 46 08
+db 48 8D 4B A8
+jmp AtariHantei_E_RET
+
+AtariHantei_F:
+cmp byte ptr [BryanyoraMem+200],00
+je AtariHantei_F_SKIP
+xor eax,eax
+cmp ax,[rdx+00000560]
+jb AtariHantei_F_SKIP
+mov r8d,00000001
+AtariHantei_F_SKIP:
+db 48 8B F2
+db 48 8B E9
+jmp AtariHantei_F_RET
+
+AtariHantei_G:
+cmp byte ptr [BryanyoraMem+200],00
+je AtariHantei_G_SKIP
+movzx ebx,byte ptr [rsi+00003560]
+xor bl,01
+movzx ecx,bl
+call CALL_CHARABASE
+xor ecx,rcx
+cmp cx,[rax+00000560]
+jb AtariHantei_G_SKIP
+movzx ebx,byte ptr [rsi+00003560]
+movzx ecx,bl
+call CALL_CHARABASE
+mov rcx,rax
+mov rdx,[rax]
+call qword ptr [rdx+40]
+mov rdx,[rax+08]
+mov rcx,[rax]
+cmp rdx,rcx
+jne AtariHantei_G_SKIP
+add [rax+08],000000D0
+AtariHantei_G_SKIP:
+db 8B 86 94 36 00 00
+jmp AtariHantei_G_RET
+
+HoldType_A:
+cmp byte ptr [BryanyoraMem+200],00
+je HoldType_A_SKIP
+xor eax,eax
+cmp ax,[r14+00000560]
+jb HoldType_A_SKIP
+cmp dword ptr [r14+8C],03
+je HoldType_A_A
+cmp byte ptr [BryanyoraMem+206],01
+je HoldType_A_B
+cmp byte ptr [BryanyoraMem+206],03
+jne HoldType_A_SKIP
+HoldType_A_A:
+xor al,al
+mov ecx,[r14+68]
+cmp ecx,000000B0
+je HoldType_A_C
+cmp ecx,000000B1
+je HoldType_A_C
+cmp ecx,000000B2
+je HoldType_A_C
+mov al,01
+cmp ecx,000000B3
+je HoldType_A_C
+cmp ecx,000000B4
+je HoldType_A_C
+cmp ecx,000000B5
+je HoldType_A_C
+jmp HoldType_A_SKIP
+
+HoldType_A_B:
+xor al,al
+mov ecx,[r13+68]
+cmp ecx,0000009A
+je HoldType_A_C
+mov al,01
+cmp ecx,0000009B
+jne HoldType_A_SKIP
+HoldType_A_C:
+
+HoldType_A_01:
+cmp [r13+14],01
+jne HoldType_A_02
+mov ecx,0000209F
+mov r15d,000020A1
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_02:
+cmp [r13+14],02
+jne HoldType_A_03
+mov ecx,000020D7
+mov r15d,000020DB
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_03:
+cmp [r13+14],03
+jne HoldType_A_04
+mov ecx,00002036
+mov r15d,0000203A
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_04:
+cmp [r13+14],04
+jne HoldType_A_05
+mov ecx,000020B5
+mov r15d,000020B7
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_05:
+cmp [r13+14],05
+jne HoldType_A_06
+mov ecx,00002061
+mov r15d,00002065
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_06:
+cmp [r13+14],06
+jne HoldType_A_07
+mov ecx,00002074
+mov r15d,00002076
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_07:
+cmp [r13+14],07
+jne HoldType_A_08
+mov ecx,00002098
+mov r15d,0000209A
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_08:
+cmp [r13+14],08
+jne HoldType_A_09
+mov ecx,0000201E
+mov r15d,00002020
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_09:
+cmp [r13+14],09
+jne HoldType_A_0A
+mov ecx,00002072
+mov r15d,00002074
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_0A:
+cmp [r13+14],0A
+jne HoldType_A_0B
+mov ecx,0000201D
+mov r15d,0000201F
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_0B:
+cmp [r13+14],0B
+jne HoldType_A_0C
+mov ecx,0000206F
+mov r15d,00002073
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_0C:
+cmp [r13+14],0C
+jne HoldType_A_0D
+mov ecx,00002015
+mov r15d,00002019
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_0D:
+cmp [r13+14],0D
+jne HoldType_A_0E
+mov ecx,00002074
+mov r15d,00002076
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_0E:
+cmp [r13+14],0E
+jne HoldType_A_0F
+mov ecx,000020CA
+mov r15d,000020CE
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_0F:
+cmp [r13+14],0F
+jne HoldType_A_10
+mov ecx,00002081
+mov r15d,00002085
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_10:
+cmp [r13+14],10
+jne HoldType_A_11
+mov ecx,0000204F
+mov r15d,00002051
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_11:
+cmp [r13+14],11
+jne HoldType_A_12
+mov ecx,0000207B
+mov r15d,0000207D
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_12:
+cmp [r13+14],12
+jne HoldType_A_13
+mov ecx,00002005
+mov r15d,00002007
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_13:
+cmp [r13+14],13
+jne HoldType_A_14
+mov ecx,00001FA4
+mov r15d,00001FA6
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_14:
+cmp [r13+14],14
+jne HoldType_A_15
+mov ecx,00001FAF
+mov r15d,00001FB1
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_15:
+cmp [r13+14],15
+jne HoldType_A_16
+mov ecx,0000201F
+mov r15d,00002023
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_16:
+cmp [r13+14],16
+jne HoldType_A_17
+mov ecx,0000207B
+mov r15d,0000207D
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_17:
+cmp [r13+14],17
+jne HoldType_A_18
+mov ecx,00001FFE
+mov r15d,00002000
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_18:
+cmp [r13+14],18
+jne HoldType_A_19
+mov ecx,00001F74
+mov r15d,00001F76
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_19:
+cmp [r13+14],19
+jne HoldType_A_1A
+mov ecx,00001F86
+mov r15d,00001F88
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_1A:
+cmp [r13+14],1A
+jne HoldType_A_1B
+mov ecx,00001FFE
+mov r15d,00002000
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_1B:
+cmp [r13+14],1B
+jne HoldType_A_1C
+mov ecx,00001FFE
+mov r15d,00002000
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_1C:
+cmp [r13+14],1C
+jne HoldType_A_1E
+mov ecx,00002061
+mov r15d,00002065
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+
+HoldType_A_1E:
+cmp [r13+14],1E
+jne HoldType_A_1F
+mov ecx,00001F69
+mov r15d,00001F6B
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_1F:
+cmp [r13+14],1F
+jne HoldType_A_20
+mov ecx,00001FAE
+mov r15d,00001FB0
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_20:
+cmp [r13+14],20
+jne HoldType_A_SKIP
+mov ecx,00001FAC
+mov r15d,00001FAE
+test al,al
+cmove r15d,ecx
+//jmp HoldType_A_SKIP
+
+HoldType_A_SKIP:
+db B8 FF FF 00 00
+jmp HoldType_A_RET
+
+DownNokezori_A:
+{
+xor ecx,ecx
+cmp cx,[rsi+00000560]
+jb DownNokezori_A_SKIP
+}
+cmp byte ptr [BryanyoraMem+200],02
+je DownNokezori_A_JMP
+{
+jne DownNokezori_A_SKIP
+cmp byte ptr [rsi+000000F0],C
+je DownNokezori_A_JMP
+cmp [rsi+68],613D
+je DownNokezori_A_JMP
+cmp [rsi+68],613E
+je DownNokezori_A_JMP
+cmp [rsi+68],6149
+je DownNokezori_A_JMP
+cmp [rsi+68],614A
+je DownNokezori_A_JMP
+cmp [rsi+68],62F6
+je DownNokezori_A_JMP
+}
+DownNokezori_A_SKIP:
+db 48 8D 4C 24 68
+jmp DownNokezori_A_RET
+DownNokezori_A_JMP:
+xor eax,eax
+jmp DownNokezori_A_RET+5
+
+NageHantei_A:
+db 0F 29 74 24 20
+xor eax,eax
+cmp ax,[rdi+00000560]
+jb NageHantei_A_SKIP
+cmp [rdi+68],613D
+je NageHantei_A_A
+cmp [rdi+68],613E
+je NageHantei_A_A
+cmp [rdi+68],6149
+je NageHantei_A_A
+cmp [rdi+68],614A
+je NageHantei_A_A
+cmp [rdi+68],62F6
+je NageHantei_A_A
+cmp byte ptr [rdi+00000100],08
+je NageHantei_A_A
+cmp byte ptr [rdi+00000100],0C
+jne NageHantei_A_SKIP
+NageHantei_A_A:
+cmp byte ptr [BryanyoraMem+200],00
+je NageHantei_A_SKIP
+mov byte ptr [rdi+7C],01
+mov eax,[rbp+68]
+cmp [rbp+14],02
+jne NageHantei_A07
+cmp eax,00001FDA
+je NageHantei_A_SKIP
+jmp NageHantei_A_JMP
+NageHantei_A07:
+cmp [rbp+14],07
+jne NageHantei_A11
+cmp eax,00001FBA
+je NageHantei_A_SKIP
+jmp NageHantei_A_JMP
+
+NageHantei_A11:
+cmp [rbp+14],11
+jne NageHantei_A13
+cmp eax,00001FC3
+je NageHantei_A_SKIP
+cmp eax,0000212C
+je NageHantei_A_SKIP
+jmp NageHantei_A_JMP
+
+NageHantei_A13:
+cmp [rbp+14],13
+jne NageHantei_A15
+cmp eax,00001FB0
+je NageHantei_A_SKIP
+jmp NageHantei_A_JMP
+
+NageHantei_A15:
+cmp [rbp+14],15
+jne NageHantei_A_JMP
+cmp eax,000020E6//rbp+E8,1662
+je NageHantei_A_SKIP
+jmp NageHantei_A_JMP
+
+NageHantei_A_SKIP:
+jmp NageHantei_A_RET
+NageHantei_A_JMP:
+mov al,01
+jmp NageHantei_A_RET+05
+
+KabeBitan_A:
+xor eax,eax
+cmp ax,[rsi+00000560]
+jb KabeBitan_A_SKIP
+cmp byte ptr [BryanyoraMem+202],01
+jne KabeBitan_A_SKIP
+mov byte ptr [rsi+000003E0],00
+KabeBitan_A_SKIP:
+db 80 BE E0 03 00 00 00
+jmp KabeBitan_A_RET
+
+
+HaibokuPose_A:
+db 8B 4C 24 40
+cmp ecx,00000154
+je HaibokuPose_A_A
+cmp ecx,0000015A
+jne HaibokuPose_A_SKIP
+HaibokuPose_A_A:
+cmp byte ptr [BryanyoraMem+205],00
+je HaibokuPose_A_SKIP
+xor edi,edi
+cmp di,[rax+00000560]
+jb NageHantei_A_SKIP
+{
+cmp byte ptr [rax+14],02
+je HaibokuPose_A_JMP
+cmp byte ptr [rax+14],05
+je HaibokuPose_A_JMP
+cmp byte ptr [rax+14],06
+je HaibokuPose_A_JMP
+cmp byte ptr [rax+14],08
+je HaibokuPose_A_JMP
+cmp byte ptr [rax+14],0A
+je HaibokuPose_A_JMP
+cmp byte ptr [rax+14],0B
+je HaibokuPose_A_JMP
+cmp byte ptr [rax+14],0D
+je HaibokuPose_A_JMP
+cmp byte ptr [rax+14],0F
+je HaibokuPose_A_JMP
+cmp byte ptr [rax+14],10
+je HaibokuPose_A_JMP
+cmp byte ptr [rax+14],13
+je HaibokuPose_A_JMP
+cmp byte ptr [rax+14],14
+je HaibokuPose_A_JMP
+cmp byte ptr [rax+14],15
+je HaibokuPose_A_JMP
+cmp byte ptr [rax+14],16
+je HaibokuPose_A_JMP
+cmp byte ptr [rax+14],19
+je HaibokuPose_A_JMP
+cmp byte ptr [rax+14],1C
+je HaibokuPose_A_JMP
+jmp HaibokuPose_A_SKIP
+}
+HaibokuPose_A_JMP:
+cmp byte ptr [BryanyoraMem+205],01
+je HaibokuPose_A_JMP2
+mov edi,0000008F
+cmp byte ptr [BryanyoraMem+205],02
+cmove ecx,edi
+cmp byte ptr [BryanyoraMem+205],03
+cmove ecx,edi
+mov edi,00000090
+cmp byte ptr [BryanyoraMem+205],04
+cmove ecx,edi
+cmp byte ptr [BryanyoraMem+205],05
+cmove ecx,edi
+mov edi,0000613D
+cmp byte ptr [BryanyoraMem+205],06
+cmove ecx,edi
+cmp byte ptr [BryanyoraMem+205],07
+cmove ecx,edi
+mov edi,00006149
+cmp byte ptr [BryanyoraMem+205],08
+cmove ecx,edi
+cmp byte ptr [BryanyoraMem+205],09
+cmove ecx,edi
+xor edx,edx
+mov edi,00000001
+cmp byte ptr [BryanyoraMem+205],03
+cmove edx,edi
+cmp byte ptr [BryanyoraMem+205],05
+cmove edx,edi
+cmp byte ptr [BryanyoraMem+205],07
+cmove edx,edi
+cmp byte ptr [BryanyoraMem+205],09
+cmove edx,edi
+mov [rax+78],dl
+HaibokuPose_A_SKIP:
+db 33 FF
+jmp HaibokuPose_A_RET
+HaibokuPose_A_JMP2:
+mov rdi,[r9+28]
+mov rdi,[rdi+00000098]
+mov byte ptr [rdi+000035A0],00
+jmp JMP_HaibokuPose_A
+
+BreakBlow_A:
+xor eax,eax
+cmp ax,[r9+00000560]
+jae BreakBlow_A_SKIP
+mov rax,[DOA6.exe+25F1C40]
+test rax,rax
+je BreakBlow_A_SKIP
+lea rax,[rax+000008F0]
+cmp byte ptr [rax+00000308],0F
+jne BreakBlow_A_SKIP
+cmp byte ptr [rax+00000229],00
+jne BreakBlow_A_JMP
+BreakBlow_A_SKIP:
+db 8B 41 0C
+db F7 D8
+jmp BreakBlow_A_RET
+BreakBlow_A_JMP:
+xor eax,eax
+jmp BreakBlow_A_RET
+
+BreakBlow_B:
+xor eax,eax
+cmp ax,[r9+00000560]
+jae BreakBlow_B_SKIP
+mov rax,[DOA6.exe+25F1C40]
+test rax,rax
+je BreakBlow_B_SKIP
+lea rax,[rax+000008F0]
+cmp byte ptr [rax+00000308],0F
+jne BreakBlow_B_SKIP
+cmp byte ptr [rax+00000229],00
+jne BreakBlow_B_JMP
+BreakBlow_B_SKIP:
+db 8B 41 0C
+db F7 D8
+jmp BreakBlow_B_RET
+BreakBlow_B_JMP:
+xor eax,eax
+jmp BreakBlow_B_RET
+
+Counter_A:
+db 0F B7 40 30
+db 45 33 F6
+cmp r14w,[rcx+00000560]
+jb Counter_A_SKIP
+cmp byte ptr [BryanyoraMem+207],01
+jne Counter_A_A
+mov eax,00000001
+jmp Counter_A_JMP
+Counter_A_A:
+cmp byte ptr [BryanyoraMem+207],02
+jne Counter_A_SKIP
+mov eax,00000002
+jmp Counter_A_JMP
+Counter_A_SKIP:
+jmp Counter_A_RET
+Counter_A_JMP:
+cmp al,al
+jmp Counter_A_RET+D
+
+Counter_B:
+db 0F B7 41 30
+cmp r14w,[r15+00000560]
+jb Counter_B_SKIP
+cmp byte ptr [BryanyoraMem+207],01
+jne Counter_B_A
+mov eax,00000001
+jmp Counter_B_JMP
+Counter_B_A:
+cmp byte ptr [BryanyoraMem+207],02
+jne Counter_B_SKIP
+mov eax,00000002
+jmp Counter_B_JMP
+Counter_B_SKIP:
+db 66 44 3B F0
+jmp Counter_B_RET
+Counter_B_JMP:
+cmp al,al
+jmp Counter_B_RET+9
+
+Counter_C:
+db 0F B7 41 30
+cmp si,[rbx+00000560]
+jb Counter_C_SKIP
+cmp byte ptr [BryanyoraMem+207],01
+jne Counter_C_A
+mov eax,00000001
+jmp Counter_C_SKIP
+Counter_C_A:
+cmp byte ptr [BryanyoraMem+207],02
+jne Counter_C_SKIP
+mov eax,00000002
+Counter_C_SKIP:
+db 66 3B F0
+jmp Counter_C_RET
+
+AOB_AtariHantei_A:
+jmp AtariHantei_A
+nop
+nop
+AtariHantei_A_RET:
+
+AOB_AtariHantei_B:
+jmp AtariHantei_B
+nop
+AtariHantei_B_RET:
+
+AOB_AtariHantei_C:
+jmp AtariHantei_C
+AtariHantei_C_RET:
+
+AOB_AtariHantei_D:
+jmp AtariHantei_D
+nop
+nop
+nop
+AtariHantei_D_RET:
+
+AOB_AtariHantei_E:
+jmp AtariHantei_E
+nop
+nop
+nop
+AtariHantei_E_RET:
+
+AOB_AtariHantei_F:
+jmp AtariHantei_F
+nop
+AtariHantei_F_RET:
+
+AOB_AtariHantei_G:
+jmp AtariHantei_G
+nop
+AtariHantei_G_RET:
+
+AOB_HoldType_A:
+jmp HoldType_A
+HoldType_A_RET:
+
+AOB_DownNokezori_A:
+jmp DownNokezori_A
+DownNokezori_A_RET:
+
+AOB_NageHantei_A:
+jmp NageHantei_A
+NageHantei_A_RET:
+
+AOB_KabeBitan_A:
+jmp KabeBitan_A
+nop
+nop
+KabeBitan_A_RET:
+
+AOB_HaibokuPose_A:
+jmp HaibokuPose_A
+nop
+HaibokuPose_A_RET:
+
+AOB_BreakBlow_A:
+jmp BreakBlow_A
+BreakBlow_A_RET:
+
+AOB_BreakBlow_B:
+jmp BreakBlow_B
+BreakBlow_B_RET:
+
+AOB_Counter_A:
+jmp Counter_A
+nop
+nop
+Counter_A_RET:
+
+AOB_Counter_B:
+jmp Counter_B
+nop
+nop
+nop
+Counter_B_RET:
+
+AOB_Counter_C:
+jmp Counter_C
+nop
+nop
+Counter_C_RET:
+
+BryanyoraMem+200:
+db 02
+BryanyoraMem+201:
+db 01
+BryanyoraMem+202:
+db 01
+BryanyoraMem+205:
+db 01
+BryanyoraMem+207:
+db 01
+
+[disable]
+unregistersymbol(AOB_AtariHantei_A)
+unregistersymbol(AOB_AtariHantei_B)
+unregistersymbol(AOB_AtariHantei_C)
+unregistersymbol(AOB_AtariHantei_D)
+unregistersymbol(AOB_AtariHantei_E)
+unregistersymbol(AOB_AtariHantei_F)
+unregistersymbol(AOB_AtariHantei_G)
+unregistersymbol(AOB_HoldType_A)
+unregistersymbol(AOB_DownNokezori_A)
+unregistersymbol(AOB_NageHantei_A)
+unregistersymbol(AOB_KabeBitan_A)
+unregistersymbol(AOB_HaibokuPose_A)
+unregistersymbol(JMP_HaibokuPose_A)
+unregistersymbol(AOB_BreakBlow_A)
+unregistersymbol(AOB_BreakBlow_B)
+unregistersymbol(AOB_Counter_A)
+unregistersymbol(AOB_Counter_B)
+unregistersymbol(AOB_Counter_C)
+dealloc(newmem)
+
+AOB_AtariHantei_A:
+db 0F B6 86 32 01 00 00
+
+AOB_AtariHantei_B:
+db 48 8B C8
+db 48 8B 10
+
+AOB_AtariHantei_C:
+db 4C 8B 44 24 30
+
+AOB_AtariHantei_D:
+db 49 8B 46 08
+db 48 8D 4B A8
+
+AOB_AtariHantei_E:
+db 49 8B 46 08
+db 48 8D 4B A8
+
+AOB_AtariHantei_F:
+db 48 8B F2
+db 48 8B E9
+
+AOB_AtariHantei_G:
+db 8B 86 94 36 00 00
+
+AOB_HoldType_A:
+db B8 FF FF 00 00
+
+AOB_DownNokezori_A:
+db 48 8D 4C 24 68
+
+AOB_NageHantei_A:
+db 0F 29 74 24 20
+
+AOB_KabeBitan_A:
+db 80 BE E0 03 00 00 00
+
+AOB_HaibokuPose_A:
+db 8B 4C 24 40
+db 33 FF
+
+AOB_BreakBlow_A:
+db 8B 41 0C
+db F7 D8
+
+AOB_BreakBlow_B:
+db 8B 41 0C
+db F7 D8
+
+AOB_Counter_A:
+db 0F B7 40 30
+db 45 33 F6
+
+AOB_Counter_B:
+db 0F B7 41 30
+db 66 44 3B F0
+
+AOB_Counter_C:
+db 0F B7 41 30
+db 66 3B F0
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>23</ID>
+              <Description>"(Don't Active)00_Option Select"</Description>
+              <DropDownList DisplayValueAsItem="1">00:Default
+01:Throw+Hold
+02:Throw+Hold+KnockDown
+03:Throw+Hold+StandUp
+</DropDownList>
+              <ShowAsHex>1</ShowAsHex>
+              <VariableType>Byte</VariableType>
+              <Address>BryanyoraMem+200</Address>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>3523</ID>
+                  <Description>"(Don't Active)Hold Select"</Description>
+                  <DropDownList DisplayValueAsItem="1">00:P-Hold
+01:P-Hold_J
+02:K-Hold
+03:K-Hold_J
+</DropDownList>
+                  <ShowAsHex>1</ShowAsHex>
+                  <VariableType>Byte</VariableType>
+                  <Address>BryanyoraMem+206</Address>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3524</ID>
+              <Description>"(Don't Active)01_Counter Hit"</Description>
+              <DropDownList DisplayValueAsItem="1">00:Default
+01:High Counter
+02:Counter
+</DropDownList>
+              <ShowAsHex>1</ShowAsHex>
+              <VariableType>Byte</VariableType>
+              <Address>BryanyoraMem+207</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>29</ID>
+              <Description>"02_Y-axis Hit Box Correction"</Description>
+              <DropDownList DisplayValueAsItem="1">00:Default
+01:ON
+</DropDownList>
+              <ShowAsHex>1</ShowAsHex>
+              <VariableType>Byte</VariableType>
+              <Address>BryanyoraMem+201</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>30</ID>
+              <Description>"03_Wall Hit"</Description>
+              <DropDownList DisplayValueAsItem="1">00:Default
+01:ON
+</DropDownList>
+              <ShowAsHex>1</ShowAsHex>
+              <VariableType>Byte</VariableType>
+              <Address>BryanyoraMem+202</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>3417</ID>
+              <Description>"04_Lose Pose"</Description>
+              <DropDownList DisplayValueAsItem="1">00:Default
+01:Match Result
+02:Down1L
+03:Down1R
+04:Down2L
+05:Down2R
+</DropDownList>
+              <ShowAsHex>1</ShowAsHex>
+              <VariableType>Byte</VariableType>
+              <Address>BryanyoraMem+205</Address>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
       </CheatEntries>
     </CheatEntry>
     <CheatEntry>
       <ID>3876</ID>
       <Description>"CPU Player 1"</Description>
-      <LastState Value="1" RealAddress="2CB8164B770"/>
+      <LastState Value="0" RealAddress="21273E1B5B0"/>
       <VariableType>4 Bytes</VariableType>
-      <Address>doa6.exe+25a5c30</Address>
+      <Address>doa6.exe+25aec30</Address>
       <Offsets>
         <Offset>90</Offset>
         <Offset>b48</Offset>
@@ -1169,9 +2965,9 @@ db 4D 85 E4
     <CheatEntry>
       <ID>3888</ID>
       <Description>"CPU Player 2"</Description>
-      <LastState Value="1" RealAddress="2CB8164B774"/>
+      <LastState Value="1" RealAddress="21273E1B5B4"/>
       <VariableType>4 Bytes</VariableType>
-      <Address>doa6.exe+25a5c30</Address>
+      <Address>doa6.exe+25aec30</Address>
       <Offsets>
         <Offset>94</Offset>
         <Offset>b48</Offset>

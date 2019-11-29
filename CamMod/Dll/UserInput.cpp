@@ -41,6 +41,13 @@ namespace
         L"Source and Target Off",    // FREE_MODE_NO_SOURCE_NO_TARGET,
                                      // FREE_MODE_CNT
         };
+
+    const LPCWSTR sBreakModeStrings[] =
+    {
+        L"Normal",
+        L"Infinite",
+        L"Empty",
+    };
 }
 
 namespace CamMod
@@ -52,7 +59,7 @@ namespace CamMod
         , mLockHeight(LOCK_MODE_NONE )
         , mHmdLockMode(HMD_LOCK_MODE_NONE )
         , mLockPitch( 0 )
-        , mFullBoosts()
+        , mFullBreaks()
         , mFullHealths()
         , mHideUi()
         , mHidePlayer(0)
@@ -122,11 +129,11 @@ namespace CamMod
             const int8_t offset = (aCommands.altFunc ? -1 : 1);
             if CLICKED(XINPUT_GAMEPAD_A)
             {
-                RotateOption(mFullBoosts[0], 3, L"P 1 Break");
+                RotateOption(mFullBreaks[0], BREAK_MODE_CNT, L"P 1 Break", aCommands.altFunc, sBreakModeStrings);
             }
             else if CLICKED(XINPUT_GAMEPAD_B)
             {
-                RotateOption(mFullBoosts[1], 3, L"P 2 Break");
+                RotateOption(mFullBreaks[1], BREAK_MODE_CNT, L"P 2 Break", aCommands.altFunc, sBreakModeStrings);
             }
             else if CLICKED(XINPUT_GAMEPAD_X)
             {
@@ -207,7 +214,7 @@ namespace CamMod
         aCommands.lockHeight = mLockHeight;
         aCommands.lockPitch = mLockPitch;
         aCommands.hmdLockMode = mHmdLockMode;
-        memcpy(&aCommands.fullBoost, mFullBoosts, sizeof(mFullBoosts));
+        memcpy(&aCommands.fullBreak, mFullBreaks, sizeof(mFullBreaks));
         memcpy(&aCommands.fullHealth, mFullHealths, sizeof(mFullHealths));
         aCommands.lockCam = mLockCam;
         aCommands.hideUI = mHideUi;
