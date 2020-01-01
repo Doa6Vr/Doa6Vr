@@ -17,9 +17,10 @@
 #include <cmath>
 
 #define RETRY_FRAME_CNT 200
+#define DEFAULT_ZOOM 0.55f
 CamMod::IHmdServerIntf* gHmdServer = nullptr;
 CamMod::UserInput gUserInput;
-float gZoomAmount = 0.f;
+float gZoomAmount = DEFAULT_ZOOM;
 uint8_t gPrevTargetIdx = 0;
 uint8_t gPrevTargetTbl = 0;
 uint8_t gPrevSrcIdx = 0;
@@ -127,7 +128,7 @@ extern "C" DllExport void _cdecl AdjustCamera(VariableBlock* varBlock)
         if (commands.resetPos)
         {
             gCamera.Reset();
-            gZoomAmount = 0.f;
+            gZoomAmount = DEFAULT_ZOOM;
             varBlock->Cameras->camRoll = sOrigCamRoll;
             if (gHmdServer)
             {
@@ -170,10 +171,16 @@ extern "C" DllExport void _cdecl AdjustCamera(VariableBlock* varBlock)
         sourceType = SOURCE_OFF;
         break;
 
+    case CamMod::UserInput::FREE_MODE_SOURCE_LOCKED:
+        targetType = TARGET_TABLE;
+        sourceType = SOURCE_LOCKED;
+        break;
+
     case CamMod::UserInput::FREE_MODE_NO_SOURCE_NO_TARGET:
         targetType = TARGET_OFF;
         sourceType = SOURCE_OFF;
         break;
+
 
     case CamMod::UserInput::FREE_MODE_POV:
         sourceType = TARGET_TABLE;
@@ -371,29 +378,30 @@ extern "C" DllExport void _cdecl AdjustCamera(VariableBlock* varBlock)
 
     if (Vector3::Magnitude(stateUpdate.headsetPosDelta) > 0.f)
     {
+        // Convert headset movement to Z-forward
+        Vector3 headsetForwardDelta;
+        GetForwardVector(stateUpdate.headsetPosDelta, stateUpdate.headsetRot, headsetForwardDelta);
+        Vector3 camMovement;
+        gCamera.ToWorldCoords(headsetForwardDelta, camMovement);
+
         switch (commands.hmdLockMode)
         {
             case CamMod::UserInput::HMD_LOCK_MODE_NONE:
                 break;
 
             case CamMod::UserInput::HMD_LOCK_MODE_Y:
-                stateUpdate.headsetPosDelta.Y = 0.f;
+                camMovement.Y = 0.f;
                 break;
 
             case CamMod::UserInput::HMD_LOCK_MODE_XZ:
-                stateUpdate.headsetPosDelta.X = 0.f;
-                stateUpdate.headsetPosDelta.Z = 0.f;
+                camMovement.X = 0.f;
+                camMovement.Z = 0.f;
                 break;
 
             case CamMod::UserInput::HMD_LOCK_MODE_ALL:
-                stateUpdate.headsetPosDelta = Vector3::Zero();
+                camMovement = Vector3::Zero();
                 break;
         }
-        // Convert headset movement to Z-forward
-        Vector3 headsetForwardDelta;
-        GetForwardVector(stateUpdate.headsetPosDelta, stateUpdate.headsetRot, headsetForwardDelta);
-        Vector3 camMovement;
-        gCamera.ToWorldCoords(headsetForwardDelta, camMovement);
         gCamera.Translate(camMovement, false);
     }
 
@@ -680,7 +688,7 @@ void SetBreakAndHealth(VariableBlock* aVarBlock, uint8_t aP1Health, uint8_t aP1B
             {
             case 1:
                 table1->health = 500;
-                table1->health_display = 500;
+                table1->max_health = 500;
                 break;
             }
         }
@@ -707,7 +715,7 @@ void SetBreakAndHealth(VariableBlock* aVarBlock, uint8_t aP1Health, uint8_t aP1B
             {
             case 1:
                 table2->health = 500;
-                table2->health_display = 500;
+                table2->max_health = 500;
             }
         }
     }

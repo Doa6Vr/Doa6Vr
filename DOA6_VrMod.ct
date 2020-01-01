@@ -896,13 +896,43 @@ UnregisterSymbol(AOB_SetCpuDifficultyCall)
       </CheatEntries>
     </CheatEntry>
     <CheatEntry>
-      <ID>3872</ID>
+      <ID>3908</ID>
       <Description>"Scripts copied from bryanyora2525.com"</Description>
-      <LastState Value="" RealAddress="00000000"/>
-      <GroupHeader>1</GroupHeader>
+      <Options moHideChildren="1"/>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[enable]
+aobscanmodule(CALL_CHARABASE,DOA6.exe,48 8B C4 88 48 08 57 48 81 EC 80 00 00 00 48 C7 40 98 FE FF FF FF)
+registersymbol(CALL_CHARABASE)
+registersymbol(BryanyoraMem)
+registersymbol(CameraPos_PN)
+alloc(BryanyoraMem,4096,"DOA6.exe")
+label(CameraPos_PN)
+
+BryanyoraMem+0C:
+db 00
+
+BryanyoraMem+180:
+CameraPos_PN:
+db 00 01 08 09 0A 0B 02 00 00 00 00 00 00 00 00 00
+BryanyoraMem+190:
+db 0B 0A 09 08 01 00 02 00 00 00 00 00 00 00 00 00
+BryanyoraMem+1A0:
+db 07 07 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+BryanyoraMem+1B0:
+dq 0000000000000000 0000000000000000
+BryanyoraMem+1C0:
+dq 0000000000000000 0000000000000000
+
+[disable]
+unregistersymbol(CALL_CHARABASE)
+unregistersymbol(BryanyoraMem)
+unregistersymbol(CameraPos_PN)
+dealloc(BryanyoraMem)
+</AssemblerScript>
       <CheatEntries>
         <CheatEntry>
-          <ID>15</ID>
+          <ID>3892</ID>
           <Description>"0000_Face Punchi Deregulate"</Description>
           <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
@@ -930,7 +960,7 @@ db 40 84 FF
 </AssemblerScript>
         </CheatEntry>
         <CheatEntry>
-          <ID>3629</ID>
+          <ID>3893</ID>
           <Description>"0010_BB Blood Deregulate"</Description>
           <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
           <LastState/>
@@ -1016,7 +1046,7 @@ db 89 45 E8
 </AssemblerScript>
           <CheatEntries>
             <CheatEntry>
-              <ID>3632</ID>
+              <ID>3894</ID>
               <Description>"Blood Type"</Description>
               <DropDownList DisplayValueAsItem="1">00:Default
 01:Heavy
@@ -1028,7 +1058,7 @@ db 89 45 E8
           </CheatEntries>
         </CheatEntry>
         <CheatEntry>
-          <ID>3889</ID>
+          <ID>3648</ID>
           <Description>"0020_Disable Raising Dust"</Description>
           <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
           <LastState/>
@@ -1098,7 +1128,7 @@ db 4D 85 E4
 </AssemblerScript>
           <CheatEntries>
             <CheatEntry>
-              <ID>3890</ID>
+              <ID>3652</ID>
               <Description>"Almost Effect"</Description>
               <DropDownList DisplayValueAsItem="1">00:OFF
 01:ON
@@ -1110,7 +1140,3062 @@ db 4D 85 E4
           </CheatEntries>
         </CheatEntry>
         <CheatEntry>
-          <ID>3416</ID>
+          <ID>3655</ID>
+          <Description>"0040_High Probability Scream"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[enable]
+aobscanmodule(AOB_Scream100_A,DOA6.exe,03 C7 48 8B 4E 08 8B D0 E8 25 E4 84 FF 48 8B 7C 24 50)
+aobscanmodule(AOB_Scream100_B,DOA6.exe,44 3B C1 0F 84 2A 01 00 00 40 38 70 19 75 4E)
+registersymbol(AOB_Scream100_A)
+registersymbol(AOB_Scream100_B)
+
+AOB_Scream100_A:
+db 31 C0
+
+AOB_Scream100_B:
+db 85 C9
+db 90
+
+[disable]
+unregistersymbol(AOB_Scream100_A)
+unregistersymbol(AOB_Scream100_B)
+
+AOB_Scream100_A:
+db 03 C7
+
+AOB_Scream100_B:
+db 44 3B C1
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>3422</ID>
+          <Description>"0200_Wet and Stains"</Description>
+          <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[enable]
+registersymbol(YOGORE_MEM)
+alloc(YOGORE_MEM,$1000,"DOA6.exe")
+
+YOGORE_MEM:
+dd 00000000
+dd 00000000
+dd 00000000
+dd 00000000
+dd 00000000
+dd 00000000
+dd 00000000
+dd 00000000
+dd 00000000
+dd 00000000
+dd 00000000
+dd 00000000
+dd 00000000
+dd 00000000
+dd 00000000
+
+[disable]
+unregistersymbol(YOGORE_MEM)
+dealloc(YOGORE_MEM)
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>3423</ID>
+              <Description>"00_Wet and Stains(Script)"</Description>
+              <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[enable]
+aobscanmodule(AOB_Yogore_A,DOA6.exe,66 83 B8 74 01 00 00 01 75 51 0F B6 88 08 01 00 00)
+registersymbol(AOB_Yogore_A)
+alloc(newmem,$1000,"DOA6.exe")
+label(Yogore_A)
+label(Yogore_A_HP)
+label(Yogore_A_A)
+label(Yogore_A_A1)
+label(Yogore_A_AS)
+label(Yogore_A_AR)
+label(Yogore_A_B1)
+label(Yogore_A_BS)
+label(Yogore_A_BR)
+
+label(Yogore_A_APWTA)
+label(Yogore_A_APWTE)
+label(Yogore_A_APWTS)
+label(Yogore_A_AWTA)
+label(Yogore_A_AWTE)
+label(Yogore_A_AWTS)
+label(Yogore_A_BPWTA)
+label(Yogore_A_BPWTE)
+label(Yogore_A_BPWTS)
+label(Yogore_A_BWTA)
+label(Yogore_A_BWTE)
+label(Yogore_A_BWTS)
+
+label(Yogore_A_SKIP)
+label(Yogore_A_RET)
+
+newmem:
+Yogore_A:
+push rbx
+push rdx
+push rsi
+push rdi
+push r8
+xor ecx,ecx
+cmp cx,[rax+00000570]
+jb Yogore_A_A
+cmp byte ptr [rax+00000100],00
+je Yogore_A_A
+cmp [rax+68],00000120
+je Yogore_A_HP
+cmp byte ptr [rax+00000100],0D
+je Yogore_A_A
+Yogore_A_HP:
+lea rdi,[YOGORE_MEM]
+mov rsi,[r9+28]
+test rsi,rsi
+je Yogore_A_A
+mov rsi,[rsi+08]
+test rsi,rsi
+je Yogore_A_A
+mov rdx,[rsi+20]
+test rdx,rdx
+je Yogore_A_A
+mov rbx,[rsi+48]
+test rbx,rbx
+je Yogore_A_AP
+mov rbx,[rbx+28]
+test rbx,rbx
+je Yogore_A_AP
+mov rcx,[rbx+30]
+test rcx,rcx
+je Yogore_A_AP
+mov rcx,[rcx]
+test rcx,rcx
+je Yogore_A_AP
+mov rcx,[rcx+38]
+test rcx,rcx
+je Yogore_A_AP
+mov ecx,[rcx+10]
+add rbx,ecx
+Yogore_A_AP:
+mov rsi,[rsi+10]
+test rsi,rsi
+je Yogore_A_A
+mov rsi,[rsi+28]
+test rsi,rsi
+je Yogore_A_A
+mov rdx,[rdx+28]
+test rdx,rdx
+je Yogore_A_A
+mov rcx,[rsi+30]
+test rcx,rcx
+je Yogore_A_A
+mov rcx,[rcx]
+test rcx,rcx
+je Yogore_A_A
+mov rcx,[rcx+38]
+test rcx,rcx
+je Yogore_A_A
+mov ecx,[rcx+10]
+add rsi,ecx
+mov rcx,[rdx+30]
+test rcx,rcx
+je Yogore_A_A
+mov rcx,[rcx]
+test rcx,rcx
+je Yogore_A_A
+mov rcx,[rcx+38]
+test rcx,rcx
+je Yogore_A_A
+mov ecx,[rcx+10]
+add rdx,ecx
+xor ecx,ecx
+Yogore_A_AR:
+movss xmm0,[rdi+04]
+test byte ptr [rdi],01
+je Yogore_A_A1
+movss [rsi],xmm0
+test rbx,rbx
+je Yogore_A_A1
+movss [rbx],xmm0
+Yogore_A_A1:
+test byte ptr [rdi],02
+je Yogore_A_AS
+movss [rdx],xmm0
+Yogore_A_AS:
+inc ecx
+add rsi,04
+add rdx,04
+add rdi,08
+test rbx,rbx
+je Yogore_A_APS
+add rbx,04
+Yogore_A_APS:
+cmp ecx,08
+jb Yogore_A_AR
+
+lea rdi,[YOGORE_MEM]
+
+mov rsi,[r9+28]
+mov rsi,[rsi+08]
+mov rbx,[rsi+48]
+mov rsi,[rsi+10]
+mov rsi,[rsi+28]
+
+test byte ptr [rdi+40],01
+je Yogore_A_AWTS
+test rbx,rbx
+je Yogore_A_APWTS
+mov rbx,[rbx+28]
+test rbx,rbx
+je Yogore_A_APWTS
+mov rcx,[rbx+30]
+test rcx,rcx
+je Yogore_A_APWTS
+mov rcx,[rcx]
+test rcx,rcx
+je Yogore_A_APWTS
+mov rcx,[rcx+A0]
+test rcx,rcx
+je Yogore_A_APWTS
+mov edx,[rcx]
+shr edx,1E
+test dl,01
+je Yogore_A_APWTA
+mov rdx,[rcx+10]
+add rdx,rbx
+jmp Yogore_A_APWTE
+Yogore_A_APWTA:
+mov rdx,[rbx+20]
+add rdx,[rcx+10]
+Yogore_A_APWTE:
+movss xmm0,[rdi+44]
+movss [rdx],xmm0
+Yogore_A_APWTS:
+
+mov rcx,[rsi+30]
+mov rcx,[rcx]
+mov rcx,[rcx+A0]
+test rcx,rcx
+je Yogore_A_AWTS
+
+mov ebx,[rcx]
+shr ebx,1E
+test bl,01
+je Yogore_A_AWTA
+mov rbx,[rcx+10]
+add rsi,rbx
+jmp Yogore_A_AWTE
+Yogore_A_AWTA:
+mov rsi,[rsi+20]
+add rsi,[rcx+10]
+Yogore_A_AWTE:
+movss xmm0,[rdi+44]
+movss [rsi],xmm0
+
+Yogore_A_AWTS:
+
+Yogore_A_A:
+mov rsi,[r9+28]
+test rsi,rsi
+je Yogore_A_SKIP
+mov rcx,[rsi+00000098]
+test rcx,rcx
+je Yogore_A_SKIP
+movzx ecx,byte ptr [rcx+00003560]
+imul ecx,80
+lea rdi,[YOGORE_MEM+80]
+add rdi,ecx
+mov r8,rdi
+mov rsi,[rsi+08]
+test rsi,rsi
+je Yogore_A_SKIP
+mov rdx,[rsi+20]
+test rdx,rdx
+je Yogore_A_SKIP
+mov rbx,[rsi+48]
+test rbx,rbx
+je Yogore_A_BP
+mov rbx,[rbx+28]
+test rbx,rbx
+je Yogore_A_BP
+mov rcx,[rbx+30]
+test rcx,rcx
+je Yogore_A_BP
+mov rcx,[rcx]
+test rcx,rcx
+je Yogore_A_BP
+mov rcx,[rcx+38]
+test rcx,rcx
+je Yogore_A_BP
+mov ecx,[rcx+10]
+add rbx,ecx
+Yogore_A_BP:
+mov rsi,[rsi+10]
+test rsi,rsi
+je Yogore_A_SKIP
+mov rsi,[rsi+28]
+test rsi,rsi
+je Yogore_A_SKIP
+mov rdx,[rdx+28]
+test rdx,rdx
+je Yogore_A_SKIP
+mov rcx,[rsi+30]
+test rcx,rcx
+je Yogore_A_SKIP
+mov rcx,[rcx]
+test rcx,rcx
+je Yogore_A_SKIP
+mov rcx,[rcx+38]
+test rcx,rcx
+je Yogore_A_SKIP
+mov ecx,[rcx+10]
+add rsi,ecx
+mov rcx,[rdx+30]
+test rcx,rcx
+je Yogore_A_SKIP
+mov rcx,[rcx]
+test rcx,rcx
+je Yogore_A_SKIP
+mov rcx,[rcx+38]
+test rcx,rcx
+je Yogore_A_SKIP
+mov ecx,[rcx+10]
+add rdx,ecx
+xor ecx,ecx
+Yogore_A_BR:
+movss xmm0,[rdi+04]
+test byte ptr [rdi],01
+je Yogore_A_B1
+movss [rsi],xmm0
+test rbx,rbx
+je Yogore_A_B1
+movss [rbx],xmm0
+Yogore_A_B1:
+test byte ptr [rdi],02
+je Yogore_A_BS
+movss [rdx],xmm0
+Yogore_A_BS:
+inc ecx
+add rsi,04
+add rdx,04
+add rdi,08
+test rbx,rbx
+je Yogore_A_BPS
+add rbx,04
+Yogore_A_BPS:
+cmp ecx,08
+jb Yogore_A_BR
+
+mov rdi,r8
+mov rsi,[r9+28]
+mov rsi,[rsi+08]
+mov rbx,[rsi+48]
+mov rsi,[rsi+10]
+mov rsi,[rsi+28]
+
+test byte ptr [rdi+40],01
+je Yogore_A_BWTS
+test rbx,rbx
+je Yogore_A_BPWTS
+mov rbx,[rbx+28]
+test rbx,rbx
+je Yogore_A_BPWTS
+mov rcx,[rbx+30]
+test rcx,rcx
+je Yogore_A_BPWTS
+mov rcx,[rcx]
+test rcx,rcx
+je Yogore_A_BPWTS
+mov rcx,[rcx+A0]
+test rcx,rcx
+je Yogore_A_BPWTS
+mov edx,[rcx]
+shr edx,1E
+test dl,01
+je Yogore_A_BPWTA
+mov rdx,[rcx+10]
+add rdx,rbx
+jmp Yogore_A_BPWTE
+Yogore_A_BPWTA:
+mov rdx,[rbx+20]
+add rdx,[rcx+10]
+Yogore_A_BPWTE:
+movss xmm0,[rdi+44]
+movss [rdx],xmm0
+Yogore_A_BPWTS:
+
+mov rcx,[rsi+30]
+mov rcx,[rcx]
+mov rcx,[rcx+A0]
+test rcx,rcx
+je Yogore_A_BWTS
+
+mov ebx,[rcx]
+shr ebx,1E
+test bl,01
+je Yogore_A_BWTA
+mov rbx,[rcx+10]
+add rsi,rbx
+jmp Yogore_A_BWTE
+Yogore_A_BWTA:
+mov rsi,[rsi+20]
+add rsi,[rcx+10]
+Yogore_A_BWTE:
+movss xmm0,[rdi+44]
+movss [rsi],xmm0
+Yogore_A_BWTS:
+
+
+Yogore_A_SKIP:
+pop r8
+pop rdi
+pop rsi
+pop rdx
+pop rbx
+db 66 83 B8 74 01 00 00 01
+jmp Yogore_A_RET
+
+AOB_Yogore_A:
+jmp Yogore_A
+nop
+nop
+nop
+Yogore_A_RET:
+
+[disable]
+unregistersymbol(AOB_Yogore_A)
+dealloc(newmem)
+
+AOB_Yogore_A:
+db 66 83 B8 74 01 00 00 01
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>3475</ID>
+                  <Description>"00_HP0 Wet and Stains"</Description>
+                  <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>3476</ID>
+                      <Description>"00_HP0 Wet(Body) Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3477</ID>
+                          <Description>"HP0 Wet(Body) Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+4</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3478</ID>
+                      <Description>"01_HP0 Wet(Clothes) Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+8</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3479</ID>
+                          <Description>"HP0 Wet(Clothes) Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+C</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3480</ID>
+                      <Description>"02_HP0 Scar Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+10</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3481</ID>
+                          <Description>"HP0 Scar Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+14</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3482</ID>
+                      <Description>"03_HP0 Soot Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+18</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3483</ID>
+                          <Description>"HP0 Soot Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+1C</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3484</ID>
+                      <Description>"04_HP0 Stain Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+20</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3485</ID>
+                          <Description>"HP0 Stain Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+24</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3486</ID>
+                      <Description>"05_HP0 Sand Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+28</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3487</ID>
+                          <Description>"HP0 Sand Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+2C</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3488</ID>
+                      <Description>"06_HP0 Snow Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+30</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3489</ID>
+                          <Description>"HP0 Snow Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+34</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3557</ID>
+                      <Description>"07_HP0 Oil Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+38</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3558</ID>
+                          <Description>"HP0 Oil Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+3C</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3490</ID>
+                      <Description>"08_HP0 Wet Cloth Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:ON
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+40</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3491</ID>
+                          <Description>"HP0 Wet Cloth Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+44</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>3492</ID>
+                  <Description>"01_1P Wet and Stains"</Description>
+                  <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>3493</ID>
+                      <Description>"00_1P Wet(Body) Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+80</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3494</ID>
+                          <Description>"1P Wet(Body) Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+80+4</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3495</ID>
+                      <Description>"01_1P Wet(Clothes) Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+80+8</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3496</ID>
+                          <Description>"1P Wet(Clothes) Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+80+C</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3497</ID>
+                      <Description>"02_1P Scar Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+80+10</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3498</ID>
+                          <Description>"1P Scar Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+80+14</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3499</ID>
+                      <Description>"03_1P Soot Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+80+18</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3500</ID>
+                          <Description>"1P Soot Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+80+1C</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3501</ID>
+                      <Description>"04_1P Stain Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+80+20</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3502</ID>
+                          <Description>"1P Stain Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+80+24</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3503</ID>
+                      <Description>"05_1P Sand Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+80+28</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3504</ID>
+                          <Description>"1P Sand Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+80+2C</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3505</ID>
+                      <Description>"06_1P Snow Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+80+30</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3506</ID>
+                          <Description>"1P Snow Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+80+34</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3507</ID>
+                      <Description>"07_1P Oil Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+80+38</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3508</ID>
+                          <Description>"1P Oil Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+80+3C</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3559</ID>
+                      <Description>"08_1P Wet Cloth Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:ON
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+80+40</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3560</ID>
+                          <Description>"1P Wet Cloth Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+80+44</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>3458</ID>
+                  <Description>"02_2P Wet and Stains"</Description>
+                  <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>3459</ID>
+                      <Description>"00_2P Wet(Body) Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+80*2</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3460</ID>
+                          <Description>"2P Wet(Body) Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+80*2+4</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3461</ID>
+                      <Description>"01_2P Wet(Clothes) Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+80*2+8</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3462</ID>
+                          <Description>"2P Wet(Clothes) Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+80*2+C</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3561</ID>
+                      <Description>"08_2P Wet Cloth Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:ON
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+80*2+40</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3562</ID>
+                          <Description>"2P Wet Cloth Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+80*2+44</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3463</ID>
+                      <Description>"02_2P Scar Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+80*2+10</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3464</ID>
+                          <Description>"2P Scar Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+80*2+14</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3465</ID>
+                      <Description>"03_2P Soot Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+80*2+18</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3466</ID>
+                          <Description>"2P Soot Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+80*2+1C</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3467</ID>
+                      <Description>"04_2P Stain Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+80*2+20</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3468</ID>
+                          <Description>"2P Stain Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+80*2+24</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3469</ID>
+                      <Description>"05_2P Sand Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+80*2+28</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3470</ID>
+                          <Description>"2P Sand Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+80*2+2C</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3471</ID>
+                      <Description>"06_2P Snow Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+80*2+30</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3472</ID>
+                          <Description>"2P Snow Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+80*2+34</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3473</ID>
+                      <Description>"07_2P Oil Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:Body
+02:Face
+03:Body+Face
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+80*2+38</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3474</ID>
+                          <Description>"2P Oil Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+80*2+3C</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>3587</ID>
+          <Description>"0500_Hide Physics Costume"</Description>
+          <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[enable]
+registersymbol(SKIRT_MEM)
+alloc(SKIRT_MEM,$10000,"DOA6.exe")
+
+SKIRT_MEM:
+db 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+db 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+/*BOTTOMS FULL*/
+SKIRT_MEM+20:
+/*TINA*/
+dd 000000CC 00004E20 0000EA10
+dd 0000006C 00004E20 00008040
+dd 0000006C 00004E21 00008040
+dd 0000003C 00004E26 00004B60
+dd 0000006C 00004E20 000080E0
+dd 00000012 00004E21 00001E30
+dd 00000012 00004E22 00001E30
+dd 00000070 00004E20 00008500
+dd 00000012 00004E22 00001C90
+dd 00000024 00004E22 000030B0
+dd 00000028 00004E23 00003520
+dd 00000062 00004E20 00007530
+dd 00000018 00004E21 000023F0
+dd 00000018 00004E22 000023F0
+dd 00000024 00004E20 00002F70
+dd 00000024 00004E21 00002F70
+/*KASUMI*/
+dd 00000042 00004E20 00005530
+dd 00000077 00004E21 00008F50
+dd 00000042 00004E20 00005550
+dd 00000077 00004E21 00008F70
+dd 00000096 00004E21 0000AE10
+dd 00000072 00004E20 00008A60
+dd 00000085 00004E20 00009B40
+dd 00000042 00004E20 00005480
+dd 00000085 00004E21 00009DF0
+dd 0000001E 00004E22 00002D00
+dd 0000001E 00004E23 00002D00
+dd 000000A0 00004E20 0000B930
+dd 00000023 00004E21 00002D90
+dd 0000000F 00004E22 000016D0
+dd 0000000F 00004E23 000016D0
+dd 000000C8 00004E20 0000E8A0
+dd 0000007E 00004E24 000094A0
+dd 0000003C 00004E20 00004A60
+/*HELENA*/
+dd 0000008C 00004E20 0000A6A0
+dd 000000AB 00004E21 0000C500
+dd 000000A9 00004E20 0000C340
+dd 00000014 00004E21 00001EB0
+dd 00000014 00004E22 00001EB0
+dd 00000054 00004E20 000065B0
+dd 00000079 00004E21 00008E40
+dd 00000024 00004E24 00002F70
+dd 00000024 00004E25 00002F70
+dd 00000078 00004E23 00008DD0
+dd 00000078 00004E24 00008DD0
+dd 0000003C 00004E25 00004B00
+dd 00000037 00004E26 00004580
+dd 0000000F 00004E20 000019B0
+dd 000000C8 00004E20 0000E8A0
+dd 00000012 00004E21 00001F00
+dd 00000012 00004E22 00001F00
+dd 00000150 00004E23 00017D10
+dd 00000024 00004E20 00003040
+dd 00000024 00004E21 00003040
+/*KOKORO*/
+dd 000000CC 00004E24 0000E810
+dd 000000B4 00004E20 0000D050
+dd 00000098 00004E20 0000B010
+dd 00000078 00004E20 00008D30
+dd 000000A0 00004E20 0000B930
+dd 00000023 00004E21 00002D90
+dd 0000000F 00004E22 000016D0
+dd 0000000F 00004E23 000016D0
+dd 000000A0 00004E20 0000BE80
+dd 00000015 00004E20 000020A0
+dd 00000015 00004E21 000020A0
+dd 00000062 00004E22 00007530
+dd 0000003C 00004E20 00004A60
+/*LEIFANG*/
+dd 0000000E 00004E20 00001750
+dd 00000075 00004E22 00008930
+dd 00000082 00004E23 00009770
+dd 000000B0 00004E20 0000CB20
+dd 0000007E 00004E21 00009460
+dd 0000006E 00004E20 000084A0
+dd 00000090 00004E20 0000ABE0
+dd 000000A0 00004E20 0000BE80
+dd 00000018 00004E20 000024C0
+dd 000000B4 00004E21 0000D050
+/*AYANE*/
+dd 000000B0 00004E20 0000CC60
+dd 00000021 00004E21 00002F60
+dd 00000021 00004E22 00002F60
+dd 00000012 00004E20 00001AF0
+dd 0000002D 00004E21 00003BB0
+dd 00000024 00004E22 00003040
+dd 00000024 00004E23 00003040
+dd 00000014 00004E21 00002190
+dd 00000014 00004E22 00002190
+dd 00000070 00004E20 00008560
+dd 00000018 00004E22 00002460
+dd 0000008C 00004E20 0000A350
+dd 00000018 00004E20 000024C0
+dd 000000B4 00004E21 0000D050
+/*LA MARIPOSA*/
+dd 000000D2 00004E21 0000F930
+dd 000000BE 00004E20 0000DC10
+dd 00000024 00004E22 00002FE0
+dd 00000028 00004E23 00003450
+dd 00000012 00004E21 00001F00
+dd 00000012 00004E22 00001F00
+dd 00000150 00004E23 00017D10
+/*CHRISTIE*/
+dd 00000018 00004E20 00002490
+dd 00000062 00004E20 00007670
+dd 00000015 00004E21 00002580
+dd 00000015 00004E22 00002580
+/*HITOMI*/
+dd 0000004D 00004E20 00005CF0
+dd 00000031 00004E21 00003F60
+dd 00000012 00004E22 00001C20
+dd 00000012 00004E23 00001C20
+dd 000000CF 00004E20 0000EDF0
+dd 00000090 00004E20 0000ABE0
+dd 0000008C 00004E20 0000A350
+dd 00000070 00004E24 000084F0
+/*MILA*/
+dd 00000070 00004E20 00008560
+dd 00000012 00004E22 00001C30
+dd 000000A0 00004E20 0000BA70
+dd 00000018 00004E20 000024C0
+dd 000000B4 00004E21 0000D050
+/*MARIE ROSE*/
+dd 000000D8 00004E20 0000FCA0
+dd 00000069 00004E20 00007CE0
+dd 000000BB 00004E20 0000D840
+dd 0000001C 00004E20 000025E0
+dd 0000001C 00004E21 000025E0
+dd 0000006E 00004E20 00008160
+dd 00000090 00004E20 0000AB10
+dd 00000078 00004E21 00008C40
+dd 000000D8 00004E20 0000FCA0
+dd 00000070 00004E23 00008620
+dd 000000A8 00004E20 0000C560
+/*NYOTENGU*/
+dd 000000C0 00004E22 0000DDB0
+dd 00000015 00004E20 00001F00
+dd 00000014 00004E21 00001E50
+dd 00000014 00004E22 00001E50
+dd 0000002D 00004E23 00003A10
+dd 0000002D 00004E24 00003A10
+dd 000000A0 00004E20 0000B9A0
+dd 00000023 00004E21 00002D90
+dd 0000000F 00004E22 000016D0
+dd 0000000F 00004E23 000016D0
+dd 000000A0 00004E20 0000B8D0
+dd 00000018 00004E21 000023F0
+dd 00000018 00004E22 000023F0
+dd 000000C0 00004E23 0000DD20
+dd 00000024 00004E20 00003040
+dd 00000024 00004E21 00003040
+/*HONOKA*/
+dd 000000B4 00004E22 0000D180
+dd 000000B4 00004E20 0000CF10
+dd 0000000F 00004E20 00001A70
+dd 00000014 00004E22 00001D20
+dd 000000A0 00004E20 0000B930
+dd 00000015 00004E22 00002040
+dd 00000028 00004E22 000034B0
+dd 00000024 00004E23 00003040
+dd 000000B4 00004E22 0000D180
+dd 00000018 00004E20 000023F0
+dd 00000018 00004E21 000023F0
+dd 000000C6 00004E22 0000E610
+dd 0000003F 00004E20 00004FF0
+/*NiCO*/
+dd 00000012 00004E21 00001C30
+dd 00000012 00004E22 00001C30
+dd 000000A9 00004E23 0000C470
+dd 000000A0 00004E22 0000BA70
+dd 00000018 00004E20 000021F0
+dd 00000018 00004E21 000021F0
+dd 00000090 00004E20 0000ABE0
+dd 00000078 00004E21 00008C40
+dd 00000018 00004E20 000024C0
+dd 000000D8 00004E21 0000F7D0
+dd 000000A8 00004E20 0000C210
+/*PHASE-4*/
+dd 00000042 00004E20 00005460
+dd 00000063 00004E21 00007890
+dd 00000063 00004E22 00007890
+dd 00000078 00004E21 00008C40
+dd 00000018 00004E21 00002320
+dd 00000018 00004E22 00002320
+dd 000000EA 00004E23 00010BF0
+dd 00000024 00004E20 000030B0
+dd 00000024 00004E21 000030B0
+/*MAI*/
+dd 00000028 00004E20 00003520
+dd 00000028 00004E21 00003520
+dd 00000037 00004E22 00004510
+dd 000000A0 00004E20 0000BA70
+dd 00000028 00004E21 000034B0
+dd 00000028 00004E22 000034B0
+dd 0000008C 00004E20 0000A5C0
+dd 00000028 00004E21 000035F0
+dd 00000028 00004E22 000035F0
+dd 00000028 00004E20 00003520
+dd 00000028 00004E21 00003520
+dd 00000028 00004E20 00003520
+dd 00000028 00004E21 00003580
+dd 00000090 00004E22 0000A860
+dd 00000028 00004E20 00003580
+dd 00000028 00004E21 00003580
+dd 00000032 00004E22 00004140
+/*KULA*/
+dd 00000028 00004E20 00003530
+dd 00000028 00004E21 00003530
+dd 00000028 00004E22 00003530
+dd 00000028 00004E23 00003530
+dd 000000A8 00004E20 0000C620
+dd 0000008C 00004E20 0000A5C0
+dd 00000075 00004E20 00008A40
+/*MOMIJI*/
+dd 00000030 00004E20 00003F00
+dd 00000030 00004E21 00003F00
+dd 00000020 00004E20 00002C50
+dd 00000020 00004E21 00002C50
+dd 00000023 00004E22 00003070
+dd 00000077 00004E23 00008C40
+dd 000000A0 00004E20 0000B930
+dd 00000023 00004E21 00002D90
+dd 0000000F 00004E22 000016D0
+dd 0000000F 00004E23 000016D0
+dd 0000008C 00004E20 0000A420
+dd 00000018 00004E20 000024C0
+dd 000000B4 00004E21 0000D050
+dd 00000020 00004E20 00002C50
+dd 00000020 00004E21 00002C50
+/*END*/
+dd 00000000 00000000 00000000
+
+/*BOTTOMS A*/
+SKIRT_MEM+2000:
+/*TINA*/
+dd 000000CC 00004E20 0000EA10
+dd 0000003C 00004E26 00004B60
+dd 00000012 00004E21 00001E30
+dd 00000012 00004E22 00001E30
+dd 00000070 00004E20 00008500
+dd 00000024 00004E22 000030B0
+dd 00000028 00004E23 00003520
+dd 00000062 00004E20 00007530
+dd 00000024 00004E20 00002F70
+dd 00000024 00004E21 00002F70
+/*KASUMI*/
+dd 00000042 00004E20 00005530
+dd 00000042 00004E20 00005550
+dd 00000096 00004E21 0000AE10
+dd 00000072 00004E20 00008A60
+dd 00000085 00004E20 00009B40
+dd 00000042 00004E20 00005480
+dd 000000A0 00004E20 0000B930
+dd 000000C8 00004E20 0000E8A0
+dd 0000007E 00004E24 000094A0
+dd 0000003C 00004E20 00004A60
+/*HELENA*/
+dd 0000008C 00004E20 0000A6A0
+dd 000000A9 00004E20 0000C340
+dd 00000054 00004E20 000065B0
+dd 00000078 00004E23 00008DD0
+dd 00000078 00004E24 00008DD0
+dd 0000000F 00004E20 000019B0
+dd 000000C8 00004E20 0000E8A0
+dd 00000150 00004E23 00017D10
+dd 00000024 00004E20 00003040
+dd 00000024 00004E21 00003040
+/*KOKORO*/
+dd 000000CC 00004E24 0000E810
+dd 000000B4 00004E20 0000D050
+dd 00000098 00004E20 0000B010
+dd 00000078 00004E20 00008D30
+dd 000000A0 00004E20 0000B930
+dd 000000A0 00004E20 0000BE80
+dd 00000062 00004E22 00007530
+dd 0000003C 00004E20 00004A60
+/*LEIFANG*/
+dd 0000000E 00004E20 00001750
+dd 00000075 00004E22 00008930
+dd 000000B0 00004E20 0000CB20
+dd 0000006E 00004E20 000084A0
+dd 00000090 00004E20 0000ABE0
+dd 000000A0 00004E20 0000BE80
+dd 000000B4 00004E21 0000D050
+/*AYANE*/
+dd 000000B0 00004E20 0000CC60
+dd 0000002D 00004E21 00003BB0
+dd 00000014 00004E21 00002190
+dd 00000014 00004E22 00002190
+dd 00000070 00004E20 00008560
+dd 0000008C 00004E20 0000A350
+dd 000000B4 00004E21 0000D050
+/*LA MARIPOSA*/
+dd 000000D2 00004E21 0000F930
+dd 000000BE 00004E20 0000DC10
+dd 00000024 00004E22 00002FE0
+dd 00000028 00004E23 00003450
+dd 00000150 00004E23 00017D10
+/*CHRISTIE*/
+dd 00000018 00004E20 00002490
+dd 00000062 00004E20 00007670
+/*HITOMI*/
+dd 0000004D 00004E20 00005CF0
+dd 000000CF 00004E20 0000EDF0
+dd 00000090 00004E20 0000ABE0
+dd 0000008C 00004E20 0000A350
+dd 00000070 00004E24 000084F0
+/*MILA*/
+dd 00000070 00004E20 00008560
+dd 000000A0 00004E20 0000BA70
+dd 000000B4 00004E21 0000D050
+/*MARIE ROSE*/
+dd 000000D8 00004E20 0000FCA0
+dd 00000069 00004E20 00007CE0
+dd 000000BB 00004E20 0000D840
+dd 0000001C 00004E20 000025E0
+dd 0000001C 00004E21 000025E0
+dd 0000006E 00004E20 00008160
+dd 00000090 00004E20 0000AB10
+dd 00000078 00004E21 00008C40
+dd 000000D8 00004E20 0000FCA0
+dd 00000070 00004E23 00008620
+dd 000000A8 00004E20 0000C560
+/*NYOTENGU*/
+dd 000000C0 00004E22 0000DDB0
+dd 00000015 00004E20 00001F00
+dd 000000A0 00004E20 0000B9A0
+dd 000000A0 00004E20 0000B8D0
+dd 000000C0 00004E23 0000DD20
+dd 00000024 00004E20 00003040
+dd 00000024 00004E21 00003040
+/*HONOKA*/
+dd 000000B4 00004E22 0000D180
+dd 000000B4 00004E20 0000CF10
+dd 0000000F 00004E20 00001A70
+dd 00000014 00004E22 00001D20
+dd 000000A0 00004E20 0000B930
+dd 00000028 00004E22 000034B0
+dd 00000024 00004E23 00003040
+dd 000000B4 00004E22 0000D180
+dd 000000C6 00004E22 0000E610
+dd 0000003F 00004E20 00004FF0
+/*NiCO*/
+dd 000000A9 00004E23 0000C470
+dd 000000A0 00004E22 0000BA70
+dd 00000090 00004E20 0000ABE0
+dd 00000078 00004E21 00008C40
+dd 000000D8 00004E21 0000F7D0
+dd 000000A8 00004E20 0000C210
+/*PHASE-4*/
+dd 00000042 00004E20 00005460
+dd 00000078 00004E21 00008C40
+dd 000000EA 00004E23 00010BF0
+dd 00000024 00004E20 000030B0
+dd 00000024 00004E21 000030B0
+/*MAI*/
+dd 00000037 00004E22 00004510
+dd 000000A0 00004E20 0000BA70
+dd 0000008C 00004E20 0000A5C0
+dd 00000028 00004E20 00003520
+dd 00000028 00004E21 00003520
+dd 00000090 00004E22 0000A860
+dd 00000032 00004E22 00004140
+/*KULA*/
+dd 00000028 00004E20 00003530
+dd 00000028 00004E21 00003530
+dd 00000028 00004E22 00003530
+dd 00000028 00004E23 00003530
+dd 000000A8 00004E20 0000C620
+dd 0000008C 00004E20 0000A5C0
+dd 00000075 00004E20 00008A40
+/*MOMIJI*/
+dd 00000030 00004E20 00003F00
+dd 00000030 00004E21 00003F00
+dd 00000077 00004E23 00008C40
+dd 000000A0 00004E20 0000B930
+dd 0000008C 00004E20 0000A420
+dd 000000B4 00004E21 0000D050
+dd 00000020 00004E20 00002C50
+dd 00000020 00004E21 00002C50
+/*END*/
+dd 00000000 00000000 00000000
+
+/*BOTTOMS B*/
+SKIRT_MEM+3000:
+/*TINA*/
+dd 000000CC 00004E20 0000EA10
+dd 0000006C 00004E20 00008040
+dd 0000006C 00004E21 00008040
+dd 0000006C 00004E20 000080E0
+dd 00000012 00004E22 00001C90
+dd 00000024 00004E22 000030B0
+dd 00000028 00004E23 00003520
+dd 00000018 00004E21 000023F0
+dd 00000018 00004E22 000023F0
+dd 00000024 00004E20 00002F70
+dd 00000024 00004E21 00002F70
+/*KASUMI*/
+dd 00000077 00004E21 00008F50
+dd 00000077 00004E21 00008F70
+dd 00000096 00004E21 0000AE10
+dd 00000072 00004E20 00008A60
+dd 00000085 00004E20 00009B40
+dd 00000085 00004E21 00009DF0
+dd 00000023 00004E21 00002D90
+dd 000000C8 00004E20 0000E8A0
+dd 0000007E 00004E24 000094A0
+dd 0000003C 00004E20 00004A60
+/*HELENA*/
+dd 000000AB 00004E21 0000C500
+dd 00000014 00004E21 00001EB0
+dd 00000014 00004E22 00001EB0
+dd 00000079 00004E21 00008E40
+dd 0000003C 00004E25 00004B00
+dd 00000037 00004E26 00004580
+dd 0000000F 00004E20 000019B0
+dd 000000C8 00004E20 0000E8A0
+dd 00000012 00004E21 00001F00
+dd 00000012 00004E22 00001F00
+dd 00000024 00004E20 00003040
+dd 00000024 00004E21 00003040
+/*KOKORO*/
+dd 000000CC 00004E24 0000E810
+dd 000000B4 00004E20 0000D050
+dd 00000098 00004E20 0000B010
+dd 00000078 00004E20 00008D30
+dd 00000023 00004E21 00002D90
+dd 000000A0 00004E20 0000BE80
+dd 00000015 00004E20 000020A0
+dd 00000015 00004E21 000020A0
+dd 0000003C 00004E20 00004A60
+/*LEIFANG*/
+dd 0000000E 00004E20 00001750
+dd 00000082 00004E23 00009770
+dd 0000007E 00004E21 00009460
+dd 0000006E 00004E20 000084A0
+dd 00000090 00004E20 0000ABE0
+dd 000000A0 00004E20 0000BE80
+dd 00000018 00004E20 000024C0
+/*AYANE*/
+dd 00000021 00004E21 00002F60
+dd 00000021 00004E22 00002F60
+dd 00000024 00004E22 00003040
+dd 00000024 00004E23 00003040
+dd 00000014 00004E21 00002190
+dd 00000014 00004E22 00002190
+dd 00000018 00004E22 00002460
+dd 0000008C 00004E20 0000A350
+dd 00000018 00004E20 000024C0
+/*LA MARIPOSA*/
+dd 000000D2 00004E21 0000F930
+dd 000000BE 00004E20 0000DC10
+dd 00000024 00004E22 00002FE0
+dd 00000028 00004E23 00003450
+dd 00000012 00004E21 00001F00
+dd 00000012 00004E22 00001F00
+/*CHRISTIE*/
+dd 00000018 00004E20 00002490
+dd 00000015 00004E21 00002580
+dd 00000015 00004E22 00002580
+/*HITOMI*/
+dd 00000031 00004E21 00003F60
+dd 000000CF 00004E20 0000EDF0
+dd 00000090 00004E20 0000ABE0
+dd 0000008C 00004E20 0000A350
+dd 00000070 00004E24 000084F0
+/*MILA*/
+dd 00000012 00004E22 00001C30
+dd 000000A0 00004E20 0000BA70
+dd 00000018 00004E20 000024C0
+/*MARIE ROSE*/
+dd 000000D8 00004E20 0000FCA0
+dd 00000069 00004E20 00007CE0
+dd 000000BB 00004E20 0000D840
+dd 0000001C 00004E20 000025E0
+dd 0000001C 00004E21 000025E0
+dd 0000006E 00004E20 00008160
+dd 00000090 00004E20 0000AB10
+dd 00000078 00004E21 00008C40
+dd 000000D8 00004E20 0000FCA0
+dd 00000070 00004E23 00008620
+dd 000000A8 00004E20 0000C560
+/*NYOTENGU*/
+dd 000000C0 00004E22 0000DDB0
+dd 0000002D 00004E23 00003A10
+dd 0000002D 00004E24 00003A10
+dd 00000023 00004E21 00002D90
+dd 000000A0 00004E20 0000B8D0
+dd 00000018 00004E21 000023F0
+dd 00000018 00004E22 000023F0
+dd 00000024 00004E20 00003040
+dd 00000024 00004E21 00003040
+/*HONOKA*/
+dd 000000B4 00004E22 0000D180
+dd 000000B4 00004E20 0000CF20
+dd 0000000F 00004E20 00001A70
+dd 00000014 00004E22 00001D20
+dd 00000015 00004E22 00002040
+dd 00000028 00004E22 000034B0
+dd 00000024 00004E23 00003040
+dd 000000B4 00004E22 0000D180
+dd 00000018 00004E20 000023F0
+dd 00000018 00004E21 000023F0
+dd 0000003F 00004E20 00004FF0
+/*NiCO*/
+dd 00000012 00004E21 00001C30
+dd 00000012 00004E22 00001C30
+dd 000000A0 00004E22 0000BA70
+dd 00000018 00004E20 000021F0
+dd 00000018 00004E21 000021F0
+dd 00000090 00004E20 0000ABE0
+dd 00000078 00004E21 00008C40
+dd 00000018 00004E20 000024C0
+dd 000000A8 00004E20 0000C210
+/*PHASE-4*/
+dd 00000063 00004E21 00007890
+dd 00000063 00004E22 00007890
+dd 00000078 00004E21 00008C40
+dd 00000018 00004E21 00002320
+dd 00000018 00004E22 00002320
+dd 00000024 00004E20 000030B0
+dd 00000024 00004E21 000030B0
+/*MAI*/
+dd 00000028 00004E20 00003520
+dd 00000028 00004E21 00003520
+dd 00000028 00004E21 000034B0
+dd 00000028 00004E22 000034B0
+dd 00000028 00004E21 000035F0
+dd 00000028 00004E22 000035F0
+dd 00000028 00004E20 00003520
+dd 00000028 00004E21 00003520
+dd 00000028 00004E20 00003520
+dd 00000028 00004E21 00003580
+dd 00000028 00004E20 00003580
+dd 00000028 00004E21 00003580
+/*KULA*/
+dd 00000028 00004E20 00003530
+dd 00000028 00004E21 00003530
+dd 00000028 00004E22 00003530
+dd 00000028 00004E23 00003530
+dd 000000A8 00004E20 0000C620
+dd 0000008C 00004E20 0000A5C0
+dd 00000075 00004E20 00008A40
+/*MOMIJI*/
+dd 00000030 00004E20 00003F00
+dd 00000030 00004E21 00003F00
+dd 00000023 00004E22 00003070
+dd 00000023 00004E21 00002D90
+dd 0000008C 00004E20 0000A420
+dd 00000018 00004E20 000024C0
+dd 00000020 00004E20 00002C50
+dd 00000020 00004E21 00002C50
+/*END*/
+dd 00000000 00000000 00000000
+
+/*BOTTOMS C*/
+SKIRT_MEM+4000:
+/*TINA*/
+dd 000000CC 00004E20 0000EA10
+dd 0000006C 00004E20 00008040
+dd 0000006C 00004E21 00008040
+dd 0000006C 00004E20 000080E0
+dd 00000012 00004E22 00001C90
+dd 00000024 00004E22 000030B0
+dd 00000028 00004E23 00003520
+dd 00000018 00004E21 000023F0
+dd 00000018 00004E22 000023F0
+dd 00000024 00004E20 00002F70
+dd 00000024 00004E21 00002F70
+/*KASUMI*/
+dd 00000077 00004E21 00008F50
+dd 00000077 00004E21 00008F70
+dd 00000096 00004E21 0000AE10
+dd 00000072 00004E20 00008A60
+dd 00000085 00004E20 00009B40
+dd 0000001E 00004E22 00002D00
+dd 0000001E 00004E23 00002D00
+dd 0000000F 00004E22 000016D0
+dd 0000000F 00004E23 000016D0
+dd 000000C8 00004E20 0000E8A0
+dd 0000007E 00004E24 000094A0
+dd 0000003C 00004E20 00004A60
+/*HELENA*/
+dd 000000AB 00004E21 0000C500
+dd 00000014 00004E21 00001EB0
+dd 00000014 00004E22 00001EB0
+dd 00000024 00004E24 00002F70
+dd 00000024 00004E25 00002F70
+dd 0000003C 00004E25 00004B00
+dd 00000037 00004E26 00004580
+dd 0000000F 00004E20 000019B0
+dd 000000C8 00004E20 0000E8A0
+dd 00000012 00004E21 00001F00
+dd 00000012 00004E22 00001F00
+dd 00000024 00004E20 00003040
+dd 00000024 00004E21 00003040
+/*KOKORO*/
+dd 000000CC 00004E24 0000E810
+dd 000000B4 00004E20 0000D050
+dd 00000098 00004E20 0000B010
+dd 00000078 00004E20 00008D30
+dd 0000000F 00004E22 000016D0
+dd 0000000F 00004E23 000016D0
+dd 000000A0 00004E20 0000BE80
+dd 00000015 00004E20 000020A0
+dd 00000015 00004E21 000020A0
+dd 0000003C 00004E20 00004A60
+/*LEIFANG*/
+dd 0000000E 00004E20 00001750
+dd 00000082 00004E23 00009770
+dd 0000007E 00004E21 00009460
+dd 0000006E 00004E20 000084A0
+dd 00000090 00004E20 0000ABE0
+dd 000000A0 00004E20 0000BE80
+dd 00000018 00004E20 000024C0
+/*AYANE*/
+dd 00000021 00004E21 00002F60
+dd 00000021 00004E22 00002F60
+dd 00000012 00004E20 00001AF0
+dd 00000014 00004E21 00002190
+dd 00000014 00004E22 00002190
+dd 00000018 00004E22 00002460
+dd 0000008C 00004E20 0000A350
+dd 00000018 00004E20 000024C0
+/*LA MARIPOSA*/
+dd 000000D2 00004E21 0000F930
+dd 000000BE 00004E20 0000DC10
+dd 00000024 00004E22 00002FE0
+dd 00000028 00004E23 00003450
+dd 00000012 00004E21 00001F00
+dd 00000012 00004E22 00001F00
+/*CHRISTIE*/
+dd 00000018 00004E20 00002490
+dd 00000015 00004E21 00002580
+dd 00000015 00004E22 00002580
+/*HITOMI*/
+dd 00000012 00004E22 00001C20
+dd 00000012 00004E23 00001C20
+dd 000000CF 00004E20 0000EDF0
+dd 00000090 00004E20 0000ABE0
+dd 0000008C 00004E20 0000A350
+dd 00000070 00004E24 000084F0
+/*MILA*/
+dd 00000012 00004E22 00001C30
+dd 000000A0 00004E20 0000BA70
+dd 00000018 00004E20 000024C0
+/*MARIE ROSE*/
+dd 000000D8 00004E20 0000FCA0
+dd 00000069 00004E20 00007CE0
+dd 000000BB 00004E20 0000D840
+dd 0000001C 00004E20 000025E0
+dd 0000001C 00004E21 000025E0
+dd 0000006E 00004E20 00008160
+dd 00000090 00004E20 0000AB10
+dd 00000078 00004E21 00008C40
+dd 000000D8 00004E20 0000FCA0
+dd 00000070 00004E23 00008620
+dd 000000A8 00004E20 0000C560
+/*NYOTENGU*/
+dd 000000C0 00004E22 0000DDB0
+dd 00000014 00004E21 00001E50
+dd 00000014 00004E22 00001E50
+dd 0000000F 00004E22 000016D0
+dd 0000000F 00004E23 000016D0
+dd 000000A0 00004E20 0000B8D0
+dd 00000018 00004E21 000023F0
+dd 00000018 00004E22 000023F0
+dd 00000024 00004E20 00003040
+dd 00000024 00004E21 00003040
+/*HONOKA*/
+dd 000000B4 00004E22 0000D180
+dd 000000B4 00004E20 0000CF10
+dd 0000000F 00004E20 00001A70
+dd 00000014 00004E22 00001D20
+dd 00000015 00004E22 00002040
+dd 00000028 00004E22 000034B0
+dd 00000024 00004E23 00003040
+dd 000000B4 00004E22 0000D180
+dd 00000018 00004E20 000023F0
+dd 00000018 00004E21 000023F0
+dd 0000003F 00004E20 00004FF0
+/*NiCO*/
+dd 00000012 00004E21 00001C30
+dd 00000012 00004E22 00001C30
+dd 000000A0 00004E22 0000BA70
+dd 00000018 00004E20 000021F0
+dd 00000018 00004E21 000021F0
+dd 00000090 00004E20 0000ABE0
+dd 00000078 00004E21 00008C40
+dd 00000018 00004E20 000024C0
+dd 000000A8 00004E20 0000C210
+/*PHASE-4*/
+dd 00000063 00004E21 00007890
+dd 00000063 00004E22 00007890
+dd 00000078 00004E21 00008C40
+dd 00000018 00004E21 00002320
+dd 00000018 00004E22 00002320
+dd 00000024 00004E20 000030B0
+dd 00000024 00004E21 000030B0
+/*MAI*/
+dd 00000028 00004E20 00003520
+dd 00000028 00004E21 00003520
+dd 00000028 00004E21 000034B0
+dd 00000028 00004E22 000034B0
+dd 00000028 00004E21 000035F0
+dd 00000028 00004E22 000035F0
+dd 00000028 00004E20 00003520
+dd 00000028 00004E21 00003520
+dd 00000028 00004E20 00003520
+dd 00000028 00004E21 00003580
+dd 00000028 00004E20 00003580
+dd 00000028 00004E21 00003580
+/*KULA*/
+dd 00000028 00004E20 00003530
+dd 00000028 00004E21 00003530
+dd 00000028 00004E22 00003530
+dd 00000028 00004E23 00003530
+dd 000000A8 00004E20 0000C620
+dd 0000008C 00004E20 0000A5C0
+dd 00000075 00004E20 00008A40
+/*MOMIJI*/
+dd 00000030 00004E20 00003F00
+dd 00000030 00004E21 00003F00
+dd 00000020 00004E20 00002C50
+dd 00000020 00004E21 00002C50
+dd 0000000F 00004E22 000016D0
+dd 0000000F 00004E23 000016D0
+dd 0000008C 00004E20 0000A420
+dd 00000018 00004E20 000024C0
+dd 00000020 00004E20 00002C50
+dd 00000020 00004E21 00002C50
+/*END*/
+dd 00000000 00000000 00000000
+
+/*TOPS FULL*/
+SKIRT_MEM+5000:
+/*TINA*/
+dd 000000CC 00004E20 0000EA10
+dd 00000028 00004E20 00003310
+dd 00000072 00004E23 000084E0
+dd 00000046 00004E22 00005690
+dd 00000046 00004E23 00005690
+dd 0000001E 00004E24 00002A90
+dd 0000001E 00004E25 00002A90
+dd 0000002A 00004E27 00003540
+dd 00000009 00004E20 000016C0
+dd 00000015 00004E23 00001F70
+dd 00000040 00004E26 00004F40
+dd 0000003C 00004E24 00004CD0
+dd 0000003C 00004E25 00004CD0
+dd 0000000F 00004E21 00001940
+dd 00000012 00004E22 00001C90
+dd 00000020 00004E20 00002C50
+dd 00000020 00004E21 00002C50
+dd 00000020 00004E24 00002A00
+dd 00000020 00004E25 00002A00
+dd 00000018 00004E21 000023F0
+dd 00000018 00004E22 000023F0
+dd 00000024 00004E20 00002F70
+dd 00000024 00004E21 00002F70
+/*KASUMI*/
+dd 00000012 00004E21 00001BF0
+dd 00000024 00004E24 00003390
+dd 00000006 00004E25 00001300
+dd 00000019 00004E20 000025E0
+dd 0000001E 00004E21 00002B60
+dd 00000032 00004E21 00004090
+dd 00000032 00004E22 00004090
+dd 00000012 00004E23 00001AF0
+dd 00000015 00004E20 00002110
+dd 0000001C 00004E21 000027A0
+dd 0000001C 00004E22 000027A0
+dd 00000012 00004E23 00001E30
+/*HELENA*/
+dd 000000A9 00004E20 0000C340
+dd 00000012 00004E23 00001A90
+dd 00000014 00004E22 00001D80
+dd 00000014 00004E23 00001D80
+dd 00000024 00004E26 00002F70
+dd 00000024 00004E27 00002F70
+dd 00000019 00004E20 00002310
+dd 00000048 00004E21 000056B0
+dd 00000048 00004E22 000056B0
+dd 00000032 00004E21 00003F60
+dd 00000032 00004E22 00003F60
+dd 00000012 00004E23 00001EA0
+dd 00000023 00004E20 00002EE0
+dd 00000012 00004E21 00001F00
+dd 00000012 00004E22 00001F00
+dd 00000024 00004E20 00003040
+dd 00000024 00004E21 00003040
+/*KOKORO*/
+dd 00000018 00004E22 000021F0
+dd 00000018 00004E23 000021F0
+dd 00000023 00004E21 000033B0
+dd 0000002A 00004E21 00003540
+dd 00000012 00004E21 00001BC0
+dd 00000015 00004E20 000020A0
+dd 00000015 00004E21 000020A0
+/*LEIFANG*/
+dd 0000001C 00004E21 00002C60
+dd 00000012 00004E21 00001BC0
+dd 00000018 00004E20 000024C0
+/*AYANE*/
+dd 00000040 00004E20 00005150
+dd 00000040 00004E21 00005150
+dd 0000002D 00004E20 00003C20
+dd 0000001B 00004E20 00002940
+dd 00000018 00004E21 00002460
+dd 00000010 00004E21 00001B20
+dd 00000018 00004E20 000024C0
+/*LA MARIPOSA*/
+dd 00000036 00004E20 00004320
+dd 0000006C 00004E20 00008660
+dd 00000004 00004E22 00001240
+dd 000000BE 00004E20 0000DC10
+dd 00000028 00004E20 00003450
+dd 00000020 00004E20 00002B80
+dd 00000020 00004E21 00002B80
+dd 00000023 00004E20 00002EE0
+dd 00000012 00004E21 00001F00
+dd 00000012 00004E22 00001F00
+/*CHRISTIE*/
+dd 00000009 00004E21 000013E0
+dd 00000008 00004E22 00001020
+dd 00000020 00004E20 00002BE0
+dd 00000020 00004E21 00002BE0
+dd 00000015 00004E21 00002580
+dd 00000015 00004E22 00002580
+/*HITOMI*/
+dd 0000004D 00004E20 00005CF0
+dd 00000031 00004E21 00003F60
+dd 00000012 00004E22 00001C20
+dd 00000012 00004E23 00001C20
+dd 00000072 00004E20 00008680
+dd 0000001C 00004E21 000026D0
+dd 0000001C 00004E21 00002C60
+dd 00000010 00004E21 00001780
+dd 00000015 00004E20 00002110
+dd 0000001C 00004E21 000027A0
+dd 0000001C 00004E22 000027A0
+dd 00000012 00004E23 00001DD0
+/*MILA*/
+dd 00000098 00004E20 0000B0E0
+dd 0000001E 00004E21 00002CF0
+dd 00000037 00004E20 00004720
+dd 000000BD 00004E20 0000D9C0
+dd 00000012 00004E21 00001B10
+dd 0000000F 00004E21 000018E0
+dd 00000010 00004E21 000019F0
+dd 0000000F 00004E22 000018E0
+dd 00000018 00004E20 000024C0
+/*MARIE ROSE*/
+dd 00000004 00004E21 00000C90
+dd 00000037 00004E21 00004990
+dd 000000BB 00004E20 0000D840
+dd 0000001E 00004E21 00002C30
+dd 0000000C 00004E21 000016C0
+dd 0000001C 00004E21 00002B90
+dd 00000023 00004E20 00002DA0
+dd 00000015 00004E20 00001F70
+dd 0000001C 00004E21 00002740
+dd 0000001C 00004E22 00002740
+dd 00000012 00004E24 00001F00
+/*NYOTENGU*/
+dd 00000008 00004E20 00001060
+dd 00000008 00004E21 00001060
+dd 00000014 00004E21 00001E50
+dd 00000014 00004E22 00001E50
+dd 0000002D 00004E23 00003A10
+dd 0000002D 00004E24 00003A10
+dd 00000085 00004E20 00009BA0
+dd 00000010 00004E21 00001A50
+dd 0000000F 00004E22 00001940
+dd 00000023 00004E20 00002EE0
+dd 00000018 00004E21 000023F0
+dd 00000018 00004E22 000023F0
+dd 00000024 00004E20 00003040
+dd 00000024 00004E21 00003040
+/*HONOKA*/
+dd 0000000C 00004E21 00001930
+dd 0000000E 00004E22 000017C0
+dd 00000075 00004E20 00008AC0
+dd 00000015 00004E20 00001EA0
+dd 00000015 00004E21 00001EA0
+dd 00000010 00004E21 00001AC0
+dd 00000024 00004E20 00003040
+dd 00000020 00004E21 00002BE0
+dd 0000000C 00004E21 00001930
+dd 00000018 00004E20 000023F0
+dd 00000018 00004E21 000023F0
+dd 0000003F 00004E20 00004FF0
+/*NiCO*/
+dd 000000A9 00004E23 0000C470
+dd 0000001E 00004E20 00002960
+dd 00000012 00004E20 00001C20
+dd 00000098 00004E21 0000B0E0
+dd 00000018 00004E24 00002190
+dd 00000018 00004E25 00002190
+dd 00000016 00004E20 000021B0
+dd 0000001C 00004E21 00002C60
+dd 00000023 00004E20 00002DA0
+dd 00000018 00004E20 000024C0
+/*PHASE-4*/
+dd 0000001E 00004E20 00002C90
+dd 00000021 00004E21 00002FF0
+dd 0000002A 00004E20 00003550
+dd 00000018 00004E21 00002320
+dd 00000018 00004E22 00002320
+dd 00000024 00004E20 000030B0
+dd 00000024 00004E21 000030B0
+/*MAI*/
+dd 00000028 00004E20 00003520
+dd 00000028 00004E21 00003520
+dd 0000001E 00004E23 00002960
+dd 0000001E 00004E24 00002960
+dd 00000028 00004E21 000034B0
+dd 00000028 00004E22 000034B0
+dd 00000012 00004E23 00001B60
+dd 00000018 00004E24 00002530
+dd 00000028 00004E21 000035F0
+dd 00000028 00004E22 000035F0
+dd 00000010 00004E23 00001D30
+dd 00000028 00004E20 00003520
+dd 00000028 00004E21 00003520
+dd 0000001B 00004E22 000028D0
+dd 00000018 00004E23 00002580
+dd 00000028 00004E20 00003520
+dd 00000028 00004E21 00003580
+dd 00000028 00004E20 00003580
+dd 00000028 00004E21 00003580
+dd 00000032 00004E22 00004140
+/*KULA*/
+dd 0000001C 00004E21 00002C60
+dd 00000023 00004E20 00002DA0
+dd 0000001E 00004E20 00003100
+dd 00000012 00004E21 000023D0
+dd 00000010 00004E21 000018C0
+dd 0000001E 00004E22 00002820
+dd 00000075 00004E20 00008A40
+/*MOMIJI*/
+dd 00000015 00004E20 00001FD0
+dd 00000023 00004E21 00002D90
+dd 0000000F 00004E22 000016D0
+dd 0000000F 00004E23 000016D0
+dd 00000010 00004E21 00001BF0
+dd 00000018 00004E20 000024C0
+dd 00000020 00004E20 00002C50
+dd 00000020 00004E21 00002C50
+/*END*/
+dd 00000000 00000000 00000000
+
+/*TOPS A*/
+SKIRT_MEM+6000:
+/*TINA*/
+dd 000000CC 00004E20 0000EA10
+dd 00000072 00004E23 000084E0
+dd 00000046 00004E22 00005690
+dd 00000046 00004E23 00005690
+dd 00000009 00004E20 000016C0
+dd 00000040 00004E26 00004F40
+dd 0000003C 00004E24 00004CD0
+dd 0000003C 00004E25 00004CD0
+dd 0000000F 00004E21 00001940
+dd 00000020 00004E24 00002A00
+dd 00000020 00004E25 00002A00
+dd 00000018 00004E21 000023F0
+dd 00000018 00004E22 000023F0
+dd 00000024 00004E20 00002F70
+dd 00000024 00004E21 00002F70
+/*KASUMI*/
+dd 00000012 00004E21 00001BF0
+dd 00000024 00004E24 00003390
+dd 0000001E 00004E21 00002B60
+dd 00000032 00004E21 00004090
+dd 00000032 00004E22 00004090
+dd 0000001C 00004E21 000027A0
+dd 0000001C 00004E22 000027A0
+/*HELENA*/
+dd 000000A9 00004E20 0000C340
+dd 00000014 00004E22 00001D80
+dd 00000014 00004E23 00001D80
+dd 00000048 00004E21 000056B0
+dd 00000048 00004E22 000056B0
+dd 00000032 00004E21 00003F60
+dd 00000032 00004E22 00003F60
+dd 00000023 00004E20 00002EE0
+dd 00000024 00004E20 00003040
+dd 00000024 00004E21 00003040
+/*KOKORO*/
+dd 00000018 00004E22 000021F0
+dd 00000018 00004E23 000021F0
+dd 00000023 00004E21 000033B0
+dd 0000002A 00004E21 00003540
+dd 00000012 00004E21 00001BC0
+dd 00000015 00004E20 000020A0
+dd 00000015 00004E21 000020A0
+/*LEIFANG*/
+dd 0000001C 00004E21 00002C60
+dd 00000012 00004E21 00001BC0
+dd 00000018 00004E20 000024C0
+/*AYANE*/
+dd 00000040 00004E20 00005150
+dd 00000040 00004E21 00005150
+dd 0000002D 00004E20 00003C20
+dd 0000001B 00004E20 00002940
+dd 00000018 00004E21 00002460
+dd 00000010 00004E21 00001B20
+dd 00000018 00004E20 000024C0
+/*LA MARIPOSA*/
+dd 00000036 00004E20 00004320
+dd 0000006C 00004E20 00008660
+dd 000000BE 00004E20 0000DC10
+dd 00000028 00004E20 00003450
+dd 00000020 00004E20 00002B80
+dd 00000020 00004E21 00002B80
+dd 00000023 00004E20 00002EE0
+/*CHRISTIE*/
+dd 00000008 00004E22 00001020
+dd 00000020 00004E20 00002BE0
+dd 00000020 00004E21 00002BE0
+dd 00000015 00004E21 00002580
+dd 00000015 00004E22 00002580
+/*HITOMI*/
+dd 0000004D 00004E20 00005CF0
+dd 00000072 00004E20 00008680
+dd 0000001C 00004E21 000026D0
+dd 0000001C 00004E21 00002C60
+dd 00000010 00004E21 00001780
+dd 0000001C 00004E21 000027A0
+dd 0000001C 00004E22 000027A0
+/*MILA*/
+dd 00000098 00004E20 0000B0E0
+dd 00000037 00004E20 00004720
+dd 000000BD 00004E20 0000D9C0
+dd 0000000F 00004E21 000018E0
+dd 00000010 00004E21 000019F0
+dd 00000018 00004E20 000024C0
+/*MARIE ROSE*/
+dd 00000004 00004E21 00000C90
+dd 00000037 00004E21 00004990
+dd 000000BB 00004E20 0000D840
+dd 0000000C 00004E21 000016C0
+dd 0000001C 00004E21 00002B90
+dd 00000023 00004E20 00002DA0
+dd 0000001C 00004E21 00002740
+dd 0000001C 00004E22 00002740
+/*NYOTENGU*/
+dd 00000008 00004E20 00001060
+dd 00000008 00004E21 00001060
+dd 00000014 00004E21 00001E50
+dd 00000014 00004E22 00001E50
+dd 00000085 00004E20 00009BA0
+dd 00000010 00004E21 00001A50
+dd 00000023 00004E20 00002EE0
+dd 00000024 00004E20 00003040
+dd 00000024 00004E21 00003040
+/*HONOKA*/
+dd 0000000C 00004E21 00001930
+dd 0000000E 00004E22 000017C0
+dd 00000075 00004E20 00008AC0
+dd 00000015 00004E20 00001EA0
+dd 00000015 00004E21 00001EA0
+dd 00000010 00004E21 00001AC0
+dd 00000024 00004E20 00003040
+dd 00000020 00004E21 00002BE0
+dd 0000000C 00004E21 00001930
+dd 00000018 00004E20 000023F0
+dd 00000018 00004E21 000023F0
+dd 0000003F 00004E20 00004FF0
+/*NiCO*/
+dd 000000A9 00004E23 0000C470
+dd 00000098 00004E21 0000B0E0
+dd 00000018 00004E24 00002190
+dd 00000018 00004E25 00002190
+dd 00000016 00004E20 000021B0
+dd 0000001C 00004E21 00002C60
+dd 00000023 00004E20 00002DA0
+dd 00000018 00004E20 000024C0
+/*PHASE-4*/
+dd 0000001E 00004E20 00002C90
+dd 00000021 00004E21 00002FF0
+dd 0000002A 00004E20 00003550
+dd 00000018 00004E21 00002320
+dd 00000018 00004E22 00002320
+dd 00000024 00004E20 000030B0
+dd 00000024 00004E21 000030B0
+/*MAI*/
+dd 00000028 00004E20 00003520
+dd 00000028 00004E21 00003520
+dd 00000028 00004E21 000034B0
+dd 00000028 00004E22 000034B0
+dd 00000028 00004E21 000035F0
+dd 00000028 00004E22 000035F0
+dd 00000028 00004E20 00003520
+dd 00000028 00004E21 00003520
+dd 00000028 00004E20 00003520
+dd 00000028 00004E21 00003580
+dd 00000028 00004E20 00003580
+dd 00000028 00004E21 00003580
+/*KULA*/
+dd 0000001C 00004E21 00002C60
+dd 00000023 00004E20 00002DA0
+dd 0000001E 00004E20 00003100
+dd 00000012 00004E21 000023D0
+dd 00000010 00004E21 000018C0
+dd 00000075 00004E20 00008A40
+/*MOMIJI*/
+dd 00000015 00004E20 00001FD0
+dd 00000023 00004E21 00002D90
+dd 00000010 00004E21 00001BF0
+dd 00000018 00004E20 000024C0
+dd 00000020 00004E20 00002C50
+dd 00000020 00004E21 00002C50
+/*END*/
+dd 00000000 00000000 00000000
+
+/*TOPS B*/
+SKIRT_MEM+7000:
+/*TINA*/
+dd 000000CC 00004E20 0000EA10
+dd 00000028 00004E20 00003310
+dd 0000001E 00004E24 00002A90
+dd 0000001E 00004E25 00002A90
+dd 00000009 00004E20 000016C0
+dd 00000015 00004E23 00001F70
+dd 0000003C 00004E24 00004CD0
+dd 0000003C 00004E25 00004CD0
+dd 00000012 00004E22 00001C90
+dd 00000020 00004E20 00002C50
+dd 00000020 00004E21 00002C50
+dd 00000018 00004E21 000023F0
+dd 00000018 00004E22 000023F0
+dd 00000024 00004E20 00002F70
+dd 00000024 00004E21 00002F70
+/*KASUMI*/
+dd 00000012 00004E21 00001BF0
+dd 00000006 00004E25 00001300
+dd 00000019 00004E20 000025E0
+dd 00000012 00004E23 00001AF0
+dd 00000015 00004E20 00002110
+/*HELENA*/
+dd 00000012 00004E23 00001A90
+dd 00000024 00004E26 00002F70
+dd 00000024 00004E27 00002F70
+dd 00000019 00004E20 00002310
+dd 00000012 00004E23 00001EA0
+dd 00000012 00004E21 00001F00
+dd 00000012 00004E22 00001F00
+dd 00000024 00004E20 00003040
+dd 00000024 00004E21 00003040
+/*KOKORO*/
+dd 00000018 00004E22 000021F0
+dd 00000018 00004E23 000021F0
+dd 00000023 00004E21 000033B0
+dd 0000002A 00004E21 00003540
+dd 00000012 00004E21 00001BC0
+dd 00000015 00004E20 000020A0
+dd 00000015 00004E21 000020A0
+/*LEIFANG*/
+dd 0000001C 00004E21 00002C60
+dd 00000012 00004E21 00001BC0
+dd 00000018 00004E20 000024C0
+/*AYANE*/
+dd 00000040 00004E20 00005150
+dd 00000040 00004E21 00005150
+dd 0000002D 00004E20 00003C20
+dd 0000001B 00004E20 00002940
+dd 00000018 00004E21 00002460
+dd 00000010 00004E21 00001B20
+dd 00000018 00004E20 000024C0
+/*LA MARIPOSA*/
+dd 00000036 00004E20 00004320
+dd 00000004 00004E22 00001240
+dd 000000BE 00004E20 0000DC10
+dd 00000028 00004E20 00003450
+dd 00000020 00004E20 00002B80
+dd 00000020 00004E21 00002B80
+dd 00000012 00004E21 00001F00
+dd 00000012 00004E22 00001F00
+/*CHRISTIE*/
+dd 00000009 00004E21 000013E0
+dd 00000020 00004E20 00002BE0
+dd 00000020 00004E21 00002BE0
+dd 00000015 00004E21 00002580
+dd 00000015 00004E22 00002580
+/*HITOMI*/
+dd 00000031 00004E21 00003F60
+dd 00000072 00004E20 00008680
+dd 0000001C 00004E21 000026D0
+dd 0000001C 00004E21 00002C60
+dd 00000010 00004E21 00001780
+dd 00000015 00004E20 00002110
+/*MILA*/
+dd 0000001E 00004E21 00002CF0
+dd 00000037 00004E20 00004720
+dd 00000012 00004E21 00001B10
+dd 0000000F 00004E21 000018E0
+dd 0000000F 00004E22 000018E0
+dd 00000018 00004E20 000024C0
+/*MARIE ROSE*/
+dd 00000004 00004E21 00000C90
+dd 00000037 00004E21 00004990
+dd 0000001E 00004E21 00002C30
+dd 0000000C 00004E21 000016C0
+dd 0000001C 00004E21 00002B90
+dd 00000078 00004E21 00008C40
+dd 00000015 00004E20 00001F70
+/*NYOTENGU*/
+dd 00000008 00004E20 00001060
+dd 00000008 00004E21 00001060
+dd 0000002D 00004E23 00003A10
+dd 0000002D 00004E24 00003A10
+dd 00000085 00004E20 00009BA0
+dd 0000000F 00004E22 00001940
+dd 00000018 00004E21 000023F0
+dd 00000018 00004E22 000023F0
+dd 00000024 00004E20 00003040
+dd 00000024 00004E21 00003040
+/*HONOKA*/
+dd 0000000C 00004E21 00001930
+dd 0000000E 00004E22 000017C0
+dd 00000075 00004E20 00008AC0
+dd 00000015 00004E20 00001EA0
+dd 00000015 00004E21 00001EA0
+dd 00000010 00004E21 00001AC0
+dd 00000024 00004E20 00003040
+dd 00000020 00004E21 00002BE0
+dd 0000000C 00004E21 00001930
+dd 00000018 00004E20 000023F0
+dd 00000018 00004E21 000023F0
+dd 0000003F 00004E20 00004FF0
+/*NiCO*/
+dd 0000001E 00004E20 00002960
+dd 00000012 00004E20 00001C20
+dd 00000018 00004E24 00002190
+dd 00000018 00004E25 00002190
+dd 00000016 00004E20 000021B0
+dd 0000001C 00004E21 00002C60
+dd 00000023 00004E20 00002DA0
+dd 00000018 00004E20 000024C0
+/*PHASE-4*/
+dd 0000001E 00004E20 00002C90
+dd 00000021 00004E21 00002FF0
+dd 0000002A 00004E20 00003550
+dd 00000018 00004E21 00002320
+dd 00000018 00004E22 00002320
+dd 00000024 00004E20 000030B0
+dd 00000024 00004E21 000030B0
+/*MAI*/
+dd 0000001E 00004E23 00002960
+dd 0000001E 00004E24 00002960
+dd 00000018 00004E24 00002530
+dd 00000010 00004E23 00001D30
+dd 0000001B 00004E22 000028D0
+dd 00000018 00004E23 00002580
+dd 00000028 00004E20 00003520
+dd 00000028 00004E21 00003580
+dd 00000032 00004E22 00004140
+/*KULA*/
+dd 0000001C 00004E21 00002C60
+dd 00000023 00004E20 00002DA0
+dd 0000001E 00004E20 00003100
+dd 00000012 00004E21 000023D0
+dd 0000001E 00004E22 00002820
+dd 00000075 00004E20 00008A40
+/*MOMIJI*/
+dd 00000015 00004E20 00001FD0
+dd 0000000F 00004E22 000016D0
+dd 0000000F 00004E23 000016D0
+dd 00000010 00004E21 00001BF0
+dd 00000018 00004E20 000024C0
+dd 00000020 00004E20 00002C50
+dd 00000020 00004E21 00002C50
+/*END*/
+dd 00000000 00000000 00000000
+
+/*TOPS C*/
+SKIRT_MEM+8000:
+/*TINA*/
+dd 000000CC 00004E20 0000EA10
+dd 00000028 00004E20 00003310
+dd 0000002A 00004E27 00003540
+dd 00000009 00004E20 000016C0
+dd 00000015 00004E23 00001F70
+dd 0000003C 00004E24 00004CD0
+dd 0000003C 00004E25 00004CD0
+dd 00000012 00004E22 00001C90
+dd 00000020 00004E20 00002C50
+dd 00000020 00004E21 00002C50
+dd 00000018 00004E21 000023F0
+dd 00000018 00004E22 000023F0
+dd 00000024 00004E20 00002F70
+dd 00000024 00004E21 00002F70
+/*KASUMI*/
+dd 00000012 00004E21 00001BF0
+dd 00000006 00004E25 00001300
+dd 00000019 00004E20 000025E0
+dd 00000012 00004E23 00001AF0
+dd 00000012 00004E23 00001E30
+/*HELENA*/
+dd 00000012 00004E23 00001A90
+dd 00000024 00004E26 00002F70
+dd 00000024 00004E27 00002F70
+dd 00000019 00004E20 00002310
+dd 00000012 00004E23 00001EA0
+dd 00000012 00004E21 00001F00
+dd 00000012 00004E22 00001F00
+dd 00000024 00004E20 00003040
+dd 00000024 00004E21 00003040
+/*KOKORO*/
+dd 00000018 00004E22 000021F0
+dd 00000018 00004E23 000021F0
+dd 00000023 00004E21 000033B0
+dd 0000002A 00004E21 00003540
+dd 00000012 00004E21 00001BC0
+dd 00000015 00004E20 000020A0
+dd 00000015 00004E21 000020A0
+/*LEIFANG*/
+dd 0000001C 00004E21 00002C60
+dd 00000012 00004E21 00001BC0
+dd 00000018 00004E20 000024C0
+/*AYANE*/
+dd 00000040 00004E20 00005150
+dd 00000040 00004E21 00005150
+dd 0000002D 00004E20 00003C20
+dd 0000001B 00004E20 00002940
+dd 00000018 00004E21 00002460
+dd 00000010 00004E21 00001B20
+dd 00000018 00004E20 000024C0
+/*LA MARIPOSA*/
+dd 00000036 00004E20 00004320
+dd 00000004 00004E22 00001240
+dd 000000BE 00004E20 0000DC10
+dd 00000028 00004E20 00003450
+dd 00000020 00004E20 00002B80
+dd 00000020 00004E21 00002B80
+dd 00000012 00004E21 00001F00
+dd 00000012 00004E22 00001F00
+/*CHRISTIE*/
+dd 00000009 00004E21 000013E0
+dd 00000020 00004E20 00002BE0
+dd 00000020 00004E21 00002BE0
+dd 00000015 00004E21 00002580
+dd 00000015 00004E22 00002580
+/*HITOMI*/
+dd 00000012 00004E22 00001C20
+dd 00000012 00004E23 00001C20
+dd 00000072 00004E20 00008680
+dd 0000001C 00004E21 000026D0
+dd 0000001C 00004E21 00002C60
+dd 00000010 00004E21 00001780
+dd 00000012 00004E23 00001DD0
+/*MILA*/
+dd 0000001E 00004E21 00002CF0
+dd 00000037 00004E20 00004720
+dd 00000012 00004E21 00001B10
+dd 0000000F 00004E21 000018E0
+dd 0000000F 00004E22 000018E0
+dd 00000018 00004E20 000024C0
+/*MARIE ROSE*/
+dd 00000004 00004E21 00000C90
+dd 00000037 00004E21 00004990
+dd 0000001E 00004E21 00002C30
+dd 0000000C 00004E21 000016C0
+dd 0000001C 00004E21 00002B90
+dd 00000023 00004E20 00002DA0
+dd 00000012 00004E24 00001F00
+/*NYOTENGU*/
+dd 00000008 00004E20 00001060
+dd 00000008 00004E21 00001060
+dd 0000002D 00004E23 00003A10
+dd 0000002D 00004E24 00003A10
+dd 00000085 00004E20 00009BA0
+dd 0000000F 00004E22 00001940
+dd 00000018 00004E21 000023F0
+dd 00000018 00004E22 000023F0
+dd 00000024 00004E20 00003040
+dd 00000024 00004E21 00003040
+/*HONOKA*/
+dd 0000000C 00004E21 00001930
+dd 0000000E 00004E22 000017C0
+dd 00000075 00004E20 00008AC0
+dd 00000015 00004E20 00001EA0
+dd 00000015 00004E21 00001EA0
+dd 00000010 00004E21 00001AC0
+dd 00000024 00004E20 00003040
+dd 00000020 00004E21 00002BE0
+dd 0000000C 00004E21 00001930
+dd 00000018 00004E20 000023F0
+dd 00000018 00004E21 000023F0
+dd 0000003F 00004E20 00004FF0
+/*NiCO*/
+dd 0000001E 00004E20 00002960
+dd 00000012 00004E20 00001C20
+dd 00000018 00004E24 00002190
+dd 00000018 00004E25 00002190
+dd 00000016 00004E20 000021B0
+dd 0000001C 00004E21 00002C60
+dd 00000023 00004E20 00002DA0
+dd 00000018 00004E20 000024C0
+/*PHASE-4*/
+dd 0000001E 00004E20 00002C90
+dd 00000021 00004E21 00002FF0
+dd 0000002A 00004E20 00003550
+dd 00000018 00004E21 00002320
+dd 00000018 00004E22 00002320
+dd 00000024 00004E20 000030B0
+dd 00000024 00004E21 000030B0
+/*MAI*/
+dd 0000001E 00004E23 00002960
+dd 0000001E 00004E24 00002960
+dd 00000012 00004E23 00001B60
+dd 00000010 00004E23 00001D30
+dd 0000001B 00004E22 000028D0
+dd 00000018 00004E23 00002580
+dd 00000028 00004E20 00003520
+dd 00000028 00004E21 00003580
+dd 00000032 00004E22 00004140
+/*KULA*/
+dd 0000001C 00004E21 00002C60
+dd 00000023 00004E20 00002DA0
+dd 0000001E 00004E20 00003100
+dd 00000012 00004E21 000023D0
+dd 0000001E 00004E22 00002820
+dd 00000075 00004E20 00008A40
+/*MOMIJI*/
+dd 00000015 00004E20 00001FD0
+dd 0000000F 00004E22 000016D0
+dd 0000000F 00004E23 000016D0
+dd 00000010 00004E21 00001BF0
+dd 00000018 00004E20 000024C0
+dd 00000020 00004E20 00002C50
+dd 00000020 00004E21 00002C50
+/*END*/
+dd 00000000 00000000 00000000
+
+/*OTHERS*/
+/*HEAD*/
+SKIRT_MEM+9000:
+/*TINA*/
+dd 00000018 00004E20 00002120
+dd 00000018 00004E21 00002120
+/*KASUMI*/
+dd 0000003F 00004E20 00004C40
+/*HELENA*/
+dd 00000006 00004E20 00000C90
+dd 00000006 00004E21 00000C90
+dd 00000018 00004E20 000020B0
+/*KOKORO*/
+dd 00000018 00004E20 00002180
+dd 00000051 00004E27 00006000
+/*LEIFANG*/
+dd 00000018 00004E2D 00002120
+dd 00000018 00004E2E 00002120
+/*AYANE*/
+dd 0000003F 00004E20 00004BE0
+/*LA MARIPOSA*/
+dd 00000015 00004E20 00001DF0
+dd 0000000C 00004E20 000013F0
+dd 0000000C 00004E21 000013F0
+dd 0000000C 00004E22 000013F0
+dd 0000000C 00004E23 000013F0
+dd 0000000C 00004E24 000013F0
+dd 0000000C 00004E25 000013F0
+dd 00000009 00004E20 000012B0
+dd 00000009 00004E21 000012B0
+dd 0000002D 00004E20 000038F0
+dd 0000002D 00004E21 000038F0
+dd 00000018 00004E20 00002120
+dd 00000018 00004E20 00002121
+/*CHRISTIE*/
+dd 00000009 00004E20 000011B0
+dd 00000009 40000E21 000011B0
+/*HITOMI*/
+dd 0000001E 00004E20 000027C0
+dd 0000001E 00004E21 000026F0
+/*MILA*/
+dd 0000003F 00004E20 00004BE0
+/*MARIE ROSE*/
+dd 00000018 00004E2A 00002120
+dd 00000018 00004E2B 00002120
+dd 00000028 00004E20 00003380
+dd 00000028 00004E21 00003380
+/*NYOTENGU*/
+dd 0000001B 00004E20 000023F0
+/*HONOKA*/
+dd 00000018 00004E20 00002390
+dd 00000018 00004E21 00002390
+/*NiCO*/
+dd 00000038 00004E20 000045B0
+/*PHASE-4*/
+/*MAI*/
+dd 00000018 00004E21 00002120
+dd 00000018 00004E22 00002120
+/*KULA*/
+dd 00000018 00004E20 00002120
+dd 00000018 00004E21 00002120
+/*MOMIJI*/
+/*END*/
+dd 00000000 00000000 00000000
+
+/*HAND*/
+SKIRT_MEM+9800:
+/*TINA*/
+dd 0000001E 00004E24 00002A90
+dd 0000001E 00004E25 00002A90
+dd 0000000E 00004E20 00001A30
+dd 0000000E 00004E21 00001A30
+/*KASUMI*/
+/*HELENA*/
+/*KOKORO*/
+/*LEIFANG*/
+dd 00000010 00004E20 00001850
+dd 00000010 00004E21 00001850
+/*AYANE*/
+/*LA MARIPOSA*/
+/*CHRISTIE*/
+/*HITOMI*/
+/*MILA*/
+/*MARIE ROSE*/
+dd 00000014 00004E22 00002340
+/*NYOTENGU*/
+/*HONOKA*/
+dd 0000000C 00004E20 00001810
+dd 0000000A 00004E21 000011C0
+dd 0000000F 00004E20 00001A70
+dd 0000000A 00004E20 00001150
+dd 0000000A 00004E21 00001190
+dd 0000000C 00004E20 00001810
+/*NiCO*/
+/*PHASE-4*/
+/*MAI*/
+/*KULA*/
+/*MOMIJI*/
+dd 00000012 00004E20 00001D60
+dd 00000012 00004E21 00001D60
+/*END*/
+dd 00000000 00000000 00000000
+
+/*FOOT*/
+SKIRT_MEM+A000:
+/*TINA*/
+dd 0000000F 00004E21 00001740
+dd 0000000F 00004E22 00001740
+dd 0000000C 00004E21 000013F0
+dd 0000000C 00004E22 000013F0
+dd 0000006C 00004E20 00008040
+dd 0000006C 00004E21 00008040
+dd 00000012 00004E24 00001A90
+dd 00000012 00004E25 00001A90
+dd 0000000C 00004E22 00001800
+dd 0000000C 00004E23 00001800
+/*KASUMI*/
+dd 0000000A 00004E21 00001430
+dd 0000000A 00004E22 00001430
+/*HELENA*/
+dd 00000018 00004E21 00002390
+dd 00000018 00004E22 00002390
+/*KOKORO*/
+dd 00000015 00004E20 00001EA0
+dd 00000015 00004E21 00001EA0
+dd 00000015 00004E22 00001EA0
+dd 00000015 00004E23 00001EA0
+/*LEIFANG*/
+/*AYANE*/
+dd 0000000C 00004E23 000018E0
+dd 0000000C 00004E24 000018E0
+/*LA MARIPOSA*/
+/*CHRISTIE*/
+/*HITOMI*/
+dd 0000001E 00004E20 000027C0
+dd 0000001E 00004E21 000026F0
+/*MILA*/
+dd 0000001E 00004E20 00002BD0
+dd 0000001E 00004E21 00002BD0
+/*MARIE ROSE*/
+dd 00000014 00004E23 00001BF0
+dd 00000014 00004E24 00001BF0
+/*NYOTENGU*/
+dd 00000008 00004E22 000010E0
+dd 00000008 00004E23 000010E0
+dd 00000008 00004E24 000010E0
+dd 00000008 00004E25 000010E0
+/*HONOKA*/
+dd 00000015 00004E20 00001E30
+dd 00000015 00004E21 00001E30
+/*NiCO*/
+dd 0000000F 00004E23 00001B50
+dd 0000000F 00004E24 00001B50
+dd 0000001E 00004E22 00002890
+dd 0000001E 00004E23 00002890
+/*PHASE-4*/
+/*MAI*/
+/*KULA*/
+dd 00000028 00004E20 00003530
+dd 00000028 00004E21 00003530
+dd 00000028 00004E22 00003530
+dd 00000028 00004E23 00003530
+/*MOMIJI*/
+/*END*/
+dd 00000000 00000000 00000000
+
+[disable]
+unregistersymbol(SKIRT_MEM)
+dealloc(SKIRT_MEM)
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>3588</ID>
+              <Description>"00_Hide Physics Costume(Script)"</Description>
+              <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[enable]
+aobscanmodule(AOB_Skirt_A,DOA6.exe,48 8B 92 40 03 00 00 44 8B C3 49 C1 E0 04)
+aobscanmodule(JMP_Skirt_A,DOA6.exe,33 C9 66 41 83 7E 06 04 0F 85 85 00 00 00)
+registersymbol(AOB_Skirt_A)
+alloc(newmem,$1000,"DOA6.exe")
+
+label(Skirt_A)
+label(Skirt_A_00_ROOP)
+label(Skirt_A_00_NEXT)
+label(Skirt_A_01)
+label(Skirt_A_01_ROOP)
+label(Skirt_A_01_NEXT)
+label(Skirt_A_02)
+label(Skirt_A_02_ROOP)
+label(Skirt_A_02_NEXT)
+label(Skirt_A_03)
+label(Skirt_A_03_ROOP)
+label(Skirt_A_03_NEXT)
+label(Skirt_A_04)
+label(Skirt_A_04_ROOP)
+label(Skirt_A_04_NEXT)
+label(Skirt_A_05)
+label(Skirt_A_05_ROOP)
+label(Skirt_A_05_NEXT)
+label(Skirt_A_06)
+label(Skirt_A_06_ROOP)
+label(Skirt_A_06_NEXT)
+label(Skirt_A_07)
+label(Skirt_A_07_ROOP)
+label(Skirt_A_07_NEXT)
+label(Skirt_A_08)
+label(Skirt_A_08_ROOP)
+label(Skirt_A_08_NEXT)
+label(Skirt_A_09)
+label(Skirt_A_09_ROOP)
+label(Skirt_A_09_NEXT)
+label(Skirt_A_0A)
+label(Skirt_A_0A_ROOP)
+label(Skirt_A_0A_NEXT)
+
+label(Skirt_A_SKIP)
+label(Skirt_A_JMP)
+label(Skirt_A_ROOP)
+label(Skirt_A_RET)
+
+newmem:
+Skirt_A:
+mov eax,[rdx+10]
+sub eax,70
+cmp byte ptr [SKIRT_MEM+10],01
+je Skirt_A_JMP
+cmp byte ptr [SKIRT_MEM],01
+jne Skirt_A_01
+lea r8,[SKIRT_MEM+20]
+Skirt_A_00_ROOP:
+cmp [r8],00
+je Skirt_A_04
+cmp [r8],ebx
+jne Skirt_A_00_NEXT
+cmp [r8+04],ecx
+jne Skirt_A_00_NEXT
+cmp [r8+08],eax
+je Skirt_A_JMP
+Skirt_A_00_NEXT:
+add r8,0C
+jmp Skirt_A_00_ROOP
+
+Skirt_A_01:
+cmp byte ptr [SKIRT_MEM+01],01
+jne Skirt_A_02
+lea r8,[SKIRT_MEM+2000]
+Skirt_A_01_ROOP:
+cmp [r8],00
+je Skirt_A_02
+cmp [r8],ebx
+jne Skirt_A_01_NEXT
+cmp [r8+04],ecx
+jne Skirt_A_01_NEXT
+cmp [r8+08],eax
+je Skirt_A_JMP
+Skirt_A_01_NEXT:
+add r8,0C
+jmp Skirt_A_01_ROOP
+
+Skirt_A_02:
+cmp byte ptr [SKIRT_MEM+02],01
+jne Skirt_A_03
+lea r8,[SKIRT_MEM+3000]
+Skirt_A_02_ROOP:
+cmp [r8],00
+je Skirt_A_03
+cmp [r8],ebx
+jne Skirt_A_02_NEXT
+cmp [r8+04],ecx
+jne Skirt_A_02_NEXT
+cmp [r8+08],eax
+je Skirt_A_JMP
+Skirt_A_02_NEXT:
+add r8,0C
+jmp Skirt_A_02_ROOP
+
+Skirt_A_03:
+cmp byte ptr [SKIRT_MEM+03],01
+jne Skirt_A_04
+lea r8,[SKIRT_MEM+4000]
+Skirt_A_03_ROOP:
+cmp [r8],00
+je Skirt_A_04
+cmp [r8],ebx
+jne Skirt_A_03_NEXT
+cmp [r8+04],ecx
+jne Skirt_A_03_NEXT
+cmp [r8+08],eax
+je Skirt_A_JMP
+Skirt_A_03_NEXT:
+add r8,0C
+jmp Skirt_A_03_ROOP
+
+Skirt_A_04:
+cmp byte ptr [SKIRT_MEM+04],01
+jne Skirt_A_05
+lea r8,[SKIRT_MEM+5000]
+Skirt_A_04_ROOP:
+cmp [r8],00
+je Skirt_A_08
+cmp [r8],ebx
+jne Skirt_A_04_NEXT
+cmp [r8+04],ecx
+jne Skirt_A_04_NEXT
+cmp [r8+08],eax
+je Skirt_A_JMP
+Skirt_A_04_NEXT:
+add r8,0C
+jmp Skirt_A_04_ROOP
+
+Skirt_A_05:
+cmp byte ptr [SKIRT_MEM+05],01
+jne Skirt_A_06
+lea r8,[SKIRT_MEM+6000]
+Skirt_A_05_ROOP:
+cmp [r8],00
+je Skirt_A_06
+cmp [r8],ebx
+jne Skirt_A_05_NEXT
+cmp [r8+04],ecx
+jne Skirt_A_05_NEXT
+cmp [r8+08],eax
+je Skirt_A_JMP
+Skirt_A_05_NEXT:
+add r8,0C
+jmp Skirt_A_05_ROOP
+
+Skirt_A_06:
+cmp byte ptr [SKIRT_MEM+06],01
+jne Skirt_A_07
+lea r8,[SKIRT_MEM+7000]
+Skirt_A_06_ROOP:
+cmp [r8],00
+je Skirt_A_07
+cmp [r8],ebx
+jne Skirt_A_06_NEXT
+cmp [r8+04],ecx
+jne Skirt_A_06_NEXT
+cmp [r8+08],eax
+je Skirt_A_JMP
+Skirt_A_06_NEXT:
+add r8,0C
+jmp Skirt_A_06_ROOP
+
+Skirt_A_07:
+cmp byte ptr [SKIRT_MEM+07],01
+jne Skirt_A_08
+lea r8,[SKIRT_MEM+8000]
+Skirt_A_07_ROOP:
+cmp [r8],00
+je Skirt_A_08
+cmp [r8],ebx
+jne Skirt_A_07_NEXT
+cmp [r8+04],ecx
+jne Skirt_A_07_NEXT
+cmp [r8+08],eax
+je Skirt_A_JMP
+Skirt_A_07_NEXT:
+add r8,0C
+jmp Skirt_A_07_ROOP
+
+Skirt_A_08:
+cmp byte ptr [SKIRT_MEM+08],01
+jne Skirt_A_09
+lea r8,[SKIRT_MEM+9000]
+Skirt_A_08_ROOP:
+cmp [r8],00
+je Skirt_A_09
+cmp [r8],ebx
+jne Skirt_A_08_NEXT
+cmp [r8+04],ecx
+jne Skirt_A_08_NEXT
+cmp [r8+08],eax
+je Skirt_A_JMP
+Skirt_A_08_NEXT:
+add r8,0C
+jmp Skirt_A_08_ROOP
+
+Skirt_A_09:
+cmp byte ptr [SKIRT_MEM+09],01
+jne Skirt_A_0A
+lea r8,[SKIRT_MEM+9800]
+Skirt_A_09_ROOP:
+cmp [r8],00
+je Skirt_A_0A
+cmp [r8],ebx
+jne Skirt_A_09_NEXT
+cmp [r8+04],ecx
+jne Skirt_A_09_NEXT
+cmp [r8+08],eax
+je Skirt_A_JMP
+Skirt_A_09_NEXT:
+add r8,0C
+jmp Skirt_A_09_ROOP
+
+Skirt_A_0A:
+cmp byte ptr [SKIRT_MEM+0A],01
+jne Skirt_A_SKIP
+lea r8,[SKIRT_MEM+A000]
+Skirt_A_0A_ROOP:
+cmp [r8],00
+je Skirt_A_SKIP
+cmp [r8],ebx
+jne Skirt_A_0A_NEXT
+cmp [r8+04],ecx
+jne Skirt_A_0A_NEXT
+cmp [r8+08],eax
+je Skirt_A_JMP
+Skirt_A_0A_NEXT:
+add r8,0C
+jmp Skirt_A_0A_ROOP
+
+Skirt_A_SKIP:
+db 48 8B 92 40 03 00 00
+jmp Skirt_A_RET
+
+Skirt_A_JMP:
+db 48 8B 92 40 03 00 00
+db 49 8B CB
+db 44 8B C3
+mov eax,FFFFFFFF
+movd xmm0,eax
+shufps xmm0,xmm0,0
+xor eax,eax
+Skirt_A_ROOP:
+movdqa [rcx],xmm0
+add rcx,10
+inc eax
+cmp r8d,eax
+ja Skirt_A_ROOP
+xorps xmm0,xmm0
+jmp JMP_Skirt_A
+
+AOB_Skirt_A:
+jmp Skirt_A
+nop
+nop
+Skirt_A_RET:
+
+[disable]
+unregistersymbol(AOB_Skirt_A)
+dealloc(newmem)
+
+AOB_Skirt_A:
+db 48 8B 92 40 03 00 00
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>3606</ID>
+                  <Description>"00 Full"</Description>
+                  <DropDownList DisplayValueAsItem="1">00:OFF
+01:ON
+</DropDownList>
+                  <ShowAsHex>1</ShowAsHex>
+                  <VariableType>Byte</VariableType>
+                  <Address>SKIRT_MEM+10</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>3594</ID>
+                  <Description>"01_Bottoms"</Description>
+                  <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>3589</ID>
+                      <Description>"00_Bottoms Full"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:ON
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>SKIRT_MEM</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3591</ID>
+                      <Description>"01_Bottoms A"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:ON
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>SKIRT_MEM+01</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3590</ID>
+                      <Description>"02_Bottoms B"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:ON
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>SKIRT_MEM+02</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3592</ID>
+                      <Description>"03_Bottoms C"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:ON
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>SKIRT_MEM+03</Address>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>3595</ID>
+                  <Description>"02_Tops"</Description>
+                  <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>3596</ID>
+                      <Description>"00_Tops Full"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:ON
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>SKIRT_MEM+04</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3597</ID>
+                      <Description>"01_Tops A"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:ON
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>SKIRT_MEM+05</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3598</ID>
+                      <Description>"02_Tops B"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:ON
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>SKIRT_MEM+06</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3599</ID>
+                      <Description>"03_Tops C"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:ON
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>SKIRT_MEM+07</Address>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>3600</ID>
+                  <Description>"03_Others"</Description>
+                  <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>3602</ID>
+                      <Description>"01_Head"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:ON
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>SKIRT_MEM+08</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3603</ID>
+                      <Description>"02_Hand"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:ON
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>SKIRT_MEM+09</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3604</ID>
+                      <Description>"03_Foot"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:ON
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>SKIRT_MEM+0A</Address>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>3898</ID>
           <Description>"0120_Left Side (Use to fix controls in POV)"</Description>
           <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
@@ -1142,18 +4227,18 @@ db 88 83 48 01 00 00
 </AssemblerScript>
         </CheatEntry>
         <CheatEntry>
-          <ID>13</ID>
+          <ID>3899</ID>
           <Description>"0200_Over Kill"</Description>
           <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
           <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[enable]
 aobscanmodule(AOB_OverKill_A,DOA6.exe,FF C8 89 45 20 40 84 FF 0F 85 18 03 00 00)
-aobscanmodule(AOB_OverKill_B,DOA6.exe,C6 80 37 01 00 00 01 4C 8B 05 * * * *)
-aobscanmodule(AOB_OverKill_C,DOA6.exe,80 B8 37 01 00 00 00 0F 84 F4 00 00 00 0F B6 4D 28)
-aobscanmodule(AOB_OverKill_D,DOA6.exe,84 DB 48 8B 5C 24 20 75 07 B0 01 48 83 C4 28)
-aobscanmodule(AOB_OverKill_E,DOA6.exe,48 8B 05 B9 7F D6 00 F6 40 70 01 74 43)
-aobscanmodule(AOB_OverKill_F,DOA6.exe,38 48 32 0F 94 C0 48 83 C4 48 C3 48 8D 0D D5 E8 5C 00)
+aobscanmodule(AOB_OverKill_B,DOA6.exe,C6 80 3F 01 00 00 01 4C 8B 05 * * * *)
+aobscanmodule(AOB_OverKill_C,DOA6.exe,80 B8 3F 01 00 00 00 0F 84 F4 00 00 00 0F B6 4D 28)
+aobscanmodule(AOB_OverKill_D,DOA6.exe,84 DB 48 8B 5C 24 20 0F 85 5C FF FF FF B0 01 48 83 C4 28)
+aobscanmodule(AOB_OverKill_E,DOA6.exe,48 8B 05 79 95 D6 00 F6 40 70 01 74 43)
+aobscanmodule(AOB_OverKill_F,DOA6.exe,38 48 32 0F 94 C0 48 83 C4 48 C3 48 8D 0D DD FC 5C 00)
 registersymbol(AOB_OverKill_A)
 registersymbol(AOB_OverKill_B)
 registersymbol(AOB_OverKill_C)
@@ -1189,35 +4274,35 @@ jmp OverKill_A_RET
 
 OverKill_B:
 xor r8d,r8d
-cmp r8w,[rax+00000560]
+cmp r8w,[rax+00000570]
 jae OverKill_B_SKIP
-db C6 80 37 01 00 00 00
+db C6 80 3F 01 00 00 00
 jmp OverKill_B_RET
 OverKill_B_SKIP:
-db C6 80 37 01 00 00 01
+db C6 80 3F 01 00 00 01
 jmp OverKill_B_RET
 
 OverKill_C:
 xor ecx,ecx
-cmp cx,[rax+00000560]
+cmp cx,[rax+00000570]
 jae OverKill_C_SKIP
 cmp al,al
 jmp OverKill_C_RET
 OverKill_C_SKIP:
-db 80 B8 37 01 00 00 00
+db 80 B8 3F 01 00 00 00
 jmp OverKill_C_RET
 
 OverKill_E:
-mov rax,[DOA6.exe+25F1C40]
+mov rax,[DOA6.exe+25F4CC0]
 test rax,rax
 je OverKill_E_SKIP
 lea rax,[rax+000008F0]
-cmp byte ptr [rax+00000308],0F
+cmp byte ptr [rax+00000330],0F
 jne OverKill_E_SKIP
 cmp byte ptr [rax+00000229],00
 jne OverKill_E_JMP
 OverKill_E_SKIP:
-mov rax,[DOA6.exe+25AE8B0]
+mov rax,[DOA6.exe+25B17A0]
 jmp OverKill_E_RET
 OverKill_E_JMP:
 jmp OverKill_E_RET+6
@@ -1238,7 +4323,7 @@ nop
 nop
 OverKill_C_RET:
 
-AOB_OverKill_D+09:
+AOB_OverKill_D+0D:
 db 32 C0
 
 AOB_OverKill_E:
@@ -1265,34 +4350,34 @@ db FF C8
 db 89 45 20
 
 AOB_OverKill_B:
-db C6 80 37 01 00 00 01
+db C6 80 3F 01 00 00 01
 
 AOB_OverKill_C:
-db 80 B8 37 01 00 00 00
+db 80 B8 3F 01 00 00 00
 
-AOB_OverKill_D+09:
+AOB_OverKill_D+0D:
 db B0 01
 
 AOB_OverKill_E:
-db 48 8B 05 B9 7F D6 00
+db 48 8B 05 79 95 D6 00
 
 AOB_OverKill_F+03:
 db 0F 94 C0
 </AssemblerScript>
           <CheatEntries>
             <CheatEntry>
-              <ID>3891</ID>
+              <ID>3900</ID>
               <Description>"0201_COM Over Kill"</Description>
               <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
-              <AssemblerScript>assert(DOA6.exe+1940083,48 8B 05 B6 1B CB 00)
+              <AssemblerScript>assert(DOA6.exe+1941F43,48 8B 05 76 2D CB 00)
 
 [enable]
-aobscanmodule(AOB_COMOverKill_A,DOA6.exe,75 2C 0F B6 4F 09 E8 * * * * 80 B8 00 01 00 00 0C)
-aobscanmodule(AOB_COMOverKill_B,DOA6.exe,80 B8 00 01 00 00 09 75 10 48 8B D6 48 8B CF E8 * * * *)
-aobscanmodule(AOB_COMOverKill_C,DOA6.exe,80 B8 00 01 00 00 0C 0F 85 8D 00 00 00 0F B6 4F 08 E8 * * * *)
-aobscanmodule(AOB_COMOverKill_D,DOA6.exe,0F B6 88 00 01 00 00 83 F9 10 0F 87 E0 01 00 00 8B C1)
-aobscanmodule(AOB_COMBreakBlow_A,DOA6.exe,8B 41 0C F7 D8 41 39 81 38 17 00 00 7C 48 48 8B 43 30)
+aobscanmodule(AOB_COMOverKill_A,DOA6.exe,75 2C 0F B6 4F 09 E8 * * * * 80 B8 08 01 00 00 0C)
+aobscanmodule(AOB_COMOverKill_B,DOA6.exe,80 B8 08 01 00 00 09 75 10 48 8B D6 48 8B CF E8 * * * *)
+aobscanmodule(AOB_COMOverKill_C,DOA6.exe,80 B8 08 01 00 00 0C 0F 85 8D 00 00 00 0F B6 4F 08 E8 * * * *)
+aobscanmodule(AOB_COMOverKill_D,DOA6.exe,0F B6 88 08 01 00 00 83 F9 10 0F 87 E0 01 00 00 8B C1)
+aobscanmodule(AOB_COMBreakBlow_A,DOA6.exe,8B 41 0C F7 D8 41 39 81 48 17 00 00 7C 48 48 8B 43 30)
 registersymbol(AOB_COMOverKill_A)
 registersymbol(AOB_COMOverKill_B)
 registersymbol(AOB_COMOverKill_C)
@@ -1319,12 +4404,12 @@ label(COMBreakBlow_A_RET)
 newmem:
 COMOverKill_B:
 xor ecx,ecx
-cmp cx,[rax+00000560]
+cmp cx,[rax+00000570]
 jb COMOverKill_B_SKIP
 cmp byte ptr [BryanyoraMem+200],03
 je COMOverKill_B_JMP
 COMOverKill_B_SKIP:
-db 80 B8 00 01 00 00 09
+db 80 B8 08 01 00 00 09
 jmp COMOverKill_B_RET
 COMOverKill_B_JMP:
 test rax,rax
@@ -1332,12 +4417,12 @@ jmp COMOverKill_B_RET
 
 COMOverKill_C:
 xor ecx,ecx
-cmp cx,[rax+00000560]
+cmp cx,[rax+00000570]
 jb COMOverKill_C_SKIP
 cmp byte ptr [BryanyoraMem+200],03
 je COMOverKill_C_JMP
 COMOverKill_C_SKIP:
-db 80 B8 00 01 00 00 0C
+db 80 B8 08 01 00 00 0C
 jmp COMOverKill_C_RET
 COMOverKill_C_JMP:
 test rax,rax
@@ -1345,12 +4430,12 @@ jmp COMOverKill_C_RET
 
 COMOverKill_D:
 xor ecx,ecx
-cmp cx,[rax+00000560]
+cmp cx,[rax+00000570]
 jb COMOverKill_D_SKIP
 cmp byte ptr [BryanyoraMem+200],03
 je COMOverKill_D_JMP
 COMOverKill_D_SKIP:
-db 0F B6 88 00 01 00 00
+db 0F B6 88 08 01 00 00
 jmp COMOverKill_D_RET
 COMOverKill_D_JMP:
 xor ecx,ecx
@@ -1358,13 +4443,13 @@ jmp COMOverKill_D_RET
 
 COMBreakBlow_A:
 xor eax,eax
-cmp ax,[r9+00000560]
+cmp ax,[r9+00000570]
 jae COMBreakBlow_A_SKIP
-mov rax,[DOA6.exe+25F1C40]
+mov rax,[DOA6.exe+25F4CC0]
 test rax,rax
 je COMBreakBlow_A_SKIP
 lea rax,[rax+000008F0]
-cmp byte ptr [rax+00000308],0F
+cmp byte ptr [rax+00000330],0F
 jne COMBreakBlow_A_SKIP
 cmp byte ptr [rax+00000229],00
 jne COMBreakBlow_A_JMP
@@ -1413,13 +4498,13 @@ AOB_COMOverKill_A:
 db 75 2C
 
 AOB_COMOverKill_B:
-db 80 B8 00 01 00 00 09
+db 80 B8 08 01 00 00 09
 
 AOB_COMOverKill_C:
-db 80 B8 00 01 00 00 0C
+db 80 B8 08 01 00 00 0C
 
 AOB_COMOverKill_D:
-db 0F B6 88 00 01 00 00
+db 0F B6 88 08 01 00 00
 
 AOB_COMBreakBlow_A:
 db 8B 41 0C
@@ -1429,15 +4514,15 @@ db F7 D8
           </CheatEntries>
         </CheatEntry>
         <CheatEntry>
-          <ID>22</ID>
+          <ID>3901</ID>
           <Description>"0210_Over Kill Option"</Description>
           <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
           <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
-          <AssemblerScript>assert(DOA6.exe+1940083,48 8B 05 B6 1B CB 00)
+          <AssemblerScript>assert(DOA6.exe+1941F43,48 8B 05 76 2D CB 00)
 
 [enable]
-aobscanmodule(AOB_AtariHantei_A,DOA6.exe,0F B6 86 32 01 00 00 39 81 C4 01 00 00)
+aobscanmodule(AOB_AtariHantei_A,DOA6.exe,0F B6 86 3A 01 00 00 39 81 C4 01 00 00)
 aobscanmodule(AOB_AtariHantei_B,DOA6.exe,48 8B C8 48 8B 10 FF 52 40 0F B6 54 24 30)
 aobscanmodule(AOB_AtariHantei_C,DOA6.exe,4C 8B 44 24 30 45 0F B6 CC 49 8B 56 08 48 8B CD 44 88 6C 24 20)
 aobscanmodule(AOB_AtariHantei_D,DOA6.exe,49 8B 46 08 48 8D 4B A8 F3 0F 10 4B EC)
@@ -1445,13 +4530,13 @@ aobscanmodule(AOB_AtariHantei_E,DOA6.exe,49 8B 46 08 48 8D 4B A8 F3 0F 10 73 EC)
 aobscanmodule(AOB_AtariHantei_F,DOA6.exe,48 8B F2 48 8B E9 41 83 F8 01 74 13 B8 FF FF 00 00)
 aobscanmodule(AOB_AtariHantei_G,DOA6.exe,8B 86 94 36 00 00 48 83 86 A8 35 00 00 02)
 aobscanmodule(AOB_HoldType_A,DOA6.exe,B8 FF FF 00 00 66 44 3B F8 74 D7 80 7D 97 00)
-aobscanmodule(AOB_DownNokezori_A,DOA6.exe,48 8D 4C 24 68 E8 * * * * 84 C0 75 3C 8B 86 08 09 00 00)
+aobscanmodule(AOB_DownNokezori_A,DOA6.exe,48 8D 4C 24 70 E8 * * * * 84 C0 75 3C 8B 86 18 09 00 00)
 aobscanmodule(AOB_NageHantei_A,DOA6.exe,0F 29 74 24 20 E8 * * * * 84 C0 0F 84 AE 00 00 00)
-aobscanmodule(AOB_KabeBitan_A,DOA6.exe,80 BE E0 03 00 00 00 0F 85 53 05 00 00)
-aobscanmodule(AOB_HaibokuPose_A,DOA6.exe,8B 4C 24 40 33 FF 89 B8 28 01 00 00)
+aobscanmodule(AOB_KabeBitan_A,DOA6.exe,80 BE F0 03 00 00 00 0F 85 53 05 00 00)
+aobscanmodule(AOB_HaibokuPose_A,DOA6.exe,8B 4C 24 40 33 FF 89 B8 30 01 00 00)
 aobscanmodule(JMP_HaibokuPose_A,DOA6.exe,33 FF 0F B7 C7 48 8B 5C 24 48 48 83 C4 20)
-aobscanmodule(AOB_BreakBlow_A,DOA6.exe,8B 41 0C F7 D8 41 39 81 38 17 00 00 7D 04 C6 43 24 01)
-aobscanmodule(AOB_BreakBlow_B,DOA6.exe,8B 41 0C F7 D8 41 39 81 38 17 00 00 7D 04 C6 43 08 01)
+aobscanmodule(AOB_BreakBlow_A,DOA6.exe,8B 41 0C F7 D8 41 39 81 48 17 00 00 7D 04 C6 43 24 01)
+aobscanmodule(AOB_BreakBlow_B,DOA6.exe,8B 41 0C F7 D8 41 39 81 48 17 00 00 7D 04 C6 43 08 01)
 aobscanmodule(AOB_Counter_A,DOA6.exe,0F B7 40 30 45 33 F6 66 44 3B F0)
 aobscanmodule(AOB_Counter_B,DOA6.exe,0F B7 41 30 66 44 3B F0 73 0D)
 aobscanmodule(AOB_Counter_C,DOA6.exe,0F B7 41 30 66 3B F0 0F 82 B7 00 00 00)
@@ -1575,6 +4660,7 @@ label(HoldType_A_1C)
 label(HoldType_A_1E)
 label(HoldType_A_1F)
 label(HoldType_A_20)
+label(HoldType_A_21)
 label(HoldType_A_SKIP)
 label(HoldType_A_RET)
 
@@ -1626,16 +4712,16 @@ label(Counter_C_RET)
 newmem:
 AtariHantei_A:
 xor eax,eax
-cmp ax,[rdi+00000560]
+cmp ax,[rdi+00000570]
 jb AtariHantei_A_SKIP
-mov byte ptr [rsi+00000132],al
+mov byte ptr [rsi+0000013A],al
 AtariHantei_A_SKIP:
-db 0F B6 86 32 01 00 00
+db 0F B6 86 3A 01 00 00
 jmp AtariHantei_A_RET
 
 AtariHantei_B:
 xor ecx,ecx
-cmp cx,[rax+00000560]
+cmp cx,[rax+00000570]
 jb AtariHantei_B_SKIP
 cmp byte ptr [BryanyoraMem+200],00
 je AtariHantei_B_SKIP
@@ -1655,35 +4741,35 @@ jmp AtariHantei_B_RET
 AtariHantei_C:
 db 4C 8B 44 24 30
 xor ecx,ecx
-cmp cx,[r8+00000560]
+cmp cx,[r8+00000570]
 jb AtariHantei_C_SKIP
 cmp byte ptr [BryanyoraMem+200],00
 je AtariHantei_C_SKIP
-cmp [rbp+000000F8],00001389
+cmp [rbp+00000100],00001389
 je AtariHantei_C_A
-cmp [rbp+000000F8],00001392
+cmp [rbp+00000100],00001392
 je AtariHantei_C_A
-cmp [rbp+000000F8],0000157C
+cmp [rbp+00000100],0000157C
 je AtariHantei_C_A
 cmp byte ptr [BryanyoraMem+200],03
 jne AtariHantei_C_D
 AtariHantei_C_A:
 
 {
-cmp byte ptr [rbp+000000F0],05
+cmp byte ptr [rbp+00000108],05
 je AtariHantei_C_SKIP
-cmp byte ptr [rbp+000000F0],0E
+cmp byte ptr [rbp+00000108],0E
 je AtariHantei_C_SKIP
-cmp byte ptr [rbp+000000F0],10
+cmp byte ptr [rbp+00000108],10
 je AtariHantei_C_SKIP
 }
-cmp byte ptr [rbp+00000100],02
+cmp byte ptr [rbp+00000108],02
 je AtariHantei_C_B
-cmp byte ptr [rbp+00000100],03
+cmp byte ptr [rbp+00000108],03
 jne AtariHantei_C_D
 AtariHantei_C_B:
 
-cmp byte ptr [r8+00000100],0C
+cmp byte ptr [r8+00000108],0C
 je AtariHantei_C_C
 cmp [r8+68],613D
 je AtariHantei_C_C
@@ -1698,11 +4784,11 @@ jne AtariHantei_C_SKIP
 
 AtariHantei_C_C:
 mov [r8+8C],00000000
-mov byte ptr [r8+00000100],08
+mov byte ptr [r8+00000108],08
 jmp AtariHantei_C_SKIP
 
 AtariHantei_C_D:
-cmp byte ptr [rbp+00000100],05
+cmp byte ptr [rbp+00000108],05
 jne AtariHantei_C_SKIP
 mov ecx,[rbp+68]
 cmp ecx,0000009A
@@ -1722,7 +4808,7 @@ cmp ecx,00000098
 je AtariHantei_C_Ho_PU
 cmp ecx,0000009C
 je AtariHantei_C_Ho_PL
-cmp [rbp+000000F8],0000150E
+cmp [rbp+00000100],0000150E
 je AtariHantei_C_Ho_PM
 
 AtariHantei_C_Ho_P_0C:
@@ -1759,7 +4845,7 @@ cmp ecx,00000098
 je AtariHantei_C_Ho_KU
 cmp ecx,0000009C
 je AtariHantei_C_Ho_KL
-cmp [rbp+000000F8],0000150E
+cmp [rbp+00000100],0000150E
 je AtariHantei_C_Ho_KM
 
 AtariHantei_C_Ho_K_0C:
@@ -1934,7 +5020,7 @@ mov ecx,000000B5
 AtariHantei_C_Ho_END:
 mov [r8+68],ecx
 mov byte ptr [r8+72],01
-mov byte ptr [r8+00000100],03
+mov byte ptr [r8+00000108],03
 AtariHantei_C_SKIP:
 jmp AtariHantei_C_RET
 
@@ -1948,23 +5034,23 @@ mov r8,rbp
 test r8,r8
 je AtariHantei_D_SKIP
 xor ecx,ecx
-cmp cx,[rax+00000560]
+cmp cx,[rax+00000570]
 jb AtariHantei_D_SKIP
 {
-cmp byte ptr [r8+00000100],10
+cmp byte ptr [r8+00000108],10
 je AtariHantei_D_SKIP
 }
-cmp byte ptr [r8+00000100],02
+cmp byte ptr [r8+00000108],02
 je AtariHantei_D_A
-cmp byte ptr [r8+00000100],03
+cmp byte ptr [r8+00000108],03
 je AtariHantei_D_A
 cmp byte ptr [BryanyoraMem+200],00
 je AtariHantei_D_SKIP
-cmp byte ptr [r8+00000100],05
+cmp byte ptr [r8+00000108],05
 je AtariHantei_D_B
 AtariHantei_D_A:
 
-cmp byte ptr [rax+00000100],0C
+cmp byte ptr [rax+00000108],0C
 je AtariHantei_D_B
 cmp [rax+68],613D
 je AtariHantei_D_B
@@ -2000,22 +5086,22 @@ mov rdx,rbp
 test rdx,rdx
 je AtariHantei_E_SKIP
 xor ecx,ecx
-cmp cx,[rax+00000560]
+cmp cx,[rax+00000570]
 jb AtariHantei_E_SKIP
 {
-cmp byte ptr [rdx+00000100],10
+cmp byte ptr [rdx+00000108],10
 je AtariHantei_E_SKIP
 }
-cmp byte ptr [rdx+00000100],02
+cmp byte ptr [rdx+00000108],02
 je AtariHantei_E_A
-cmp byte ptr [rdx+00000100],03
+cmp byte ptr [rdx+00000108],03
 je AtariHantei_E_A
 cmp byte ptr [BryanyoraMem+200],00
 je AtariHantei_E_SKIP
-cmp byte ptr [rdx+00000100],05
+cmp byte ptr [rdx+00000108],05
 je AtariHantei_E_B
 AtariHantei_E_A:
-cmp byte ptr [rax+00000100],0C
+cmp byte ptr [rax+00000108],0C
 je AtariHantei_E_B
 cmp [rax+68],613D
 je AtariHantei_E_B
@@ -2045,7 +5131,7 @@ AtariHantei_F:
 cmp byte ptr [BryanyoraMem+200],00
 je AtariHantei_F_SKIP
 xor eax,eax
-cmp ax,[rdx+00000560]
+cmp ax,[rdx+00000570]
 jb AtariHantei_F_SKIP
 mov r8d,00000001
 AtariHantei_F_SKIP:
@@ -2061,7 +5147,7 @@ xor bl,01
 movzx ecx,bl
 call CALL_CHARABASE
 xor ecx,rcx
-cmp cx,[rax+00000560]
+cmp cx,[rax+00000570]
 jb AtariHantei_G_SKIP
 movzx ebx,byte ptr [rsi+00003560]
 movzx ecx,bl
@@ -2082,7 +5168,7 @@ HoldType_A:
 cmp byte ptr [BryanyoraMem+200],00
 je HoldType_A_SKIP
 xor eax,eax
-cmp ax,[r14+00000560]
+cmp ax,[r14+00000570]
 jb HoldType_A_SKIP
 cmp dword ptr [r14+8C],03
 je HoldType_A_A
@@ -2391,9 +5477,18 @@ jmp HoldType_A_SKIP
 
 HoldType_A_20:
 cmp [r13+14],20
-jne HoldType_A_SKIP
+jne HoldType_A_21
 mov ecx,00001FAC
 mov r15d,00001FAE
+test al,al
+cmove r15d,ecx
+jmp HoldType_A_SKIP
+
+HoldType_A_21:
+cmp [r13+14],21
+jne HoldType_A_SKIP
+mov ecx,00001F97
+mov r15d,00001F99
 test al,al
 cmove r15d,ecx
 //jmp HoldType_A_SKIP
@@ -2405,7 +5500,7 @@ jmp HoldType_A_RET
 DownNokezori_A:
 {
 xor ecx,ecx
-cmp cx,[rsi+00000560]
+cmp cx,[rsi+00000570]
 jb DownNokezori_A_SKIP
 }
 cmp byte ptr [BryanyoraMem+200],02
@@ -2426,7 +5521,7 @@ cmp [rsi+68],62F6
 je DownNokezori_A_JMP
 }
 DownNokezori_A_SKIP:
-db 48 8D 4C 24 68
+db 48 8D 4C 24 70
 jmp DownNokezori_A_RET
 DownNokezori_A_JMP:
 xor eax,eax
@@ -2435,7 +5530,7 @@ jmp DownNokezori_A_RET+5
 NageHantei_A:
 db 0F 29 74 24 20
 xor eax,eax
-cmp ax,[rdi+00000560]
+cmp ax,[rdi+00000570]
 jb NageHantei_A_SKIP
 cmp [rdi+68],613D
 je NageHantei_A_A
@@ -2447,9 +5542,9 @@ cmp [rdi+68],614A
 je NageHantei_A_A
 cmp [rdi+68],62F6
 je NageHantei_A_A
-cmp byte ptr [rdi+00000100],08
+cmp byte ptr [rdi+00000108],08
 je NageHantei_A_A
-cmp byte ptr [rdi+00000100],0C
+cmp byte ptr [rdi+00000108],0C
 jne NageHantei_A_SKIP
 NageHantei_A_A:
 cmp byte ptr [BryanyoraMem+200],00
@@ -2499,13 +5594,13 @@ jmp NageHantei_A_RET+05
 
 KabeBitan_A:
 xor eax,eax
-cmp ax,[rsi+00000560]
+cmp ax,[rsi+00000570]
 jb KabeBitan_A_SKIP
 cmp byte ptr [BryanyoraMem+202],01
 jne KabeBitan_A_SKIP
-mov byte ptr [rsi+000003E0],00
+mov byte ptr [rsi+000003F0],00
 KabeBitan_A_SKIP:
-db 80 BE E0 03 00 00 00
+db 80 BE F0 03 00 00 00
 jmp KabeBitan_A_RET
 
 
@@ -2519,7 +5614,7 @@ HaibokuPose_A_A:
 cmp byte ptr [BryanyoraMem+205],00
 je HaibokuPose_A_SKIP
 xor edi,edi
-cmp di,[rax+00000560]
+cmp di,[rax+00000570]
 jb NageHantei_A_SKIP
 {
 cmp byte ptr [rax+14],02
@@ -2599,13 +5694,13 @@ jmp JMP_HaibokuPose_A
 
 BreakBlow_A:
 xor eax,eax
-cmp ax,[r9+00000560]
+cmp ax,[r9+00000570]
 jae BreakBlow_A_SKIP
-mov rax,[DOA6.exe+25F1C40]
+mov rax,[DOA6.exe+25F4CC0]
 test rax,rax
 je BreakBlow_A_SKIP
 lea rax,[rax+000008F0]
-cmp byte ptr [rax+00000308],0F
+cmp byte ptr [rax+00000330],0F
 jne BreakBlow_A_SKIP
 cmp byte ptr [rax+00000229],00
 jne BreakBlow_A_JMP
@@ -2619,13 +5714,13 @@ jmp BreakBlow_A_RET
 
 BreakBlow_B:
 xor eax,eax
-cmp ax,[r9+00000560]
+cmp ax,[r9+00000570]
 jae BreakBlow_B_SKIP
-mov rax,[DOA6.exe+25F1C40]
+mov rax,[DOA6.exe+25F4CC0]
 test rax,rax
 je BreakBlow_B_SKIP
 lea rax,[rax+000008F0]
-cmp byte ptr [rax+00000308],0F
+cmp byte ptr [rax+00000330],0F
 jne BreakBlow_B_SKIP
 cmp byte ptr [rax+00000229],00
 jne BreakBlow_B_JMP
@@ -2640,7 +5735,7 @@ jmp BreakBlow_B_RET
 Counter_A:
 db 0F B7 40 30
 db 45 33 F6
-cmp r14w,[rcx+00000560]
+cmp r14w,[rcx+00000570]
 jb Counter_A_SKIP
 cmp byte ptr [BryanyoraMem+207],01
 jne Counter_A_A
@@ -2659,7 +5754,7 @@ jmp Counter_A_RET+D
 
 Counter_B:
 db 0F B7 41 30
-cmp r14w,[r15+00000560]
+cmp r14w,[r15+00000570]
 jb Counter_B_SKIP
 cmp byte ptr [BryanyoraMem+207],01
 jne Counter_B_A
@@ -2679,7 +5774,7 @@ jmp Counter_B_RET+9
 
 Counter_C:
 db 0F B7 41 30
-cmp si,[rbx+00000560]
+cmp si,[rbx+00000570]
 jb Counter_C_SKIP
 cmp byte ptr [BryanyoraMem+207],01
 jne Counter_C_A
@@ -2815,7 +5910,7 @@ unregistersymbol(AOB_Counter_C)
 dealloc(newmem)
 
 AOB_AtariHantei_A:
-db 0F B6 86 32 01 00 00
+db 0F B6 86 3A 01 00 00
 
 AOB_AtariHantei_B:
 db 48 8B C8
@@ -2843,13 +5938,13 @@ AOB_HoldType_A:
 db B8 FF FF 00 00
 
 AOB_DownNokezori_A:
-db 48 8D 4C 24 68
+db 48 8D 4C 24 70
 
 AOB_NageHantei_A:
 db 0F 29 74 24 20
 
 AOB_KabeBitan_A:
-db 80 BE E0 03 00 00 00
+db 80 BE F0 03 00 00 00
 
 AOB_HaibokuPose_A:
 db 8B 4C 24 40
@@ -2877,7 +5972,7 @@ db 66 3B F0
 </AssemblerScript>
           <CheatEntries>
             <CheatEntry>
-              <ID>23</ID>
+              <ID>3902</ID>
               <Description>"(Don't Active)00_Option Select"</Description>
               <DropDownList DisplayValueAsItem="1">00:Default
 01:Throw+Hold
@@ -2889,7 +5984,7 @@ db 66 3B F0
               <Address>BryanyoraMem+200</Address>
               <CheatEntries>
                 <CheatEntry>
-                  <ID>3523</ID>
+                  <ID>3903</ID>
                   <Description>"(Don't Active)Hold Select"</Description>
                   <DropDownList DisplayValueAsItem="1">00:P-Hold
 01:P-Hold_J
@@ -2903,7 +5998,7 @@ db 66 3B F0
               </CheatEntries>
             </CheatEntry>
             <CheatEntry>
-              <ID>3524</ID>
+              <ID>3904</ID>
               <Description>"(Don't Active)01_Counter Hit"</Description>
               <DropDownList DisplayValueAsItem="1">00:Default
 01:High Counter
@@ -2914,7 +6009,7 @@ db 66 3B F0
               <Address>BryanyoraMem+207</Address>
             </CheatEntry>
             <CheatEntry>
-              <ID>29</ID>
+              <ID>3905</ID>
               <Description>"02_Y-axis Hit Box Correction"</Description>
               <DropDownList DisplayValueAsItem="1">00:Default
 01:ON
@@ -2924,7 +6019,7 @@ db 66 3B F0
               <Address>BryanyoraMem+201</Address>
             </CheatEntry>
             <CheatEntry>
-              <ID>30</ID>
+              <ID>3906</ID>
               <Description>"03_Wall Hit"</Description>
               <DropDownList DisplayValueAsItem="1">00:Default
 01:ON
@@ -2934,7 +6029,7 @@ db 66 3B F0
               <Address>BryanyoraMem+202</Address>
             </CheatEntry>
             <CheatEntry>
-              <ID>3417</ID>
+              <ID>3907</ID>
               <Description>"04_Lose Pose"</Description>
               <DropDownList DisplayValueAsItem="1">00:Default
 01:Match Result
@@ -2949,14 +6044,254 @@ db 66 3B F0
             </CheatEntry>
           </CheatEntries>
         </CheatEntry>
+        <CheatEntry>
+          <ID>26</ID>
+          <Description>"0220_DownAttack"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[enable]
+aobscanmodule(AOB_DownAttack_A,DOA6.exe,80 B8 08 01 00 00 0C 74 04 C6 43 08 01)
+aobscanmodule(AOB_DownAttack_B,DOA6.exe,80 BF 08 01 00 00 0C 74 39 80 BF 84 01 00 00 00)
+registersymbol(AOB_DownAttack_A)
+registersymbol(AOB_DownAttack_B)
+alloc(newmem,$1000,"DOA6.exe")
+
+label(DownAttack_A)
+label(DownAttack_A_SKIP)
+label(DownAttack_A_JMP)
+label(DownAttack_A_RET)
+
+label(DownAttack_B)
+label(DownAttack_B_SKIP)
+label(DownAttack_B_JMP)
+label(DownAttack_B_RET)
+
+newmem:
+DownAttack_A:
+cmp [rax+68],613D
+je DownAttack_A_JMP
+cmp [rax+68],613E
+je DownAttack_A_JMP
+cmp [rax+68],6149
+je DownAttack_A_JMP
+cmp [rax+68],614A
+je DownAttack_A_JMP
+cmp [rax+68],62F6
+je DownAttack_A_JMP
+jmp DownAttack_A_SKIP
+DownAttack_A_SKIP:
+db 80 B8 08 01 00 00 0C
+jmp DownAttack_A_RET
+DownAttack_A_JMP:
+cmp al,al
+jmp DownAttack_A_RET
+
+DownAttack_B:
+xor ecx,ecx
+cmp cx,[rdi+00000570]
+jb DownAttack_B_SKIP
+cmp [rdi+68],613D
+je DownAttack_B_JMP
+cmp [rdi+68],613E
+je DownAttack_B_JMP
+cmp [rdi+68],6149
+je DownAttack_B_JMP
+cmp [rdi+68],614A
+je DownAttack_B_JMP
+cmp [rdi+68],62F6
+je DownAttack_B_JMP
+jmp DownAttack_B_SKIP
+DownAttack_B_SKIP:
+db 80 BF 08 01 00 00 0C
+jmp DownAttack_B_RET
+DownAttack_B_JMP:
+cmp al,al
+jmp DownAttack_B_RET
+
+AOB_DownAttack_A:
+jmp DownAttack_A
+nop
+nop
+DownAttack_A_RET:
+
+AOB_DownAttack_B:
+jmp DownAttack_B
+nop
+nop
+DownAttack_B_RET:
+
+[disable]
+unregistersymbol(AOB_DownAttack_A)
+unregistersymbol(AOB_DownAttack_B)
+dealloc(newmem)
+
+AOB_DownAttack_A:
+db 80 B8 08 01 00 00 0C
+
+AOB_DownAttack_B:
+db 80 BF 08 01 00 00 0C
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>27</ID>
+          <Description>"0230_DownMotion"</Description>
+          <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[enable]
+aobscanmodule(AOB_DownMotion_A,DOA6.exe,BA 58 00 00 00 48 8B CE E8 * * * * 84 C0 74 3E)
+aobscanmodule(AOB_DownMotion_B,DOA6.exe,BA 59 00 00 00 48 8B CE E8 * * * * 84 C0 74 34)
+aobscanmodule(AOB_DownMotion_C,DOA6.exe,0F B6 86 08 01 00 00 3C 0A 0F 84 3D 01 00 00 3C 0B)
+aobscanmodule(JMP_DownMotion_C,DOA6.exe,48 8B 05 8F 02 C8 00 48 8B 48 50)
+registersymbol(AOB_DownMotion_A)
+registersymbol(AOB_DownMotion_B)
+registersymbol(AOB_DownMotion_C)
+registersymbol(JMP_DownMotion_C)
+alloc(newmem,$1000,"DOA6.exe")
+
+label(DownMotion_A)
+label(DownMotion_A_SKIP)
+label(DownMotion_A_JMP)
+label(DownMotion_A_RET)
+
+label(DownMotion_B)
+label(DownMotion_B_SKIP)
+label(DownMotion_B_JMP)
+label(DownMotion_B_RET)
+
+label(DownMotion_C)
+label(DownMotion_C_A)
+label(DownMotion_C_B)
+label(DownMotion_C_C)
+label(DownMotion_C_SKIP)
+label(DownMotion_C_JMP)
+label(DownMotion_C_RET)
+
+newmem:
+DownMotion_A:
+xor ecx,ecx
+cmp cx,[rsi+00000570]
+jb DownMotion_A_SKIP
+cmp [rsi+14],19
+jne DownMotion_A_SKIP
+cmp edi,0000007F
+je DownMotion_A_JMP
+jmp DownMotion_A_SKIP
+DownMotion_A_SKIP:
+db BA 58 00 00 00
+jmp DownMotion_A_RET
+DownMotion_A_JMP:
+jmp DownMotion_A_RET+C
+
+DownMotion_B:
+xor ecx,ecx
+cmp cx,[rsi+00000570]
+jb DownMotion_B_SKIP
+cmp [rsi+14],19
+jne DownMotion_B_SKIP
+cmp edi,00000083
+je DownMotion_B_JMP
+jmp DownMotion_B_SKIP
+DownMotion_B_SKIP:
+db BA 59 00 00 00
+jmp DownMotion_B_RET
+DownMotion_B_JMP:
+jmp DownMotion_B_RET+C
+
+DownMotion_C:
+xor eax,eax
+cmp ax,[rsi+00000570]
+jb DownMotion_C_SKIP
+cmp byte ptr [BryanyoraMem+203],00
+je DownMotion_C_SKIP
+cmp edi,0000007F
+je DownMotion_C_A
+cmp edi,00000083
+jne DownMotion_C_SKIP
+DownMotion_C_A:
+cmp byte ptr [BryanyoraMem+203],01
+je DownMotion_C_B
+cmp byte ptr [BryanyoraMem+203],02
+je DownMotion_C_C
+DownMotion_C_JMP:
+jmp JMP_DownMotion_C
+DownMotion_C_B:
+mov eax,00000082
+cmp edi,0000007F
+cmove edi,eax
+mov eax,00000086
+cmp edi,00000083
+cmove edi,eax
+db 0F B6 86 08 01 00 00
+cmp al,al
+jmp DownMotion_C_RET+02
+DownMotion_C_C:
+mov eax,00000081
+cmp edi,0000007F
+cmove edi,eax
+mov eax,00000085
+cmp edi,00000083
+cmove edi,eax
+db 0F B6 86 08 01 00 00
+cmp al,al
+jmp DownMotion_C_RET+02
+DownMotion_C_SKIP:
+db 0F B6 86 08 01 00 00
+jmp DownMotion_C_RET
+
+
+AOB_DownMotion_A:
+jmp DownMotion_A
+DownMotion_A_RET:
+
+AOB_DownMotion_B:
+jmp DownMotion_B
+DownMotion_B_RET:
+
+AOB_DownMotion_C:
+jmp DownMotion_C
+nop
+nop
+DownMotion_C_RET:
+
+[disable]
+unregistersymbol(AOB_DownMotion_A)
+unregistersymbol(AOB_DownMotion_B)
+unregistersymbol(AOB_DownMotion_C)
+unregistersymbol(JMP_DownMotion_C)
+dealloc(newmem)
+
+AOB_DownMotion_A:
+db BA 58 00 00 00
+
+AOB_DownMotion_B:
+db BA 59 00 00 00
+
+AOB_DownMotion_C:
+db 0F B6 86 08 01 00 00
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>28</ID>
+              <Description>"(Don't Active)00_DownMotion Select"</Description>
+              <DropDownList DisplayValueAsItem="1">00:Default
+01:DownMotion1
+02:DownMotion2
+</DropDownList>
+              <ShowAsHex>1</ShowAsHex>
+              <VariableType>Byte</VariableType>
+              <Address>BryanyoraMem+203</Address>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
       </CheatEntries>
     </CheatEntry>
     <CheatEntry>
       <ID>3876</ID>
       <Description>"CPU Player 1"</Description>
-      <LastState Value="0" RealAddress="21273E1B5B0"/>
+      <LastState Value="77460992" RealAddress="1BC1FAFB640"/>
       <VariableType>4 Bytes</VariableType>
-      <Address>doa6.exe+25aec30</Address>
+      <Address>"DOA6.exe"+025B1C60</Address>
       <Offsets>
         <Offset>90</Offset>
         <Offset>b48</Offset>
@@ -2965,9 +6300,9 @@ db 66 3B F0
     <CheatEntry>
       <ID>3888</ID>
       <Description>"CPU Player 2"</Description>
-      <LastState Value="1" RealAddress="21273E1B5B4"/>
+      <LastState Value="567427584" RealAddress="1BC1FAFB644"/>
       <VariableType>4 Bytes</VariableType>
-      <Address>doa6.exe+25aec30</Address>
+      <Address>"DOA6.exe"+025B1C60</Address>
       <Offsets>
         <Offset>94</Offset>
         <Offset>b48</Offset>
@@ -2990,7 +6325,7 @@ requestPosResetAddr = nil
 p1CpuAddr = nil
 p2CpuAddr = nil
 rotAAddr = nil
-
+leftSideAddr = nil
 
 leftHeld = false
 rightHeld = false
@@ -3021,6 +6356,7 @@ function startTimer()
         p1CpuAddr = list.getMemoryRecordByDescription("CPU Player 1")
         p2CpuAddr = list.getMemoryRecordByDescription("CPU Player 2")
         rotAAddr = list.getMemoryRecordByDescription("RotA")
+        leftSideAddr = list.getMemoryRecordByDescription("0120_Left Side (Use to fix controls in POV)")
 
         hotkeyTimer = createTimer(getMainForm())
         hotkeyTimer.interval = 100
@@ -3033,7 +6369,15 @@ end
 function handleTimer(timer)
     local lbHeld = false
     local rbHeld = false
-    gamepad = getXBox360ControllerState(0)
+
+    local pauseOnly = false
+
+    gamepad = getXBox360ControllerState(1)
+    if gamepad == nil or gamepad.LeftTrigger == 0 then
+        gamepad = getXBox360ControllerState(0)
+    else
+        pauseOnly = true
+    end
 
     if gamepad == nil then
        return
@@ -3043,7 +6387,11 @@ function handleTimer(timer)
     if gamepad.LeftTrigger &gt; 0 then
         if not leftHeld then
             leftHeld = true
-            togglePause()
+            if pauseOnly then
+                setSpeed( 1.0 )
+            else
+                togglePause()
+            end
         end
     elseif leftHeld then
         leftHeld = false
@@ -3149,7 +6497,7 @@ function handleTimer(timer)
             elseif gamepad.GAMEPAD_B then
                 setSpeed(0.97)
             elseif gamepad.GAMEPAD_X then
-                setSpeed(1.0)
+                togglePause()
             elseif gamepad.GAMEPAD_Y then
                 setSpeed(0.4)
             end
@@ -3157,7 +6505,6 @@ function handleTimer(timer)
 
         if gamepad.GAMEPAD_A then
             if lbHeld then
-                speak("Toggle overkill")
                 toggleOverkill()
             end
         end
@@ -3165,8 +6512,13 @@ function handleTimer(timer)
 
         if gamepad.GAMEPAD_B then
             if lbHeld then
-                speak( "Reset position" )
-                requestPosResetAddr.Value = 1
+                if rbHeld then
+                    incAddr( leftSideAddr, 2 )
+                    speak( "Left side is " .. leftSideAddr.value )
+                else
+                    speak( "Reset position" )
+                    requestPosResetAddr.Value = 1
+                end
             end
         end
 
@@ -3215,7 +6567,7 @@ function setPovMode( mode )
     if mode == 0 then -- Source and target off
         speak("Control off")
         enableSrcAddr.Value = 0
-        enableTgtAddr.Value = 0
+        enableTgtAddr.Value = 1
         hideHeadPlayerAddr.Value = 0 -- show heads
         enableHideModelAddr.Value = 0 -- show models
         hideHeadPlayerAddr.Value = 1
@@ -3262,7 +6614,9 @@ end
 function toggleOverkill()
     overkillAddr.Active = not overkillAddr.Active
     if overkillAddr.Active then
-        beep()
+        speak("Overkill on")
+    else
+        speak("Overkill off")
     end
 end
 

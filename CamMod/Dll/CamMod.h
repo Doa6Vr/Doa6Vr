@@ -1,6 +1,7 @@
 #pragma once
 #include "openvr.h"
 #include "Utils.hpp"
+
 typedef unsigned char byte;
 
 #define NORM_ZOOM 0.6195918918f
@@ -89,9 +90,9 @@ typedef struct TargetsTableEntry_s
 
 typedef struct PlayerBoostTableEntry_s
 {
-    char unk1[0x560];
+    char unk1[0x570];
     uint16_t health;
-    uint16_t health_display;
+    uint16_t max_health;
     char unk2[0x30];
     uint32_t boost_display;
     char unk3[0x11A0];

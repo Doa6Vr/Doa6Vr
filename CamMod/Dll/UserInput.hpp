@@ -42,6 +42,7 @@ namespace CamMod
             FREE_MODE_SOURCE_AND_TARGET,
             FREE_MODE_POV,
             FREE_MODE_NO_SOURCE,
+            FREE_MODE_SOURCE_LOCKED,
             FREE_MODE_NO_SOURCE_NO_TARGET,
             FREE_MODE_CNT
         };

@@ -38,6 +38,7 @@ namespace
         L"Source and Target On",     // FREE_MODE_SOURCE_AND_TARGET,
         L"POV",                      // FREE_MODE_POV,
         L"Source Off Target On",     // FREE_MODE_NO_SOURCE,
+        L"Source Locked Target On",  // FREE_MODE_SOURCE_LOCKED,
         L"Source and Target Off",    // FREE_MODE_NO_SOURCE_NO_TARGET,
                                      // FREE_MODE_CNT
         };
@@ -96,14 +97,24 @@ namespace CamMod
     {
         //TODO: Make this all configurable via a file rather than this mess
 
-        #define CLICKED( _BUTTON ) ( 0 != ( state.Gamepad.wButtons & _BUTTON ) && 0 == ( mPrevState.Gamepad.wButtons & _BUTTON ) )
         XINPUT_STATE state = { 0 };
-        DWORD success = XInputGetState(0, &state);
-        if (ERROR_SUCCESS != success )
-        {
-            return false;
-        }
+        #define CLICKED( _BUTTON ) ( 0 != ( state.Gamepad.wButtons & _BUTTON ) && 0 == ( mPrevState.Gamepad.wButtons & _BUTTON ) )
 
+        // Check P2 controller. If Left Trigger held then use P2
+        DWORD success = XInputGetState(1, &state);
+        if (ERROR_SUCCESS == success )
+        {
+            float leftTriggerP2 = fmaxf(-1, (float)state.Gamepad.bLeftTrigger / 255.f);
+            if (leftTriggerP2 == 0.f)
+            {
+                success = -1;
+            }
+        }
+        // Else use P1
+        if( ERROR_SUCCESS != success)
+        {
+            success = XInputGetState(0, &state);
+        }
         const bool lbHeld = (state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) != 0;
         const bool rbHeld = (state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) != 0;
         const bool rStickClicked = (state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB) != 0;
@@ -127,21 +138,28 @@ namespace CamMod
         if (leftTrigger > 0.f)
         {
             const int8_t offset = (aCommands.altFunc ? -1 : 1);
-            if CLICKED(XINPUT_GAMEPAD_A)
+            if (rbHeld == false)
             {
-                RotateOption(mFullBreaks[0], BREAK_MODE_CNT, L"P 1 Break", aCommands.altFunc, sBreakModeStrings);
+                if CLICKED(XINPUT_GAMEPAD_A)
+                {
+                    RotateOption(mFullBreaks[0], BREAK_MODE_CNT, L"P 1 Break", aCommands.altFunc, sBreakModeStrings);
+                }
+                else if CLICKED(XINPUT_GAMEPAD_B)
+                {
+                    RotateOption(mFullBreaks[1], BREAK_MODE_CNT, L"P 2 Break", aCommands.altFunc, sBreakModeStrings);
+                }
+                else if CLICKED(XINPUT_GAMEPAD_X)
+                {
+                    RotateOption(mFullHealths[0], 2, L"P 1 Health", aCommands.altFunc);
+                }
+                else if CLICKED(XINPUT_GAMEPAD_Y)
+                {
+                    RotateOption(mFullHealths[1], 2, L"P 2 Health", aCommands.altFunc);
+                }
             }
-            else if CLICKED(XINPUT_GAMEPAD_B)
+            else
             {
-                RotateOption(mFullBreaks[1], BREAK_MODE_CNT, L"P 2 Break", aCommands.altFunc, sBreakModeStrings);
-            }
-            else if CLICKED(XINPUT_GAMEPAD_X)
-            {
-                RotateOption(mFullHealths[0], 2, L"P 1 Health", aCommands.altFunc);
-            }
-            else if CLICKED(XINPUT_GAMEPAD_Y)
-            {
-                RotateOption(mFullHealths[1], 2, L"P 2 Health", aCommands.altFunc);
+                // used by Lua script for speed control on controller 2
             }
         }
 
