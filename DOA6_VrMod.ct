@@ -13,7 +13,7 @@ aobScanModule( AOB_TargetsTableCall, DOA6.exe, 48 8B 01 48 8D 54 24 60 FF 50 08)
 aobScanModule( AOB_GameSpeedScan, DOA6.exe, C7 44 24 58 01 00 00 00 33 D2 41 F7 F0 )
 aobScanModule( AOB_HideHeadScan, DOA6.exe, 48 8B 5B 28 48 85 DB 74 7C 49 8B 06 49 8B CE FF 50 18 44 0F B6 D0 44 89 93 28 03 00 00 )
 aobScanModule( AOB_HideHairScan, DOA6.exe, 48 8B 5B 40 48 85 DB 74 7C 49 8B 06 49 8B CE FF 50 18 44 0F B6 D0 44 89 93 28 03 00 00 )
-aobScanModule( AOB_HideModelCall, DOA6.exe, 80 B9 1C 02 00 00 00 0F 94 C0 C3 )
+aobScanModule( AOB_HideModelCall, DOA6.exe, 80 B9 0C 03 00 00 00 0F 94 C0 C3 )
 aobScanModule( AOB_GetCharTableFuncPtr, DOA6.exe, 88 4c 24 08 53 56 57 48 81 ec a0 00 00 00 ) // use this passing 0 or 1 in RCX, returns in rax
 aobScanModule( AOB_HideUI, DOA6.exe, 48 8B 13 80 7A 22 00 75 0D 49 8B 45 00 )
 aobScanModule( AOB_GetTargetTableBaseCall, DOA6.exe, 4c 8b 49 10 4d 8b c1 49 8b 49 08 )
@@ -530,9 +530,7 @@ db 44 89 93 28 03 00 00
 //*******************************************
 // Restore the original AOB_HideModelCall
 AOB_HideModelCall:
-db 80 b9 1c 02 00 00 00 0f 94 c0
-
-//db 0f 5b c9
+db 80 B9 0C 03 00 00 00 0F 94 C0
 
 //*******************************************
 // Restore the original AOB_GetCameraAddr
@@ -1145,7 +1143,7 @@ db 4D 85 E4
           <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[enable]
-aobscanmodule(AOB_Scream100_A,DOA6.exe,03 C7 48 8B 4E 08 8B D0 E8 25 E4 84 FF 48 8B 7C 24 50)
+aobscanmodule(AOB_Scream100_A,DOA6.exe,03 C7 48 8B 4E 08 8B D0 E8 F5 C4 84 FF 48 8B 7C 24 50)
 aobscanmodule(AOB_Scream100_B,DOA6.exe,44 3B C1 0F 84 2A 01 00 00 40 38 70 19 75 4E)
 registersymbol(AOB_Scream100_A)
 registersymbol(AOB_Scream100_B)
@@ -1996,24 +1994,6 @@ db 66 83 B8 74 01 00 00 01
                       </CheatEntries>
                     </CheatEntry>
                     <CheatEntry>
-                      <ID>3561</ID>
-                      <Description>"08_2P Wet Cloth Change"</Description>
-                      <DropDownList DisplayValueAsItem="1">00:OFF
-01:ON
-</DropDownList>
-                      <ShowAsHex>1</ShowAsHex>
-                      <VariableType>Byte</VariableType>
-                      <Address>YOGORE_MEM+80*2+40</Address>
-                      <CheatEntries>
-                        <CheatEntry>
-                          <ID>3562</ID>
-                          <Description>"2P Wet Cloth Value"</Description>
-                          <VariableType>Float</VariableType>
-                          <Address>YOGORE_MEM+80*2+44</Address>
-                        </CheatEntry>
-                      </CheatEntries>
-                    </CheatEntry>
-                    <CheatEntry>
                       <ID>3463</ID>
                       <Description>"02_2P Scar Change"</Description>
                       <DropDownList DisplayValueAsItem="1">00:OFF
@@ -2130,6 +2110,24 @@ db 66 83 B8 74 01 00 00 01
                           <Description>"2P Oil Value"</Description>
                           <VariableType>Float</VariableType>
                           <Address>YOGORE_MEM+80*2+3C</Address>
+                        </CheatEntry>
+                      </CheatEntries>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>3561</ID>
+                      <Description>"08_2P Wet Cloth Change"</Description>
+                      <DropDownList DisplayValueAsItem="1">00:OFF
+01:ON
+</DropDownList>
+                      <ShowAsHex>1</ShowAsHex>
+                      <VariableType>Byte</VariableType>
+                      <Address>YOGORE_MEM+80*2+40</Address>
+                      <CheatEntries>
+                        <CheatEntry>
+                          <ID>3562</ID>
+                          <Description>"2P Wet Cloth Value"</Description>
+                          <VariableType>Float</VariableType>
+                          <Address>YOGORE_MEM+80*2+44</Address>
                         </CheatEntry>
                       </CheatEntries>
                     </CheatEntry>
@@ -4237,8 +4235,8 @@ aobscanmodule(AOB_OverKill_A,DOA6.exe,FF C8 89 45 20 40 84 FF 0F 85 18 03 00 00)
 aobscanmodule(AOB_OverKill_B,DOA6.exe,C6 80 3F 01 00 00 01 4C 8B 05 * * * *)
 aobscanmodule(AOB_OverKill_C,DOA6.exe,80 B8 3F 01 00 00 00 0F 84 F4 00 00 00 0F B6 4D 28)
 aobscanmodule(AOB_OverKill_D,DOA6.exe,84 DB 48 8B 5C 24 20 0F 85 5C FF FF FF B0 01 48 83 C4 28)
-aobscanmodule(AOB_OverKill_E,DOA6.exe,48 8B 05 79 95 D6 00 F6 40 70 01 74 43)
-aobscanmodule(AOB_OverKill_F,DOA6.exe,38 48 32 0F 94 C0 48 83 C4 48 C3 48 8D 0D DD FC 5C 00)
+aobscanmodule(AOB_OverKill_E,DOA6.exe,48 8B 05 F9 F4 D6 00 F6 40 70 01 74 43)
+aobscanmodule(AOB_OverKill_F,DOA6.exe,38 48 32 0F 94 C0 48 83 C4 48 C3 48 8D 0D 3D 27 5D 00)
 registersymbol(AOB_OverKill_A)
 registersymbol(AOB_OverKill_B)
 registersymbol(AOB_OverKill_C)
@@ -4293,7 +4291,7 @@ db 80 B8 3F 01 00 00 00
 jmp OverKill_C_RET
 
 OverKill_E:
-mov rax,[DOA6.exe+25F4CC0]
+mov rax,[DOA6.exe+25FFCD0]
 test rax,rax
 je OverKill_E_SKIP
 lea rax,[rax+000008F0]
@@ -4302,7 +4300,7 @@ jne OverKill_E_SKIP
 cmp byte ptr [rax+00000229],00
 jne OverKill_E_JMP
 OverKill_E_SKIP:
-mov rax,[DOA6.exe+25B17A0]
+mov rax,[DOA6.exe+25BC7B0]
 jmp OverKill_E_RET
 OverKill_E_JMP:
 jmp OverKill_E_RET+6
@@ -4359,7 +4357,7 @@ AOB_OverKill_D+0D:
 db B0 01
 
 AOB_OverKill_E:
-db 48 8B 05 79 95 D6 00
+db 48 8B 05 F9 F4 D6 00
 
 AOB_OverKill_F+03:
 db 0F 94 C0
@@ -4370,7 +4368,7 @@ db 0F 94 C0
               <Description>"0201_COM Over Kill"</Description>
               <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
-              <AssemblerScript>assert(DOA6.exe+1941F43,48 8B 05 76 2D CB 00)
+              <AssemblerScript>assert(DOA6.exe+1948923,48 8B 05 A6 73 CB 00)
 
 [enable]
 aobscanmodule(AOB_COMOverKill_A,DOA6.exe,75 2C 0F B6 4F 09 E8 * * * * 80 B8 08 01 00 00 0C)
@@ -4445,7 +4443,7 @@ COMBreakBlow_A:
 xor eax,eax
 cmp ax,[r9+00000570]
 jae COMBreakBlow_A_SKIP
-mov rax,[DOA6.exe+25F4CC0]
+mov rax,[DOA6.exe+25FFCD0]
 test rax,rax
 je COMBreakBlow_A_SKIP
 lea rax,[rax+000008F0]
@@ -4519,7 +4517,7 @@ db F7 D8
           <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
           <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
-          <AssemblerScript>assert(DOA6.exe+1941F43,48 8B 05 76 2D CB 00)
+          <AssemblerScript>assert(DOA6.exe+1948923,48 8B 05 A6 73 CB 00)
 
 [enable]
 aobscanmodule(AOB_AtariHantei_A,DOA6.exe,0F B6 86 3A 01 00 00 39 81 C4 01 00 00)
@@ -5696,7 +5694,7 @@ BreakBlow_A:
 xor eax,eax
 cmp ax,[r9+00000570]
 jae BreakBlow_A_SKIP
-mov rax,[DOA6.exe+25F4CC0]
+mov rax,[DOA6.exe+25FFCD0]
 test rax,rax
 je BreakBlow_A_SKIP
 lea rax,[rax+000008F0]
@@ -5716,7 +5714,7 @@ BreakBlow_B:
 xor eax,eax
 cmp ax,[r9+00000570]
 jae BreakBlow_B_SKIP
-mov rax,[DOA6.exe+25F4CC0]
+mov rax,[DOA6.exe+25FFCD0]
 test rax,rax
 je BreakBlow_B_SKIP
 lea rax,[rax+000008F0]
@@ -6142,7 +6140,7 @@ db 80 BF 08 01 00 00 0C
 aobscanmodule(AOB_DownMotion_A,DOA6.exe,BA 58 00 00 00 48 8B CE E8 * * * * 84 C0 74 3E)
 aobscanmodule(AOB_DownMotion_B,DOA6.exe,BA 59 00 00 00 48 8B CE E8 * * * * 84 C0 74 34)
 aobscanmodule(AOB_DownMotion_C,DOA6.exe,0F B6 86 08 01 00 00 3C 0A 0F 84 3D 01 00 00 3C 0B)
-aobscanmodule(JMP_DownMotion_C,DOA6.exe,48 8B 05 8F 02 C8 00 48 8B 48 50)
+aobscanmodule(JMP_DownMotion_C,DOA6.exe,48 8B 05 BF 32 C8 00 48 8B 48 50)
 registersymbol(AOB_DownMotion_A)
 registersymbol(AOB_DownMotion_B)
 registersymbol(AOB_DownMotion_C)
@@ -6291,10 +6289,10 @@ db 0F B6 86 08 01 00 00
       <Description>"CPU Player 1"</Description>
       <LastState Value="77460992" RealAddress="1BC1FAFB640"/>
       <VariableType>4 Bytes</VariableType>
-      <Address>"DOA6.exe"+025B1C60</Address>
+      <Address>"DOA6.exe"+025BCC70</Address>
       <Offsets>
-        <Offset>90</Offset>
-        <Offset>b48</Offset>
+        <Offset>0</Offset>
+        <Offset>748</Offset>
       </Offsets>
     </CheatEntry>
     <CheatEntry>
@@ -6302,10 +6300,10 @@ db 0F B6 86 08 01 00 00
       <Description>"CPU Player 2"</Description>
       <LastState Value="567427584" RealAddress="1BC1FAFB644"/>
       <VariableType>4 Bytes</VariableType>
-      <Address>"DOA6.exe"+025B1C60</Address>
+      <Address>"DOA6.exe"+025BCC70</Address>
       <Offsets>
-        <Offset>94</Offset>
-        <Offset>b48</Offset>
+        <Offset>4</Offset>
+        <Offset>748</Offset>
       </Offsets>
     </CheatEntry>
   </CheatEntries>
